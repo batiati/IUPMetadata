@@ -1,0 +1,436 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+<head>
+
+  <meta http-equiv="Content-Language" content="en-us">
+
+
+
+  <title>IupFlatVal</title>
+  <link rel="stylesheet" type="text/css" href="../../style.css">
+
+  <style orientation="text/css">
+.style1 {
+	font-size: large;
+}
+  .auto-style1 {
+	color: #FF0000;
+}
+  .auto-style3 {
+	color: #000000;
+}
+  </style>
+</head>
+
+
+<body>
+
+<div id="navigation">
+  
+<ul>
+
+    <li><a href="#Creation">Creation</a></li>
+
+    <li><a href="#Attributes">Attributes</a></li>
+
+    <li><a href="#Callbacks">Callbacks</a></li>
+
+    <li><a href="#Notes">Notes</a></li>
+
+    <li><a href="#Examples">Examples</a></li>
+
+    <li><a href="#SeeAlso">See Also</a></li>
+
+  
+</ul>
+
+</div>
+
+
+<h2>IupFlatVal<span class="style1"> (since 3.28)</span></h2>
+
+<p>Creates a Valuator control, but it does not have native decorations. Selects a value in a limited interval. Also known 
+as Scale or Trackbar in native systems.</p>
+<p>It behaves just like an<span class="Apple-converted-space">&nbsp;</span><a href="iupval.html">IupVal</a>, 
+but since it is not a native control it has more flexibility for additional 
+options. But ticks are NOT supported.</p>
+<p>It inherits from
+  <a href="../elem/iupcanvas.html">IupCanvas</a>.&nbsp;</p>
+
+<h3><a name="Creation">Creation</a></h3>
+
+<div>
+  
+<pre>Ihandle* IupFlatVal(const char *<strong>orientation</strong>); [in C]<br>iup.flatval{<strong>orientation</strong>: string} -&gt; (<strong>ih</strong>: ihandle) [in Lua]<br>flatval(<strong>orientation</strong>) [in LED] </pre>
+
+</div>
+
+<p><strong>orientation</strong>: optional orientation of valuator. Can be NULL. See ORIENTATION 
+attribute.</p>
+
+  
+<p>
+  <u>Returns:</u> the identifier of the 
+  created element, or NULL if an error occurs.</p>
+
+
+<h3><a name="Attributes">Attributes</a></h3>
+
+
+
+<p>
+Inherits all attributes and callbacks of the <a href="../elem/iupcanvas.html">IupCanvas</a>, 
+but redefines a few attributes.</p>
+<p>
+<a href="../attrib/iup_bgcolor.html">BGCOLOR</a>: ignored. It will use the background color of the native parent.</p>
+
+
+  <p><strong>BACKIMAGE</strong> (<font SIZE="3">non inheritable</font>):
+  image name to be used as background. Use
+	<a href="../func/iupsethandle.html">IupSetHandle</a> or
+	<a href="../func/iupsetattributehandle.html">IupSetAttributeHandle</a> to 
+	associate an image to a name. See also
+	<a href="../elem/iupimage.html">IupImage</a>. </p>
+<p><strong>BACKIMAGEZOOM</strong> (<font size="3">non inheritable</font>): if 
+set the back image will be zoomed to occupy the full background. Aspect ratio is 
+NOT preserved. Can be Yes or No. Default: No.</p>
+
+  
+<p><b>BORDER </b>(creation only):
+  
+  the default value is "NO". This is the <strong>IupCanvas</strong> border.</p>
+<p><strong>BORDERCOLOR</strong>: color used for borders. Default: &quot;50 150 255&quot;. 
+This is for the drawn border.</p>
+<p class="auto-style3"><strong>BORDERPSCOLOR</strong>: color used for borders 
+when pressed or selected. Default use BORDERCOLOR.</p>
+<p class="auto-style3"><strong>BORDERHLCOLOR</strong>: color used for borders 
+when highlighted. Pre-defined to &quot;0 120 220&quot;. Can be set to NULL. If 
+NULL BORDERCOLOR will be used instead.</p>
+<p><strong>BORDERWIDTH</strong>: line width used for borders. Default: &quot;1&quot;. Any borders can be 
+hidden by simply setting 
+this value to 0. This is for the <strong>IupFlatButton</strong> drawn border.</p>
+
+  
+<p><strong>CANFOCUS</strong> (creation only)<strong> </strong>(<font size="3">non inheritable</font>): 
+enables the focus traversal of the control. In Windows the control will still 
+get the focus when clicked. Default: YES.</p>
+
+<p><strong>PROPAGATEFOCUS</strong>(<font size="3">non inheritable</font>): 
+enables the focus callback forwarding to the next native parent with FOCUS_CB 
+defined. Default: NO.</p>
+
+
+
+  
+<p><strong>FITTOBACKIMAGE</strong> (<font size="3">non inheritable</font>): 
+enable the natural size to be computed from the BACKIMAGE. If BACKIMAGE is not 
+defined will be ignored. Can be 
+Yes or No. Default: No.</p>
+
+
+<p><a href="../attrib/iup_fgcolor.html">FGCOLOR</a>: Controls the handler color. Default: &quot;0 
+120 220&quot;.</p>
+<p class="auto-style3"><strong>HLCOLOR</strong>: color used to indicate a 
+highlight state. Pre-defined to &quot;30 150 250&quot;. Can be set to NULL. If 
+NULL FGCOLOR will be used instead.</p>
+<p class="auto-style3"><strong>PSCOLOR</strong>: color used to indicate a press 
+state. Pre-defined to &quot;0 60 190&quot;. Can be set to NULL. If NULL FGCOLOR 
+will be used instead.</p>
+
+
+
+  
+<p><strong>HANDLERSIZE</strong> (<font size="3">non inheritable</font>): handler 
+size in the same direction of the ORIENTATION. Default: 0. When 0 it 
+will be calculated with half of the dimension opposite to the ORIENTATION. If 
+IMAGE is used, it will be ignored. When IMAGE is not 
+used is the handler size in the opposite direction is the size of the element.</p>
+
+
+  <p><strong>IMAGE</strong> (<font SIZE="3">non inheritable</font>):
+  Image name for the handler. Use
+	<a href="../func/iupsethandle.html">IupSetHandle</a> or
+	<a href="../func/iupsetattributehandle.html">IupSetAttributeHandle</a> to 
+	associate an image to a name. See also
+	<a href="../elem/iupimage.html">IupImage</a>. If defined the handler will be 
+  replaced by the image.</p>
+<p><strong>IMAGEHIGHLIGHT</strong> (<font SIZE="3">non inheritable</font>): 
+Image name of the element in highlight state. If it is not defined then the 
+IMAGE is used.</p>
+  <p><strong>IMAGEINACTIVE</strong> (<font SIZE="3">non inheritable</font>): 
+  Image name of the element when inactive. If it is not defined then the IMAGE 
+  is used and its colors will be replaced by a modified version creating the 
+  disabled effect. </p>
+
+  
+<p><strong>IMAGEPRESS </strong>(<font size="3">non inheritable</font>): Image 
+name of the element in pressed state. If it is not defined then the IMAGE is 
+used.</p>
+
+<p><strong>MAX</strong>:
+  Contains the maximum valuator value. Default 
+  is 
+  "1". When changed the display will not be updated until VALUE is 
+set.</p>
+
+<p><strong>MIN</strong>:
+  Contains the minimum valuator value. Default 
+  is "0". When changed the display will not be updated until VALUE is 
+set.</p>
+
+<p><strong>PAGESTEP</strong>: Controls the increment for PgDn and PgUp keys. 
+It is not the size of the increment. The increment size is "pagestep*(max-min)", 
+so it must be 0&lt;pagestep&lt;1. Default is "0.1".</p>
+
+<p><a href="../attrib/iup_size.html">SIZE</a><span class="auto-style1"><strong> </strong>
+</span>(<font size="3">non inheritable</font>): The natural size is the height of one character in one direction and the 
+width of 15 characters in the other.</p>
+
+<p><strong>SLIDERSIZE </strong>(<font size="3">non inheritable</font>): slider 
+size in the same direction of the ORIENTATION. Default: 5. Ignored when 
+BACKIMAGE is used.</p>
+<p><strong>SLIDERBORDERCOLOR</strong>: slider border color. Default: &quot;160 
+160 
+160&quot;.</p>
+<p><strong>SLIDERCOLOR</strong>: slider background color. Default: &quot;220 220 
+220&quot;.</p>
+
+<p><strong>STEP</strong> (<font size="3">non inheritable</font><strong>)</strong>: Controls the increment for keyboard control and the mouse 
+  wheel. It is not the size of the increment. The increment size is 
+"step*(max-min)", so it must be 0&lt;step&lt;1. Default is "0.01".</p>
+
+<p><strong>ORIENTATION </strong>(creation only) (<font size="3">non inheritable</font>):&nbsp; Informs whether the valuator is "VERTICAL" 
+  or "HORIZONTAL". 
+  Vertical valuators are bottom to up, and horizontal valuators are left to right variations of min to max. 
+Default: "HORIZONTAL".</p>
+
+<p><strong>VALUE </strong>(<font size="3">non inheritable</font>):
+  Contains a number between MIN and MAX, indicating the valuator position. 
+Default: "0.0".</p>
+
+<blockquote>
+  
+  <hr>
+</blockquote>
+
+<p>
+<a href="../attrib/iup_active.html">ACTIVE</a>,
+<a href="../attrib/iup_expand.html">EXPAND</a>, <a href="../attrib/iup_font.html">FONT</a>, <a href="../attrib/iup_screenposition.html">SCREENPOSITION</a>, 
+<a href="../attrib/iup_position.html">
+POSITION</a>, <a href="../attrib/iup_minsize.html">
+MINSIZE</a>, <a href="../attrib/iup_maxsize.html">
+MAXSIZE</a>,
+    <a href="../attrib/iup_wid.html">WID</a>, <a href="../attrib/iup_tip.html">TIP</a>, 
+<a href="../attrib/iup_size.html">SIZE</a>,
+    <a href="../attrib/iup_zorder.html">ZORDER</a>, <a href="../attrib/iup_visible.html">VISIBLE</a>,
+<a href="../attrib/iup_theme.html">THEME</a>: 
+also accepted.&nbsp;</p>
+
+<h3><a name="Callbacks">Callbacks</a></h3>
+
+
+<p>Inherits all callbacks of the <a href="../elem/iupcanvas.html">IupCanvas</a>, 
+but redefines a few of them. Including ACTION, BUTTON_CB, MOTION_CB, FOCUS_CB, 
+WHEEL_CB, LEAVEWINDOW_CB, and ENTERWINDOW_CB. To allow the application to use those 
+callbacks the same callbacks are exported with the &quot;FLAT_&quot; prefix using the same 
+parameters, except the ACTION. They are all called before the internal callbacks and if they return 
+IUP_IGNORE the internal callbacks are not processed.</p>
+
+
+<p><strong>VALUECHANGED_CB</strong>:
+  Called after the value was interactively changed by the user.</p>
+
+<pre>int function(Ihandle *<strong>ih</strong>); [in C]<br><strong>ih</strong>:valuechanged_cb() -&gt; (<strong>ret</strong>: number) [in Lua]</pre>
+
+    
+<p class="info"><strong>ih</strong>:
+  identifier of the element that activated the 
+  event.</p>
+
+<p><strong>VALUECHANGING_CB</strong>:
+  Called when the value starts or ends to be interactively changed by the user.</p>
+
+<pre>int function(Ihandle *<strong>ih</strong>, int <strong>start</strong>); [in C]<br><strong>elem</strong>:valuechanging_cb(<strong>start</strong>: number) -&gt; (<strong>ret</strong>: number) [in Lua]</pre>
+
+    
+<p class="info"><strong>ih</strong>:
+  identifier of the element that activated the 
+  event.<br><strong>start</strong>: flag that indicates if the value started to 
+be changed (1) or the change just ended (0).</p>
+
+<blockquote>
+  
+  <hr>
+</blockquote>
+
+
+<p><a href="../call/iup_map_cb.html">MAP_CB</a>,  
+<a href="../call/iup_unmap_cb.html">UNMAP_CB</a>, 
+<a href="../call/iup_destroy_cb.html">DESTROY_CB</a>, 
+<a href="../call/iup_getfocus_cb.html">GETFOCUS_CB</a>,
+  <a href="../call/iup_killfocus_cb.html">KILLFOCUS_CB</a>, 
+<a href="../call/iup_enterwindow_cb.html">ENTERWINDOW_CB</a>,
+  <a href="../call/iup_leavewindow_cb.html">LEAVEWINDOW_CB</a>, 
+<a href="../call/iup_k_any.html">K_ANY</a>,
+  <a href="../call/iup_help_cb.html">HELP_CB</a>: All common callbacks are 
+supported.</p>
+
+<h3><a name="Notes">Notes</a></h3>
+
+<h4>Keyboard Mapping</h4>
+
+<p>This is the default mapping when ORIENTATION=HORIZONTAL.</p>
+
+<table align="center">
+
+	<tbody>
+    <tr>
+
+		<th>Keys</th>
+
+		<th>Action for HORIZONTAL</th>
+
+	</tr>
+
+	<tr>
+
+		<td>Right Arrow</td>
+
+		<td>move right, increment by one step</td>
+
+	</tr>
+
+	<tr>
+
+		<td>Left Arrow</td>
+
+		<td>move left, decrement by one step</td>
+
+	</tr>
+
+	<tr>
+
+		<td>Ctrl+Right Arrow or PgDn</td>
+
+		<td>move right, increment by one page step</td>
+
+	</tr>
+
+	<tr>
+
+		<td>Ctrl+Left Arrow or PgUp</td>
+
+		<td>move left, decrement by one page step</td>
+
+	</tr>
+
+	<tr>
+
+		<td>Home</td>
+
+		<td>move all left, set to minimum</td>
+
+	</tr>
+
+	<tr>
+
+		<td>End</td>
+
+		<td>move all right, set to maximum</td>
+
+	</tr>
+
+	
+  </tbody>
+</table>
+
+
+<p>This is the default mapping when ORIENTATION=VERTICAL.</p>
+
+
+<table align="center">
+
+	<tbody>
+    <tr>
+
+		<th>Keys</th>
+
+		<th>Action for VERTICAL</th>
+
+	</tr>
+
+	<tr>
+
+		<td>Up Arrow</td>
+
+		<td>move up, increment by one step</td>
+
+	</tr>
+
+	<tr>
+
+		<td>Down Arrow</td>
+
+		<td>move down, decrement by one step</td>
+
+	</tr>
+
+	<tr>
+
+		<td>Ctrl+Up Arrow or PgUp</td>
+
+		<td>move up, increment by one page step</td>
+
+	</tr>
+
+	<tr>
+
+		<td>Ctrl+Down Arrow or PgDn</td>
+
+		<td>move down, decrement by one page step</td>
+
+	</tr>
+
+	<tr>
+
+		<td>Home</td>
+
+		<td>move all up, set to maximum</td>
+
+	</tr>
+
+	<tr>
+
+		<td>End</td>
+
+		<td>move all down, set to minimum</td>
+
+	</tr>
+
+	
+  </tbody>
+</table>
+
+	
+<h3><a name="Examples">Examples</a></h3>
+
+<p><a href="../../examples/">Browse for Example Files</a></p>
+
+
+<table align="center">
+
+	<tbody>
+
+	<tr>
+
+		<td class="bg_winxp"><img src="images/iupflatval.png"></td>
+
+	</tr>
+
+	
+  </tbody>
+</table>
+
+
+</body>
+</html>

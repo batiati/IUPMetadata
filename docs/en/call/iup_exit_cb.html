@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<title>EXIT_CB</title>
+
+<link rel="stylesheet" type="text/css" href="../../style.css">
+<style type="text/css">
+.auto-style1 {
+	font-size: large;
+}
+</style>
+</head>
+<body>
+
+<h2>EXIT_CB<span class="auto-style1"> (since 3.28)</span></h2>
+<p>Global callback for an exit. Used when main is not possible, such as 
+in iOS and Android systems.</p>
+<p>It is called every time the last main loop is ended. 
+For regular systems is called right after the actual event loop is ended, every 
+time when the main loop level returns to 0.</p>
+<h3>Callback</h3>
+<pre>void function(void); [in C]</pre>
+<h3>Notes</h3>
+<p>It can only be set using <b>IupSetFunction(</b>name, func<b>)</b>.</p>
+<h4>Lua Binding&nbsp;</h4>
+<p>To modify this action use the iup.<strong>SetGlobalCallback</strong>(name, func) 
+function.</p>
+<h3>See Also</h3>
+<p><a href="../func/iupsetfunction.html">IupSetFunction</a>,
+<a href="iup_entry_point.html">ENTRY_POINT</a>, </p>
+
+</body>
+
+</html>

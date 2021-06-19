@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<title>ENTRY_POINT</title>
+
+<link rel="stylesheet" type="text/css" href="../../style.css">
+<style type="text/css">
+.auto-style1 {
+	font-size: large;
+}
+.style1 {
+	font-size: large;
+}
+</style>
+</head>
+<body>
+
+<h2>ENTRY_POINT<span class="auto-style1"> (since 3.28)</span></h2>
+<p>Global callback for an entry point. Used when main is not possible, such as 
+in iOS and Android systems.</p>
+<p>It is called only once, when the main loop is processed, but after <strong>IupOpen</strong>. 
+For regular systems is called right before the actual event loop is started.</p>
+<h3>Callback</h3>
+<pre>void function(void); [in C]</pre>
+<h3>Notes</h3>
+<p>It can only be set using <b>IupSetFunction(</b>name, func<b>)</b>.</p>
+<h4>Lua Binding&nbsp;</h4>
+<p>To modify this action use the iup.<strong>SetGlobalCallback</strong>(name, func) 
+function.</p>
+<h3>See Also</h3>
+<p><a href="../func/iupsetfunction.html">IupSetFunction</a>,
+<a href="iup_exit_cb.html">EXIT_CB</a>, <a href="../func/iupmainlooplevel.html">IupMainLoopLevel</a><span class="style1"> </span></p>
+
+</body>
+
+</html>

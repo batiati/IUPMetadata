@@ -1,0 +1,450 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<title>IupFlatTree Attributes</title>
+<link rel="stylesheet" type="text/css" href="../../style.css">
+<style type="text/css">
+.style3 {
+	color: #000000;
+}
+.style4 {
+	font-weight: bold;
+}
+.style5 {
+	text-decoration: underline;
+}
+</style>
+</head>
+<body>
+
+<h2>IupFlatTree Attributes</h2>
+<h3><a name="global">General</a></h3>
+<p><strong>AUTOREDRAW</strong> (<font size="3">non inheritable</font>): 
+automatically redraws the tree when something has change. Set to NO to change 
+many nodes without updating the display. Default: &quot;YES&quot;.</p>
+
+<p><a href="../attrib/iup_bgcolor.html">BGCOLOR</a>: Background color of the 
+tree. Default: the global attribute TXTBGCOLOR.</p>
+
+  
+<p><a href="../attrib/iup_expand.html">EXPAND</a> (<font size="3">non inheritable</font>): 
+The default value is &quot;YES&quot;.</p>
+<p><strong>BORDERCOLOR</strong>: color used for the internal border. Default: &quot;50 150 255&quot;. 
+This is for the internal border. </p>
+<p><strong>BORDERWIDTH</strong>: line width used for the internal border. Default: &quot;0&quot;. 
+The internal borders are 
+hidden by simply setting 
+this value to 0. It is drawn inside the canvas, so inside the scrollbars.</p>
+<p><strong>EXTRATEXTWIDTH</strong>: width of the extra text area at right. 
+(since 3.30)</p>
+
+<p><strong>FGCOLOR</strong>: default text foreground color. Once each node is 
+created it will not change its color when FGCOLOR is changed. Default: the 
+global attribute TXTFGCOLOR. </p>
+
+  
+<p><strong>HLCOLOR</strong> (<font size="3">non inheritable</font>): the 
+color of a filled box drawn over the selected node. Default: TXTHLCOLOR global attribute.</p>
+<p><strong>HLCOLORALPHA</strong>: the transparency used to draw the selection. 
+Default: 128. If set to 0 the selection box is not drawn.</p>
+<p><strong>PSCOLOR</strong>: background color of a selected node. If not defined 
+BACKCOLORid will be used. (since 3.30)</p>
+<p><strong>TEXTPSCOLOR</strong>: foreground color of a selected node. If not 
+defined FORECOLORid will be used. (since 3.30)</p>
+
+  
+<p><strong>ICONSPACING </strong>(<font SIZE="3">non inheritable</font>): spacing between the 
+image and the text. Default: &quot;2&quot;.</p>
+
+  
+<p><strong>INDENTATION</strong>: sets the indentation level in pixels. Default: 
+16 for standard resolution, 24 for high resolution display </p>
+
+  
+<p> 
+<a href="../attrib/iup_rastersize.html">RASTERSIZE</a> (<font size="3">non inheritable</font>): 
+the initial size is &quot;400x200&quot;. Set to NULL to allow the automatic 
+layout use smaller values.</p>
+<p><strong>SPACING</strong>: vertical space between nodes. Notice 
+that this is not the same as the IupTree. </p>
+
+  
+<p><strong>CSPACING</strong>: same as SPACING but using the units of the 
+vertical part of the <strong>
+	SIZE</strong> attribute. It will actually set the SPACING attribute. (since 
+3.29)</p>
+
+  
+<p><strong>TOPITEM</strong> (write-only): position the given node identifier at 
+the top of the tree or near to make it visible. If any parent node is collapsed 
+then they are automatically expanded. </p>
+
+  
+  
+<blockquote>
+  <hr>
+</blockquote>
+<p>
+<a href="../attrib/iup_active.html">ACTIVE</a>,
+<a href="../attrib/iup_expand.html">EXPAND</a>, 
+<a href="../attrib/iup_font.html">FONT</a>, <a href="../attrib/iup_screenposition.html">SCREENPOSITION</a>, 
+<a href="../attrib/iup_position.html">
+POSITION</a>, <a href="../attrib/iup_minsize.html">
+MINSIZE</a>, <a href="../attrib/iup_maxsize.html">
+MAXSIZE</a>,
+    <a href="../attrib/iup_wid.html">WID</a>, <a href="../attrib/iup_tip.html">TIP</a>, 
+<a href="../attrib/iup_size.html">SIZE</a>,
+<a href="../attrib/iup_rastersize.html">RASTERSIZE</a>,
+    <a href="../attrib/iup_zorder.html">ZORDER</a>, <a href="../attrib/iup_visible.html">VISIBLE</a>,
+<a href="../attrib/iup_theme.html">THEME</a>: 
+also accepted.&nbsp;</p>
+<h3><a name="Expanders">Expanders</a>&nbsp;(<font size="3">non inheritable</font>)</h3>
+
+  
+<p><strong>HIDEBUTTONS</strong>: hide the expand and collapse 
+buttons. </p>
+
+  
+<p><strong>HIDELINES</strong>: hide the lines that connect the 
+nodes in the hierarchy.</p>
+<p><strong>LINECOLOR</strong>: the color of the dotted guidelines. Default: &quot;110 
+110 110&quot;</p>
+<p><strong>BUTTONBGCOLOR</strong>: background color of the expander buttons. 
+Default: &quot;240 240 240&quot;</p>
+<p><strong>BUTTONFGCOLOR</strong>: sign color of the expander buttons (&quot;+&quot; or 
+&quot;-&quot; signs). Default: &quot;50 100 150&quot;</p>
+<p><strong>BUTTONBRDCOLOR</strong>: border color of the expander buttons. 
+Default: &quot;150 150 150&quot;</p>
+<p><strong>BUTTONSIZE</strong>: size of the expander button square. Default: 9 
+for standard resolution, 16 for high resolution display</p>
+<p><strong>BUTTONPLUSIMAGE</strong>: the image name that will be shown for all 
+expander button when collapsed. By default the button is drawn. The &quot;IMGPLUS&quot; 
+pre-defined image is a 9x9 image that can be used.</p>
+<p><strong>BUTTONMINUSIMAGE</strong>: the image name that will be shown for all 
+expander button when collapsed. By default the button is drawn. The &quot;IMGMINUS&quot; 
+pre-defined image is a 9x9 image that can be used.</p>
+<h3><a name="nodes">Nodes</a>&nbsp;(<font size="3">non inheritable</font>)</h3>
+    <p>For these attributes &quot;id&quot; is the specified node identifier. If 
+	&quot;id&quot; is 
+	empty or invalid, then the focus node is used as the specified node. </p>
+
+  
+<p><strong>COUNT</strong> (read only) (<font size="3">non inheritable</font>): 
+returns the total number of nodes in the tree. </p>
+
+  
+<p><strong>CHILDCOUNT<em>id</em></strong> (read only): returns the immediate 
+children count of the specified branch. It does not count children of child that 
+are branches. </p>
+<p><strong>TOTALCHILDCOUNT<em>id</em></strong> (read only): returns the total 
+children count of the specified branch. It counts all grandchildren too. </p>
+<p><strong>ROOTCOUNT</strong> (read only): returns the number of root nodes. </p>
+<p><strong>COLOR</strong><em><strong>id</strong></em>: foreground color of 
+the title at the given id. If not defined FGCOLOR is used.</p>
+<p><strong>BACKCOLOR</strong><em><strong>id</strong></em>: background color of 
+the title at the given id. If not defined BGCOLOR is used.</p>
+<p><strong>ITEMTIP</strong><em><strong>id</strong></em>: tip of the node at the 
+given id. If defined will be shown instead of the TIP attribute.</p>
+<p><strong>DEPTHid </strong>(read only): returns the depth of the specified 
+node. The first node has depth=0, its 
+immediate children has depth=1, their children has depth=2 and so on.</p>
+<p><strong>KINDid </strong>(read only):
+  returns the kind of the specified node. Possible values: 
+</p>
+    <blockquote>
+    <ul>
+      <li>&quot;LEAF&quot;:
+    The node is a leaf</li>
+		<li>&quot;BRANCH&quot;:
+    The node is a branch</li>
+</ul>
+</blockquote>
+<p><strong>PARENT<em>id</em> </strong>(read only): returns the parent of the 
+specified node.</p>
+<p><strong>NEXT<em>id</em> </strong>(read only): returns the next brother (same 
+depth) of the specified node. Returns NULLs if at last child node of the parent 
+(at the same depth). </p>
+<p><strong>PREVIOUS<em>id</em> </strong>(read only): returns the previous 
+brother (same depth) of the 
+specified node. Returns NULLs if at first child node of the parent (at the same 
+depth). &nbsp;</p>
+<p><strong>LAST<em>id</em> </strong>(read only): returns the last brother (same 
+depth) of the specified node. </p>
+<p><strong>FIRST<em>id</em> </strong>(read only): returns the first brother 
+(same depth) of the 
+specified node. This is the same as getting the first child of the parent of the 
+given node. If the specified node is the first child returns the specified node. 
+&nbsp;</p>
+<p><strong>STATEid</strong>: the state of the specified branch. Returns NULL for 
+a LEAF. Possible values: </p>
+    <blockquote>
+    <ul>
+      <li>&quot;EXPANDED&quot;:
+    Expanded branch state (shows its children)</li>
+		<li>&quot;COLLAPSED&quot;:
+    Collapsed branch state (hides its children)
+    </li>
+</ul>
+    </blockquote>
+<p><strong>TITLEid</strong>: the text label of the specified node.</p>
+<p><strong>TITLEFONTid</strong>: the text font of the specified node. The format 
+is the same as the <a href="../attrib/iup_font.html">FONT</a> attribute. </p>
+<p><strong>TITLEFONTSTYLEid</strong>: changes the font style of the specified 
+node. Actually changes the <strong>TITLEFONTid</strong> attribute.</p>
+<p><strong>TITLEFONTSIZEid</strong>: changes the font size of the specified 
+node. Actually changes the <strong>TITLEFONTid</strong> attribute.</p>
+<p><strong>USERDATAid</strong>: the user data associated with the specified 
+node. </p>
+<p><strong>EXTRATEXTid</strong>: text displayed at the extra text area at right. 
+(since 3.30)</p>
+<h3><a name="Toggle">Toggle</a> (<font size="3">non inheritable</font>)</h3>
+<p><strong>SHOWTOGGLE</strong>: enables 
+the use of toggles for all nodes of the tree. Can be &quot;YES&quot;, &quot;3STATE&quot; or NO&quot;. 
+Default: &quot;NO&quot;.</p>
+
+<p><strong>EMPTYTOGGLE</strong>: when SHOWTOGGLE=Yes, the empty space left in nodes that TOGGLEVISIBLEid=NO is 
+filled with a blank space. Can be Yes or NO. Default: No.</p>
+
+  
+<p><strong>TOGGLEVALUEid</strong>: 
+defines the toggle state. Values can be &quot;ON&quot; or &quot;OFF&quot;. If SHOW3STATE=YES then 
+can also be &quot;NOTDEF&quot;. Default: &quot;OFF&quot;.</p>
+<p><strong>TOGGLEVISIBLEid</strong>: 
+defines the toggle visible state. Values can be &quot;Yes&quot; or &quot;No&quot;. Default: &quot;Yes&quot;.</p>
+<p><strong>TOGGLEBGCOLOR</strong>: background color of the toggle. Default: 
+&quot;TXTBGCOLOR&quot;</p>
+<p><strong>TOGGLEFGCOLOR</strong>: foreground color of the toggle, use to draw 
+the frame and the check mark. Default: &quot;TXTFGCOLOR&quot;</p>
+<p><strong>TOGGLESIZE</strong>: size of the toggle square. Default: 16 for 
+standard resolution, 24 for high resolution display</p>
+<h3><a name="images">Images</a> (<font size="3">non inheritable</font>)</h3>
+<p><strong>IMAGEid</strong> (write only):
+  image name to be used in the specified node, where id is the specified node 
+identifier. Use <a href="../func/iupsethandle.html">IupSetHandle</a> or
+	<a href="../func/iupsetattributehandle.html">IupSetAttributeHandle</a> to 
+	associate an image to a name. See also <a href="iupimage.html">IupImage</a>. 
+If node 
+is a branch it is used when collapsed. All images do NOT need to have the same 
+size, but it is recommended that a branch expanded and collapse images to have 
+the same size. </p>
+<p><strong>IMAGEEXPANDEDid</strong> (write only):
+  same as the IMAGE attribute but used for expanded branches.</p>
+<p><strong>IMAGELEAF</strong>:
+  the image name that will be shown for all 
+  leaves. Default: &quot;IMGLEAF&quot; (a bullet). Internal values &quot;IMGBLANK&quot; 
+(blank sheet of paper) and &quot;IMGPAPER&quot; (written sheet of paper) are 
+    also available. If BGCOLOR is set the image is automatically updated. This 
+image defines the available space for the image in all nodes. &quot;IMGEMPTY&quot; can be 
+used as a totally transparent image .</p>
+<p><strong>IMAGEBRANCHCOLLAPSED</strong>: the image name that will be shown for 
+all collapsed branches. Default: &quot;IMGCOLLAPSED&quot; (a closed folder).</p>
+<p><strong>IMAGEBRANCHEXPANDED</strong>: the image name that will be shown for 
+all expanded branches. Default: &quot;IMGEXPANDED&quot; (an open folder).</p>
+
+
+  <p><strong>BACKIMAGE</strong>:
+  image name to be used as background. Use
+	<a href="../func/iupsethandle.html">IupSetHandle</a> or
+	<a href="../func/iupsetattributehandle.html">IupSetAttributeHandle</a> to 
+	associate an image to a name. See also
+	<a href="../elem/iupimage.html">IupImage</a>. </p>
+<p><strong>BACKIMAGEZOOM</strong>: if 
+set the back image will be zoomed to occupy the full background. Aspect ratio is 
+NOT preserved. Can be Yes or No. Default: No.</p>
+
+<h3><a name="focus">Focus</a></h3>
+<p><strong>VALUE</strong> (<font size="3">non inheritable</font>):
+  The focus node identifier. When retrieved but there isn't a node with focus it 
+returns 0 if there are any nodes, and returns -1 if there are no nodes. When 
+changed and MARKMODE=SINGLE the node is also selected. The tree is 
+always scrolled so 
+the node becomes visible. Additionally accepts the values:</p>
+<blockquote>
+<p class="info"><span class="style3">&quot;ROOT&quot; or &quot;FIRST&quot;:
+      the first node (which is always expanded)</span><br>
+&quot;LAST&quot;:
+      the last <span class="style3">expanded</span> node<br>
+&quot;NEXT&quot;:
+      the next <span class="style3">expanded</span> node, one node after the focus node. If at the last does nothing<br>
+&quot;PREVIOUS&quot;: the previous <span class="style3">expanded</span> node, one node before the focus node. If at the 
+first does nothing<br>
+&quot;PGDN&quot;: the next <span class="style3">expanded</span> node, ten nodes node after the focus node. If 
+at the last does nothing <br>
+&quot;PGUP&quot;: the previous <span class="style3">expanded</span> node, ten nodes before the focus node. If 
+at the first does nothing<br>&quot;CLEAR&quot;: clears the selection of the focus node.</p>
+</blockquote>
+
+  
+<p><strong>CANFOCUS</strong> (creation only) (<font size="3">non inheritable</font>): 
+enables the focus traversal of the control. Default: YES. </p>
+
+<p><strong>PROPAGATEFOCUS</strong>(<font size="3">non inheritable</font>): 
+enables the focus callback forwarding to the next native parent with FOCUS_CB 
+defined. Default: NO. </p>
+<p><strong>FOCUSFEEDBACK</strong> (<font size="3">non inheritable</font>): draw 
+the focus feedback. Can be Yes or No. Default: Yes.</p>
+
+<p><strong>HASFOCUS </strong> (read-only): returns the button state if has 
+focus. Can be Yes or No.&nbsp;</p>
+
+  
+<h3><a name="marks">Marks</a></h3>
+<p><strong>MARK</strong> (write only) (<font size="3">non inheritable</font>): Selects a range 
+of nodes in the format &quot;start-end&quot; (%d-%d). Allowed only when 
+MARKMODE=MULTIPLE. Also accepts the values:</p>
+<blockquote>
+<p class="info"><span class="style3">&quot;INVERTid&quot;:
+      Inverts the specified node selected state, where id is the specified node 
+identifier. If id is empty or invalid, then the focus node is used as reference node. 
+</span> <br>
+&quot;BLOCK&quot;: Selects all nodes between the focus node and the initial block-marking 
+node defined by MARKSTART<br>
+&quot;CLEARALL&quot;:
+      Clear the selection of all nodes<br>
+&quot;MARKALL&quot;:
+      Selects all nodes<br>
+&quot;INVERTALL&quot;:
+      Inverts the selection of all nodes</p>
+</blockquote>
+<p><strong>MARKEDid</strong> (non inheritable): The selection state of the 
+specified node, where id is the specified node identifier. If id is empty or 
+invalid, then 
+the focus node is used as reference node. Can be: YES or NO. Default: NO</p>
+<p><strong>MARKEDNODES</strong> (non inheritable): The selection state of all 
+nodes. It is/accepts a sequence of '+' and '-' symbols indicating the state of 
+each node ('+'=selected, '-'=unselected. When setting this value, if the number 
+of specified symbols is smaller than the total count then the remaining nodes 
+will not be changed. Can be set only when MARKMODE=MULTIPLE, can also be get 
+when MARKMODE=SINGLE.</p>
+<p><strong>MARKMODE</strong>: defines how the nodes can be 
+selected. Can be: 
+SINGLE or MULTIPLE. Default: SINGLE.</p>
+<p><strong>MARKSTART</strong> (<font size="3">non inheritable</font>):
+  Defines the initial node for the block 
+  marking, used when MARK=BLOCK. The value must be the node identifier.
+    Default:
+    0 (first node).</p>
+<p><strong>MARKWHENTOGGLE</strong> (<font size="3">non inheritable</font>): 
+selects or clears the selection of a node when its toggle is changed. Works only 
+if the node has a toggle. Default: No.</p>
+<h3><a name="tree">Hierarchy</a>&nbsp; (<font size="3">non inheritable</font>)</h3>
+    <p>For these attributes &quot;id&quot; is the specified node identifier. If 
+	&quot;id&quot; is 
+	empty or invalid, then the focus node is used as the specified node. </p>
+<p><strong>ADDEXPANDED</strong> (<font size="3">non inheritable</font>):
+  Defines if branches will be expanded when 
+  created. The branch will be actually expanded when it receives the first 
+child. Possible values: &quot;YES&quot; =
+    The branches will be created expanded; &quot;NO&quot; =
+    The branches will be created collapsed. Default:
+    &quot;YES&quot;.</p>
+<p><strong>ADDLEAF</strong><b>id</b><strong> </strong>(write only):
+  Adds a new leaf 
+after the reference node, where id is the reference node identifier. Use id=-1 to add 
+before the first 
+node. The value is used as the 
+text label of the new node. The id of the new node will be the id of the 
+reference node + 1. 
+  The attribute <strong>LASTADDNODE</strong> is set to the new id. The reference node is marked and all others unmarked. The reference node 
+position remains the same. If the reference node does not exist, nothing 
+happens. If the reference node is a branch then the depth of the new node is one 
+depth increment from the depth of the reference node, if the reference node is a 
+leaf then the new node has the same depth. If you need to 
+add a node after a specified node but at a different depth use <strong>
+INSERTLEAF</strong>.&nbsp; </p>
+<p><strong>ADDBRANCHid </strong>(write only):
+  Same as <strong>ADDLEAF</strong> for branches. Branches can be created 
+expanded or collapsed depending on <strong>ADDEXPANDED</strong>.&nbsp; </p>
+
+<p><strong>COPYNODEid </strong>(write only): Copies a node and its children, 
+where id is the specified node identifier. The value is the destination node 
+identifier. If the destination node is a branch and it is expanded, then the 
+specified node is inserted as the first child of the destination node. If the 
+branch is not expanded or the destination node is a leaf, then it is inserted as 
+the next brother of the leaf. The specified node is not changed. All node 
+attributes are copied, except user data.&nbsp; </p>
+
+<p><strong>DELNODEid </strong>(write only):
+  Removes a node and/or its children, where id is the specified node identifier.&nbsp; Possible values:</p>
+<blockquote>
+<ul>
+  <li>&quot;ALL&quot;: deletes all nodes, id is ignored. </li>
+	<li>&quot;SELECTED&quot;:
+    deletes the specified node and its children</li>
+  <li>&quot;CHILDREN&quot;:
+    deletes only the children of the 
+  specified node</li>
+  <li>&quot;MARKED&quot;:
+    deletes all the selected nodes (and all their 
+    children), id is ignored</li>
+</ul>
+</blockquote>
+<p><strong>EXPANDALL </strong>(write only): expand or contracts all nodes. Can 
+be YES (expand all), or NO (contract all). </p>
+
+<p><strong>INSERTLEAFid</strong>, <strong>INSERTBRANCHid </strong>
+(write only): Same as <strong>ADDLEAF</strong> and <strong>ADDBRANCH</strong> 
+but the depth of the new node is always the same of the reference node. If the 
+reference node is a leaf, then the id of the new node will be the id of the 
+reference node + 1. If the reference node is a branch the id of the new node 
+will be the id of the reference node + 1 + the total number of child nodes of 
+the reference node. </p>
+
+<p><strong>MOVENODEid </strong>(write only): Moves a node and its children, 
+where id is the specified node identifier. The value is the destination node 
+identifier. If the destination node is a branch and it is expanded, then the 
+specified node is inserted as the first child of the destination node. If the 
+branch is not expanded or the destination node is a leaf, then it is inserted as 
+the next brother of the leaf. The specified node is removed. User data and all 
+node attributes are preserved.&nbsp; </p>
+<h3><a name="edit">Editing</a></h3>
+<p><b>RENAME </b>(write only): Forces a rename action to take place. Valid only 
+when SHOWRENAME=YES.</p>
+
+<p><span class="style4">RENAMECARET</span><b> </b>(write only):
+  the caret&#8217;s 
+  position of the text box when in-place renaming. Same as the CARET attribute 
+for <a href="iuptext.html#Attributes">IupText</a>, but here is used only once 
+after SHOWRENAME_CB is called and before the text box is shown.</p>
+<p><span class="style4">RENAMESELECTION</span><b> </b>(write only):
+  the selection 
+  interval 
+  of the text box when in-place renaming. Same as the SELECTION attribute for
+<a href="iuptext.html#Attributes">IupText</a>, but here is used only once after SHOWRENAME_CB 
+is called and before the text box is shown.</p>
+<p><strong>SHOWRENAME</strong> (<font size="3">non inheritable</font>): Allows 
+the in place rename of a node. Default: &quot;NO&quot;. F2 and clicking twice only starts 
+to rename a node if SHOWRENAME=Yes.</p>
+
+<h3><a name="DragDrop">Drag&amp;Drop</a></h3>
+<p><strong>SHOWDRAGDROP</strong> (<font size="3">non inheritable</font>): Enables the 
+internal drag and drop of 
+nodes, and enables the <strong>DRAGDROP_CB</strong> callback. Default:
+  &quot;NO&quot;. Works only if MARKMODE=SINGLE. 
+<a href="../attrib/iup_dragdrop.html">Drag &amp; Drop</a> attributes<span id="result_box1" class="" lang="en"><span class="hps"> 
+are NOT used.</span></span></p>
+<p><strong>DRAGDROPTREE</strong> (<font SIZE="3">non inheritable</font>): 
+prepare the 
+<a href="../attrib/iup_dragdrop.html">Drag &amp; Drop</a> callbacks to support drag and drop of nodes between trees 
+(IupFlatTree only), in the same IUP application. 
+<a href="../attrib/iup_dragdrop.html">Drag &amp; Drop</a> attributes<span id="result_box2" class="" lang="en"><span class="hps"> 
+still need to be set in order to activate the drag &amp; drop support, so the 
+application can control if this tree will be source and/or target. </span></span>
+Default: NO.</p>
+<p><strong>DROPFILESTARGET</strong> (<font SIZE="3">non inheritable</font>): Enable or disable the drop of 
+<span class="style5">files</span>. Default: NO, but if DROPFILES_CB is defined when the element is mapped 
+then it will be automatically enabled. This is NOT related to the drag&amp;drop 
+of nodes inside the tree. </p>
+<p><strong>DROPEQUALDRAG</strong> (<font SIZE="3">non inheritable</font>): if 
+enabled will allow a drop node to be equal to the drag node. Used only if 
+SHOWDRAGDROP =Yes. In the case the nodes are equal the callback return value is 
+ignored and nothing is done after.</p>
+<p>
+<a href="../attrib/iup_dragdrop.html">Drag &amp; Drop</a> attributes are 
+supported, but
+SHOWDRAGDROP must be set no No.&nbsp;&nbsp;</p>
+
+</body>
+
+</html>

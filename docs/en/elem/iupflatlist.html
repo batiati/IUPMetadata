@@ -1,0 +1,540 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+<head>
+
+  <meta http-equiv="Content-Language" content="en-us">
+
+
+  <title>IupFlatList</title>
+  <link rel="stylesheet" type="text/css" href="../../style.css">
+
+  <style type="text/css">
+.style1 {
+	margin-left: 40px;
+}
+  .style2 {
+	color: #FF0000;
+}
+  .style3 {
+	background-color: #CEE7FF;
+}
+  .auto-style1 {
+	  font-size: large;
+  }
+  .auto-style2 {
+	border-width: 0;
+}
+  </style>
+</head>
+
+
+<body>
+
+<div id="navigation">
+  
+<ul>
+
+    <li><a href="#Creation">Creation</a></li>
+
+    <li><a href="#Attributes">Attributes</a></li>
+
+    <li><a href="#Callbacks">Callbacks</a></li>
+
+    <li><a href="#Notes">Notes</a></li>
+
+    <li><a href="#Examples">Examples</a></li>
+
+    <li><a href="#SeeAlso">See Also</a></li>
+
+  
+</ul>
+
+</div>
+
+
+<h2>IupFlatList<span class="auto-style1"> (since 3.27)</span></h2>
+
+
+  
+<p>
+  Creates an interface element that displays a list of items, but it does not 
+  have native decorations. </p>
+<p>
+  It behaves like <a href="iuplist.html">IupList</a> when DROPDOWN=NO and 
+  EDITBOX=NO.</p>
+<p>It inherits from
+  <a href="../elem/iupcanvas.html">IupCanvas</a>.</p>
+
+
+<h3><a name="Creation">Creation</a></h3>
+
+<pre>Ihandle* IupFlatList(void); [in C]<br>iup.flatlist{} -&gt; (<strong>ih</strong>: ihandle) [in Lua]<br>flatlist() [in LED]</pre>
+
+  
+<p>
+  <u>Returns:</u> the identifier of the 
+  created element, or NULL if an error occurs.</p>
+
+
+<h3><a name="Attributes">Attributes</a></h3>
+
+
+
+<p>Inherits all attributes and callbacks of the <a href="../elem/iupcanvas.html">IupCanvas</a>, 
+but redefines a few attributes.</p>
+<p><strong>"1"</strong>:
+  Title of the first item in the list.<br>
+
+  <strong>"2"</strong>:
+  Title of the second item in the list.<br>
+
+  <strong>"3"</strong>:
+  Title of the third item in the list.<br>
+
+  <b>...</b><br>
+
+  <strong>"id"</strong>:
+  Title of the id<sup>th</sup> item in the list.</p>
+
+  
+    
+<p class="info">(<font size="3">non inheritable</font>) The values can be any 
+text. Items before &quot;1&quot; are ignored. Differently from IupList the behavior before 
+map and after map are the same.</p>
+
+<div class="style1">
+	
+<ul>
+
+		<li>if "1" is set to NULL, all items are removed.</li>
+
+		<li>if "id" is set to NULL, all items after id are removed.</li>
+
+		<li>if "id" is between the first and the last item, the current id<sup>th</sup> 
+		item title is replaced. </li>
+
+		<li>if "count+n" is set then empty items are inserted from count up to 
+		the given id. (different from IupList)</li>
+
+	
+</ul>
+
+</div>
+
+<p><strong>APPENDITEM</strong> (write-only): inserts an item after the last 
+item. Ignored if set before map.</p>
+
+<p><b>ALIGNMENT</b> (<font size="3">non inheritable</font>): horizontal and 
+vertical alignment of the set image+text for each item. Possible values: &quot;ALEFT&quot;, &quot;ACENTER&quot; and &quot;ARIGHT&quot;,&nbsp; 
+combined to &quot;ATOP&quot;, &quot;ACENTER&quot; and &quot;ABOTTOM&quot;. Default: &quot;ALEFT:ACENTER&quot;. Partial 
+values are also accepted, like &quot;ARIGHT&quot; or &quot;:ATOP&quot;, the other value will be 
+obtained from the default value. Alignment does not includes the padding area. </p>
+
+
+  <p><strong>BACKIMAGE</strong> (<font SIZE="3">non inheritable</font>):
+  image name to be used as background. Use
+	<a href="../func/iupsethandle.html">IupSetHandle</a> or
+	<a href="../func/iupsetattributehandle.html">IupSetAttributeHandle</a> to 
+	associate an image to a name. See also
+	<a href="../elem/iupimage.html">IupImage</a>. </p>
+<p><strong>BACKIMAGEZOOM</strong> (<font size="3">non inheritable</font>): if 
+set the back image will be zoomed to occupy the full background. Aspect ratio is 
+NOT preserved. Can be Yes or No. Default: No.</p>
+
+<p><a href="../attrib/iup_bgcolor.html">BGCOLOR</a>: Background color of the 
+text. Default: the global attribute TXTBGCOLOR. </p>
+
+<p><b>BORDER </b>(creation only):
+  
+  the default value is "NO". This is the <strong>IupCanvas</strong> border. It 
+is displayed around the scrollbars.</p>
+<p><strong>BORDERCOLOR</strong>: color used for the internal border. Default: &quot;50 150 255&quot;. 
+This is for the internal border. </p>
+<p><strong>BORDERWIDTH</strong>: line width used for the internal border. Default: &quot;0&quot;. 
+The internal borders are 
+hidden by simply setting 
+this value to 0. It is drawn inside the canvas, so inside the scrollbars.</p>
+
+<p><strong>COUNT</strong> (read-only) (<font size="3">non inheritable</font>): 
+returns the number of items. </p>
+
+  
+<p><strong>DRAGDROPLIST</strong> (<font SIZE="3">non inheritable</font>): 
+prepare the 
+<a href="../attrib/iup_dragdrop.html">Drag &amp; Drop</a> callbacks to support drag and drop of items between lists 
+(IupList or IupFlatList), in the same IUP application. 
+<a href="../attrib/iup_dragdrop.html">Drag &amp; Drop</a> attributes<span id="result_box" class="" lang="en"><span class="hps"> 
+still need to be set in order to activate the drag &amp; drop support, so the 
+application can control if this list will be source and/or target. </span></span>Default: NO.</p>
+
+  
+<p><strong>DROPFILESTARGET</strong> (<font SIZE="3">non inheritable</font>): 
+Enable or disable the drop of files. Default: NO, but if DROPFILES_CB is defined 
+when the element is mapped then it will be automatically enabled.</p>
+
+<p><a href="../attrib/iup_fgcolor.html">FGCOLOR</a>: Text color. Default: the 
+global attribute TXTFGCOLOR.</p>
+<p><strong>FOCUSFEEDBACK</strong> (<font size="3">non inheritable</font>): draw 
+the focus feedback. Can be Yes or No. Default: Yes.</p>
+
+<p><strong>PROPAGATEFOCUS </strong>(<font size="3">non inheritable</font>): 
+enables the focus callback forwarding to the next native parent with FOCUS_CB 
+defined. Default: NO.</p>
+
+
+
+  
+<p><strong>FITTOBACKIMAGE</strong> (<font size="3">non inheritable</font>): 
+enable the natural size to be computed from the BACKIMAGE. If BACKIMAGE is not 
+defined will be ignored. Can be 
+Yes or No. Default: No.</p>
+
+
+<p><strong>HASFOCUS </strong> (read-only): returns the button state if has 
+focus. Can be Yes or No.</p>
+
+
+<p><strong>IMAGEid</strong> (<font size="3">non inheritable</font>):
+  image name to be used in the specified item, where id is the specified item 
+starting at 1. The item must already exist. Use <a href="../func/iupsethandle.html">IupSetHandle</a> or
+	<a href="../func/iupsetattributehandle.html">IupSetAttributeHandle</a> to 
+	associate an image to a name. See also <a href="iupimage.html">IupImage</a>. 
+Images don't need to have the same size.</p>
+
+  
+<p><strong>IMAGEPOSITION </strong>(<font size="3">non inheritable</font>): 
+Position of the image relative to the text when both are displayed. Can be: 
+LEFT, RIGHT, TOP, BOTTOM. Default: LEFT.</p>
+
+  
+<p><b>PADDING</b>: internal margin of each item. Works just like the MARGIN attribute of 
+  the <strong>IupHbox</strong> and <strong>IupVbox</strong> containers, but uses 
+a different name to avoid inheritance problems. Alignment does not includes the 
+padding area. Default value: &quot;2x2&quot;.</p>
+<p><strong>CPADDING</strong>: same as PADDING but using the units of the <strong>
+	SIZE</strong> attribute. It will actually set the PADDING attribute. (since 
+3.29)</p>
+
+<p><strong>ITEMFGCOLOR</strong><em><strong>id</strong></em>: foreground color of 
+the item at the given id. id starts at 1. If not defined FGCOLOR is used.</p>
+<p><strong>ITEMBGCOLOR</strong><em><strong>id</strong></em>: background color of 
+the item at the given id. id starts at 1. If not defined BGCOLOR is used.</p>
+<p><strong>ITEMTIP</strong><em><strong>id</strong></em>: tip of the item at the 
+given id. If defined will be shown instead of the TIP attribute. (since 3.29)</p>
+<p><strong>ITEMFONT</strong><em><strong>id</strong></em>: text font of the tab. 
+If not defined FONT is 
+used.</p>
+<p><strong>ITEMFONTSTYLE</strong><em><strong>id</strong></em>: text font style. When changed will actually 
+set ITEMFONTid. </p>
+<p><strong>ITEMFONTSIZE</strong><em><strong>id</strong></em>: text font size. When changed will actually set 
+ITEMFONTid. </p>
+<p><strong>ICONSPACING </strong>(<font SIZE="3">non inheritable</font>): spacing between the 
+image and the text. Default: &quot;2&quot;.</p>
+<p><strong>HLCOLOR</strong>: color of a filled box drawn over the selected item. 
+Default: &quot;TXTHLCOLOR&quot;. </p>
+<p><strong>HLCOLORALPHA</strong>: the transparency used to draw the selection. 
+Default: 128. If set to 0 the selection box is not drawn.</p>
+
+  
+<p><strong>PSCOLOR</strong>: background color of a selected item. If not defined 
+BACKCOLORid will be used. (since 3.30)</p>
+<p><strong>TEXTPSCOLOR</strong>: foreground color of a selected item. If not 
+defined FORECOLORid will be used. (since 3.30)</p>
+
+  
+<p><strong>INSERTITEMid</strong> (write-only): inserts an item before the given 
+id position. id starts at 1. If id=COUNT+1 then it will append after the last 
+item. Ignored if out of bounds. Different from IupList, can be set 
+before map.</p>
+
+  
+<p><b>MULTIPLE</b> (creation only): Allows selecting several items 
+simultaneously (multiple list). Default: &quot;NO&quot;. </p>
+
+<p><strong>REMOVEITEM</strong> (write-only): removes the given value. value 
+starts at 1. If value is NULL or &quot;ALL&quot; removes all the items. 
+Different from IupList, can be set 
+before map.</p>
+
+  
+  
+<p><a href="../attrib/iup_scrollbar.html">SCROLLBAR</a> (read-only): is always "NO". So the IupCanvas 
+native scrollbars are hidden. See the FLATSCROLLBAR attribute bellow. YAUTOHIDE and XAUTOHIDE will be always Yes.</p>
+<p> <a href="../attrib/iup_flatscrollbar.html">FLATSCROLLBAR</a>: Can be Yes, 
+Vertical or Horizontal. Can be set only before map. Default: Yes. </p>
+
+  
+<p><strong>SHOWDRAGDROP</strong> (creation only) (<font size="3">non inheritable</font>): 
+enables the 
+internal drag and drop of items in the same list, and enables the <strong>DRAGDROP_CB</strong> callback. Default:
+  &quot;NO&quot;. Works only if MULTIPLE=NO. 
+<a href="../attrib/iup_dragdrop.html">Drag &amp; Drop</a> attributes<span id="result_box0" class="" lang="en"><span class="hps"> 
+are NOT used.</span></span></p>
+
+  
+<p><a href="../attrib/iup_size.html">SIZE</a>:
+  Size of the list. 
+  The <strong>Natural</strong> <strong>Size</strong> is defined by the number of elements in the list and the with 
+	of the largest item, the default has room for 5 characters in 1 item. The <strong>Natural</strong> <strong>Size</strong> 
+ignores the list contents if VISIBLECOLUMNS or VISIBLELINES attributes are 
+defined.</p>
+<p><strong>SPACING</strong>: internal space between each item. Different from 
+IupList, it does not affects the internal margin. Not drawn with any item 
+background color. Default: 0</p>
+
+  
+<p><strong>CSPACING</strong>: same as SPACING but using the units of the 
+vertical part of the <strong>
+	SIZE</strong> attribute. It will actually set the SPACING attribute. (since 
+3.29)</p>
+
+  
+<p><strong>TOPITEM</strong> (write-only): position the given item at the top of 
+the list or near to make it visible.</p>
+
+<p><strong>TEXTALIGNMENT </strong>(<font size="3">non inheritable</font>): 
+Horizontal text alignment for multiple lines. Can be: ALEFT, ARIGHT or ACENTER. 
+Default: ALEFT.</p>
+
+
+
+  
+<p><strong>TEXTWRAP </strong>(<font size="3">non inheritable</font>): For single 
+line texts if the text is larger than its box the line will be automatically 
+broken in multiple lines. Notice that this is done internally by the system, the 
+element natural size will still use only a single line. For the remaining lines 
+to be visible the element should use EXPAND=VERTICAL or set a SIZE/RASTERSIZE 
+with enough height for the wrapped lines.</p>
+<p><strong>TEXTELLIPSIS </strong>(<font size="3">non inheritable</font>): If the 
+text is larger that its box, an ellipsis (&quot;...&quot;) will be placed near the last 
+visible part of the text and replace the invisible part. It will be ignored when 
+TEXTWRAP=Yes.</p>
+
+
+
+  
+<p><b>VALUE</b> (<font size="3">non inheritable</font>): Depends on the 
+selection mode:</p>
+
+  
+    
+<div class="style1">
+  
+    
+<ul>
+
+		<li>MULTIPLE=YES: Sequence of '+' and '-' symbols indicating the state 
+		of each item. When setting this value, the user must provide the same 
+		amount of '+' and '-' symbols as the amount of items in the list. It can 
+		use ' ' (space) or another character so the current selection on that 
+		item will remain the same (since 3.28).</li>
+
+		<li>MULTIPLE=NO: Integer number representing the selected item in the list 
+		(begins at 1). It returns NULL if there is no selected item.</li>
+		<li>For both cases, when setting NULL all items are deselected.</li>
+
+</ul>
+
+  
+  </div>
+
+  
+  
+<p><b>VALUESTRING</b> (<font size="3">non inheritable</font>): changes or 
+retrieves the value attribute using a string of an item. Works only when 
+MULTIPLE=NO. When set it will search 
+for the first item with the same string.</p>
+
+<p><strong>VISIBLECOLUMNS</strong>: Defines the number of visible columns for 
+the <strong>Natural</strong> <strong>Size</strong>, this means that will act 
+also as minimum number of visible columns. It uses a wider character size then the one used for the SIZE 
+attribute so strings will fit better without the need of extra columns. Set this 
+attribute to speed <strong>Natural</strong> <strong>Size</strong> computation 
+for very large lists.</p>
+
+<p><strong>VISIBLELINES</strong>: Defines the number of visible 
+lines for the <strong>Natural</strong> <strong>Size</strong>, this means that 
+will act also as minimum number of visible lines.</p>
+
+  
+  
+<h3><a name="Callbacks">Callbacks</a></h3>
+
+
+<p>Inherits all callbacks of the <a href="../elem/iupcanvas.html">IupCanvas</a>, 
+but redefines a few of them. Including ACTION, BUTTON_CB, LEAVEWINDOW_CB, FOCUS_CB, 
+and MOTION_CB. To allow the application to use those 
+callbacks the same callbacks are exported with the &quot;FLAT_&quot; prefix using the same 
+parameters, except the FLAT_ACTION callback that now mimics the <strong>
+IupList</strong> 
+ACTION. They are all called before the internal callbacks and if they return 
+IUP_IGNORE the internal callbacks are not processed.</p>
+
+
+<p><strong>FLAT_ACTION</strong>:
+  Action generated when the state of an item 
+  in the list is interactively changed.</p>
+
+  
+    
+<pre>int function (Ihandle *<strong>ih</strong>, char *<strong>text</strong>, int <strong>item</strong>, int <strong>state</strong>); [in C]<br><strong>ih</strong>:action(<b>text</b>: string, <strong>item</strong><b>, </b><strong>state</strong>: number) -&gt; (ret: number) [in Lua]</pre>
+
+<p class="info"><strong>ih</strong>:
+  identifier of the element that activated the 
+  event.<br>
+
+	<strong>text</strong>: Text of the changed item.<br>
+<strong>item</strong>: Number of the changed item starting at 1.<br>
+
+<strong>state</strong>: Equal to 1 if the option was selected or to 0 if the option was deselected.</p>
+
+  
+  
+<p><b>DBLCLICK_CB</b>: Action generated when the user double click an item. </p>
+
+  
+    
+<pre>int function (Ihandle *<strong>ih</strong>, int <strong>item</strong>, char *<strong>text</strong>); [in C]<br><strong>ih</strong>:dblclick_cb(<strong>item</strong>: number<b>, text</b>: string) -&gt; (ret: number) [in Lua]</pre>
+
+<p class="info"><strong>ih</strong>:
+  identifier of the element that activated the 
+  event.<br>
+
+	<strong>item</strong>: Number of the selected item starting at 1.<br>
+
+<strong>text</strong>: Text of the selected item.</p>
+
+  
+<p><strong>DRAGDROP_CB</strong>:
+  Action generated when 
+  an internal drag and drop is executed. Only active if <strong>SHOWDRAGDROP=YES.</strong></p>
+<pre>int function(Ihandle *<strong>ih</strong>, int <b>drag_id</b>, int <b>drop_id</b>, int <b>isshift</b>, int <b>iscontrol</b>); [in C] 
+<strong>ih</strong>:dragdrop_cb(<b>drag_id</b>, <b>drop_id</b>, <b>isshift</b>, <b>iscontrol</b><strong>:</strong> number) -&gt; (<strong>ret</strong>: number) [in Lua]</pre>
+<p class="info"><strong>ih</strong>: identifier of the element that activated 
+the event. <br>
+<strong>drag_id</strong>:
+    Identifier of the clicked item where the 
+    drag start. <br>
+<strong>drop_id</strong>:
+    Identifier of the clicked item where the 
+    drop were executed. -1 indicates a drop in a blank area.<br>
+<strong>isshift</strong>: flag indicating the shift key state. <br>
+<strong>iscontrol</strong>: flag indicating the control key state.</p>
+<p class="info">Returns: if returns IUP_CONTINUE, or 
+if the callback is not defined and <strong>SHOWDRAGDROP=YES</strong>, then the 
+item 
+is moved to the new position. If Ctrl is pressed then the item is copied instead 
+of moved.</p>
+
+    
+    
+<p><b>MULTISELECT_CB</b>:
+  Action generated when the state of an item 
+  in the multiple selection list is interactively changed. But it is called only when the interaction is over.</p>
+
+  
+    
+<pre>int function (Ihandle *<strong>ih</strong>, char *<b>value</b>); [in C]<br><strong>ih</strong>:multiselect_cb(<b>value</b>: string) -&gt; (ret: number) [in Lua]</pre>
+
+<p class="info"><strong>ih</strong>:
+  identifier of the element that activated the 
+  event.<br>
+
+	<strong>value</strong>: Similar to the VALUE attribute for a multiple 
+selection list. Items selected are marked with '+', items deselected are marked 
+with '-', and non changed items are marked with an 'x'.</p>
+
+    
+<p class="info">This callback is called only when MULTIPLE=YES. If this callback is defined the <b>ACTION</b> callback will not be called.</p>
+
+<p class="info">The non changed items marked with 'x' are simulated internally 
+by IUP in all systems. If you add or remove items to/from the list and you count 
+on the 'x' values, then after adding/removing items set the VALUE attribute to 
+ensure proper 'x' values.</p>
+
+
+<p><strong>VALUECHANGED_CB</strong>: Called after the selection was 
+interactively changed.</p>
+
+<pre>int function(Ihandle *<strong>ih</strong>); [in C]<br><strong>ih</strong>:valuechanged_cb() -&gt; (<strong>ret</strong>: number) [in Lua]</pre>
+
+    
+<p class="info"><strong>ih</strong>:
+  identifier of the element that activated the 
+  event.</p>
+
+    
+    
+<h3><a name="Notes">Notes</a></h3>
+
+
+<p>When the list has focus use the arrow keys to move focus from one item to 
+another. If the list has multiple selection pressing shift and the arrow will 
+select a range of items. Pressing a letter will select and scroll the list to 
+the next element which title starts with that letter. Pressing PgDn or PgUp the 
+list is scrolled but the selection is not changed.</p>
+<p>When adding or removing items the selection can be changed depending on the 
+operation but the selection callbacks will not be called.</p>
+<p> <strong>Clicking and dragging a item</strong>: if SHOWDRAGDROP=Yes starts a 
+drag. When mouse is released, the DRAGDROP_CB callback is called. If the 
+callback does not exist or if it returns IUP_CONTINUE then the item is moved to 
+the new position. If Ctrl is pressed then the node is copied instead of moved. 
+Drag is performed with the left mouse button. </p>
+<p> All list items occupy the same vertical size, which is the largest height 
+computed from the combination of text and image for each item individually.</p>
+
+
+<h3>Utility Functions </h3>
+<p>These functions can be used to set and get attributes from the element:</p>
+<pre>void  IupSetAttributeId(Ihandle *ih, const char* name, int id, const char* value);
+char* IupGetAttribute<span class="style3">Id</span>(Ihandle *ih, const char* name, int id);
+int   IupGetInt<span class="style3">Id</span>(Ihandle *ih, const char* name, int id);
+float IupGetFloat<span class="style3">Id</span>(Ihandle *ih, const char* name, int id);
+void  IupSetfAttribute<span class="style3">Id</span>(Ihandle *ih, const char* name, int id, const char* format, ...);
+void  IupSetIntId(Ihandle* ih, const char* name, int id, int value);
+void  IupSetFloatId(Ihandle* ih, const char* name, int id, float value);</pre>
+<p>They work just like the respective traditional set and get functions. But the attribute string is complemented with 
+  the id value. For ex:</p>
+<pre>IupSetAttributeId(ih, &quot;&quot;, 3, value) == IupSetAttribute(ih, &quot;3&quot;, value)
+IupSetAttributeId(ih, &quot;INSERTITEM&quot;, 8, value) == IupSetAttribute(ih, &quot;INSERTITEM8&quot;, value)</pre>
+<p>But these functions are faster than the traditional functions because they do 
+not need to parse the attribute name string and the application does not need to 
+concatenate the attribute name with the id.</p>
+
+
+<h3><a name="Examples">Examples</a></h3>
+
+<p><a href="../../examples/">Browse for Example Files</a></p>
+
+<div align="center">
+  
+<center>
+  
+<table style="border-collapse: collapse;" border="0" cellpadding="5" cellspacing="0">
+
+    <tbody>
+
+    <tr>
+
+      <td class="auto-style2"><img src="images/iupflatlist.png" border="0"></td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+  </center>
+
+</div>
+
+<h3><a name="SeeAlso">See Also</a></h3>
+
+
+<p><a href="iuplist.html">IupList</a>, 
+  <a href="../elem/iupcanvas.html">IupCanvas</a></p>
+
+
+
+</body>
+</html>

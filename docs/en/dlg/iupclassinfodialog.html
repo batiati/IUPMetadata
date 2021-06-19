@@ -1,0 +1,75 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<title>IupClassInfoDialog</title>
+<link rel="stylesheet" type="text/css" href="../../style.css">
+<style type="text/css">
+.style1 {
+	font-size: large;
+}
+.style2 {
+	border-width: 0;
+}
+.style3 {
+	background-color: #CEE7FF;
+}
+</style>
+</head>
+<body>
+<div id="navigation">
+  <ul>
+    <li><a href="#Creation">Creation</a></li>
+    <li><a href="#Attributes">Attributes</a></li>
+    <li><a href="#Callbacks">Callbacks</a></li>
+    <li><a href="#Notes">Notes</a></li>
+    <li><a href="#Examples">Examples</a></li>
+    <li><a href="#SeeAlso">See Also</a></li>
+  </ul>
+</div>
+
+<h2>IupClassInfoDialog <span class="style1">(since 3.28)</span></h2>
+<p>Creates an Iup Class Information dialog. It is a predefined dialog to show 
+all registered classes, each class attributes and callbacks. It is a standard <strong>IupDialog</strong> 
+constructed with other IUP elements. The dialog can be shown with any of 
+the show functions <strong>IupShow</strong>, <strong>IupShowXY</strong> or
+<strong>IupPopup</strong>.</p>
+<p>This is a dialog intended for developers, so they can see attributes and 
+callbacks information of a class.</p>
+<h3><a name="Creation">Creation</a></h3>
+<pre>Ihandle* IupClassInfoDialog(Ihandle*<strong> parent</strong>); [in C]
+iup.ClassInfoDialog(<span class="style3"><strong>parent</strong>: ihandle)</span> -&gt; (<strong>dlg</strong>: ihandle) [in Lua]
+[NOT available in LED]</pre>
+<p>
+  <strong>parent: </strong>dialog to be used as parent for the classinfo dialog. 
+Can be NULL.</p>
+<p><u>Returns:</u> the identifier of the 
+  created dialog, or NULL if an error occurs.</p>
+
+<h3><a name="Attributes">Attributes</a></h3>
+<p>Check the <a href="iupdialog.html#Attributes">IupDialog</a> attributes.</p>
+<h3><a name="Callbacks">Callbacks</a></h3>
+<p>Check the <a href="iupdialog.html#Callbacks">IupDialog</a> callbacks.</p>
+<h3><a name="Examples">Examples</a></h3>
+<pre>IupShow(IupClassInfoDialog());   [in C]
+
+iup.Show(iup.ClassInfoDialog())    [in Lua]</pre>
+<p>The dialog is displayed next. The Help button shows the Iup class 
+documentation page on the Tecgraf web site.</p>
+<div align="center">
+  <center>
+  <table border="0" cellpadding="5" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber1">
+    <tr>
+      <td class="style2"><img border="0" src="images/classinfodialog.png"></td>
+    </tr>
+  </table>
+  </center>
+</div>
+<h3><a name="SeeAlso">See Also</a></h3>
+<p><a href="iupdialog.html">IupDialog</a>, <a href="../func/iupshow.html">
+IupShow</a>, <a href="../func/iupshowxy.html">IupShowXY</a>,
+<a href="../func/iuppopup.html">IupPopup</a>, <a href="iuplayoutdialog.html">IupLayoutDialog</a></p>
+
+</body>
+
+</html>

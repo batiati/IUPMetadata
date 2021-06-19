@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<title>IupOleControl</title>
+<link rel="stylesheet" type="text/css" href="../../style.css">
+<style type="text/css">
+.style1 {
+	text-align: center;
+}
+.style2 {
+	font-size: large;
+}
+</style>
+</head>
+<body>
+<div id="navigation">
+  <ul>
+    <li><a href="#Creation">Creation</a></li>
+    <li><a href="#Attributes">Attributes</a></li>
+    <li><a href="#Callbacks">Callbacks</a></li>
+    <li><a href="#Notes">Notes</a></li>
+    <li><a href="#Examples">Examples</a></li>
+    <li><a href="#SeeAlso">See Also</a></li>
+  </ul>
+</div>
+
+<h2>IupNewFileDlg <span class="style2">[Windows only] (since 3.26)</span></h2>
+<p>In Windows, starting in Windows Vista, there is new file selection interface. 
+But it is available for the regular Windows API only when used with 
+restrictions, in particular the Hook procedure that enables the FILE_CB callback 
+and dialog positioning. So if you don't use these features the regular 
+IupFileDlg in Windows will show the newest interface. To address that 
+restrictions we implemented a separate library that uses a new Windows API to 
+show the file selection interface. This library is internally implemented in C++ 
+and it will need a C++ linker if statically linked.</p>
+<p>Notice that this library exists only on Windows, and it is only available for 
+Visual C++ compilers when statically linking.&nbsp;</p>
+<h3>Initialization and usage</h3>
+<p>The <b>IupNewFileDlgOpen</b> function must be called after a <b>IupOpen</b>, so that the 
+regular IupFileDlg will be replaced by the new versions. 
+  The iupfiledlg.h file must also be included in the source code. The program must be linked to the library (iupfiledlg).</p>
+<p>To make the control available in Lua use require&quot;iupluafiledlg&quot; or manually 
+call the initialization function in C, 
+<b>iupfiledlglua_open</b>, after calling <b>iuplua_open</b>.
+  When manually calling the function the iupluafiledlg.h file must also be included in the source code, 
+and the program must be linked to the lua control 
+  library (iupluafiledlg).</p>
+<h3><a name="Creation">Creation</a></h3>
+
+<p>The creation and all Attributes and callbacks are the same as the regular
+<a href="iupfiledlg.html">IupFileDlg</a> view a few exceptions.</p>
+<h3><a name="Attributes">Attributes</a></h3>
+<p><strong>NOPLACESBAR</strong>: NOT supported. (There is no Places Bar)</p>
+<p><strong>SHOWEDITBOX</strong>: NOT supported. (Already has an edit box shown)</p>
+<p><strong>SHOWPREVIEW</strong>: only shows the preview area provided for
+<a href="../shell_extensions.html">Windows Shell Extensions Handlers</a>. It 
+does NOT have support for the internal preview.</p>
+<h3><a name="Callbacks">Callbacks</a></h3>
+<p><strong>FILE_CB</strong>: &quot;PAINT&quot; status is NOT supported.</p>
+<p>The preview canvas callbacks are not supported here, only when implemented a 
+Windows Shell Extension Preview Handler.</p>
+
+<h3><a name="Examples">Examples</a></h3>
+<p class="style1">OLD Explorer Interface</p>
+<p class="style1">
+<img height="520" src="images/old_iupfiledlg_win.png" width="827"></p>
+<p class="style1">New Explorer Interface</p>
+<p class="style1">
+<img height="578" src="images/new_iupfiledlg_win.png" width="926"></p>
+
+</body>
+
+</html>
+
+</body>
+
+</html>

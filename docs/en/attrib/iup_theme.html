@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<title>THEME</title>
+
+<link rel="stylesheet" type="text/css" href="../../style.css">
+<style type="text/css">
+.style1 {
+	font-size: large;
+}
+</style>
+</head>
+<body>
+
+<h2>THEME/NTHEME<span class="style1"> (since 3.26)</span></h2>
+<p>Applies a set of attributes to a control. The THEME attribute in inheritable 
+and the NTHEME attribute is NOT inheritable.</p>
+<h3>Value</h3>
+<p>Name of an <strong>IupUser</strong> element that contains the attributes. The name is 
+associated in C using <a href="../func/iupsethandle.html">IupSetHandle</a>. The 
+name association must be done before setting the attribute.&nbsp;</p>
+<h3>Notes</h3>
+<p>All attributes in the theme must be strings.</p>
+<p>Only attributes that are registered in the element will receive its theme 
+value.</p>
+<p>Attributes that are registered as not being strings, read-only, write-only or 
+callbacks will NOT be applied.</p>
+<p>The theme can contain an specialized sub-theme for the element class. The 
+element class name will be used with a &quot;IUP&quot; prefix to identify the sub-theme. 
+For instance, if the element is a label, then an attribute called &quot;IUPLABEL&quot; can 
+point to anohter theme name to be applied at the element additionally to the 
+already applied attributes.</p>
+<p>The global attribute <a href="iup_globals.html#DEFAULTTHEME">DEFAULTTHEME</a> 
+can be applied to all elements during creation.</p>
+<h3>Affects</h3>
+<p>All controls.</p>
+
+<h3>See Also</h3>
+<p><a href="../elem/iupuser.html">IupUser</a></p>
+
+</body>
+
+</html>

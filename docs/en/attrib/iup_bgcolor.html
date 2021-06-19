@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<title>BGCOLOR</title>
+
+<link rel="stylesheet" type="text/css" href="../../style.css">
+</head>
+<body>
+
+<h2>BGCOLOR</h2>
+
+<p>Element&#8217;s
+    background color.</p>
+
+<h3>Value</h3>
+
+<p>The RGB or RGBA components, in the format &quot;R G B A&quot;. </p>
+<p>Values should be between 0
+    and 255, separated by a blank space. For example &quot;255 0 128&quot;, red=255 blue=0 
+green=128.</p>
+<p>Alpha is optional and assumed to be 255 if not specified. But it is only 
+supported in custom controls drawn by IUP, example IupGauge, IupDial, all IupFlat* 
+controls, 
+and only when using OpenGL, Cairo or Direct2D draw drivers. It is never supported when using X11, 
+GDI or GDK draw drivers.</p>
+<p><strong>Default</strong>: It is the value of the DLGBGCOLOR or TXTBGCOLOR global attributes. 
+TXTBGCOLOR is used on IupText, IupList, IupTree and IupScintilla (<span style="color: rgb(0, 0, 0); font-family: tahoma, verdana, arial, helvetica, geneva, sans-serif; font-size: medium; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">Usually 
+is &quot;255 255 255&quot; - white.</span>). On some controls 
+if not defined will inherit the background of the native parent.</p>
+<p>Hexadecimal notation in the format &quot;#RRGGBB&quot; is also accepted in all color 
+attributes. For example, &quot;255 0 128&quot; can also be written as &quot;#FF0080&quot;.</p>
+
+<h3>Affects</h3>
+
+<p>All controls that have visual representation, but with some restrictions. <u1:p></u1:p>
+</p>
+<p>
+<u1:p>Several controls have transparent parts 
+that are not affected by the BGCOLOR.</u1:p></p>
+<p>
+<u1:p></u1:p>
+<u1:p>See also the </u1:p>
+screenshots
+<u1:p>of </u1:p>
+the
+		<a href="../../examples/C/sample.c">sample.c</a> results<u1:p> with 
+<a href="../sample_results.html">normal background</a>,</u1:p><u1:p> changing 
+the dialog <a href="../sample_results_background.html">
+BACKGROUND</a>, the dialog <a href="../sample_results_bgcolor.html">BGCOLOR</a> and 
+the <a href="../sample_results_bgcolor_indiv.html">children BGCOLOR</a>.</u1:p><u1:p> </u1:p>
+<u1:p></u1:p></p>
+
+<h3>See Also</h3>
+
+<p><a href="iup_fgcolor.html">FGCOLOR</a>, <a href="iup_globals.html#DLGBGCOLOR">
+DLGBGCOLOR</a> </p>
+</body>
+</html>
