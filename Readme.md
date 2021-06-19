@@ -63,20 +63,20 @@ pub fn setSize(self: *Self, width: ?iup.ScreenSize, height: ?iup.ScreenSize) voi
 
 All metadata are available in JSON format and can be consumed by any tool independently of this project.
 
-Download: [iup.json](https://to.do)
+Download: [iup.json](https://github.com/batiati/IUPMetadata/raw/master/iup.json)
 
 ## IUP for Zig
 
-For more information about using IUP on [Zig](https://ziglang.org/), please visit [IUP for Zig](https://to.do) repository.
+For more information about using IUP on [Zig](https://ziglang.org/), please visit [IUP for Zig](https://github.com/batiati/IUPforZig) repository.
 
 ## Pending work
 
-- [] Review DataType and formating for several attributes.
-- [] Improve Zig Code Generator (support for indexed items in list items for example)
-- [] Fix UPPERCASE converter algorithm (for example `SCROLLTOPOS` is rendered as `ScrollTopOs` instead of `ScrollToPos`)
-- [] Add C# Code Generator
-- [] Improve documentation extractor
-- [] Add Linux support for metadata extraction
+- [ ] Review DataType and formating for several attributes.
+- [ ] Improve Zig Code Generator (support for indexed items in list items for example)
+- [ ] Fix UPPERCASE converter algorithm (for example `SCROLLTOPOS` is rendered as `ScrollTopOs` instead of `ScrollToPos`)
+- [ ] Add C# Code Generator
+- [ ] Improve documentation extractor
+- [ ] Add Linux support for metadata extraction
 
 ## License
 
