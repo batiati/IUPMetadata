@@ -2,16 +2,16 @@
 
 ## WIP - Work in Progress
 
-[IUP Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/) is a solid and well-proven portable GUI toolkit that exposes a simple raw C API, so it can be used in any [FFI](https://en.wikipedia.org/wiki/Foreign_function_interface) capable programing language.
+[IUP Toolkit](https://webserver2.tecgraf.puc-rio.br/iup/) is a solid and well-proven portable GUI toolkit that exposes a simple raw C API, so it can be used via [FFI](https://en.wikipedia.org/wiki/Foreign_function_interface).
 
 More information can be found at
 https://webserver2.tecgraf.puc-rio.br/iup/
 
-This project aims to collect rich metadata information about IUP's elements, enabling code generators to create type-safe bindings for **any** programing language.
+This project aims to collect rich metadata information about IUP's elements, enabling code-gen tools to create type-checked bindings for **any** programing language.
 
-## Type-safe
+## Type-checked
 
-As IUP's API is largely based on string attributes names and values, this metadata can be useful to improve the user experience through a fully typed and idiomatic API by removing the need for string based actions.
+As IUP's API is largely based on key-value string attributes, this metadata can be useful to improve the developer experience through a fully typed and idiomatic API by removing the need for string based actions.
 
 Original IUP API in C:
 
@@ -25,7 +25,7 @@ IupSetCallback(bt_close, "ACTION", (Icallback)close_action_cb);
 IupSetAttribute(bt_close, "PADDING", "10x2");
 ```
 
-Type-safe API in Zig
+Type-checked API in Zig
 
 ```Zig
 var dlg = Dialog.init();

@@ -10,7 +10,9 @@ const std = @import("std");
 
 const c = @import("../c.zig");
 const iup = @import("../iup.zig");
-const traits = @import("../traits.zig");
+
+const Impl = @import("../impl.zig").Impl; 
+const CallbackHandler = @import("../callback_handler.zig").CallbackHandler;
 
 const debug = std.debug;
 const trait = std.meta.trait;

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace IupMetadata
+﻿namespace IupMetadata
 {
 	public record IupAttribute
 	{
@@ -24,11 +22,11 @@ namespace IupMetadata
 
 		public DataType DataType { get; set; }
 
+		public DataFormat DataFormat { get; set; }
+
 		public string HandleName { get; set; }
 
 		public EnumValue[] EnumValues { get; set; }
-
-		public bool EnumAsInteger => EnumValues?.Any(x => x.IntValue != null) ?? false;
 
 		public string Default { get; set; }
 

@@ -10,6 +10,9 @@ const std = @import("std");
 const ascii = std.ascii;
 const testing = std.testing;
 
+const Impl = @import("../impl.zig").Impl; 
+const CallbackHandler = @import("../callback_handler.zig").CallbackHandler;
+
 const iup = @import("iup.zig");
 const c = @import("c.zig");
 const ChildrenIterator = iup.ChildrenIterator;

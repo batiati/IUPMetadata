@@ -107,9 +107,9 @@ namespace IupMetadata.CodeGenerators.Zig
 			var self = isInitializer ? "self.ref" : "self";
 			var @return = isInitializer ? "return self.*;" : "";
 
-			var decl = attribute.DataType switch
+			var decl = (attribute.DataFormat, attribute.DataType) switch
 			{
-				DataType.Int => $@"
+				(DataFormat.Binary, DataType.Int) => $@"
 
 				pub fn set{attribute.Name}(self: {type}, arg: i32) {ret} {{
 					c.setIntAttribute({self}, ""{attribute.AttributeName}"", arg);
@@ -118,7 +118,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.String => $@"
+				(DataFormat.Binary, DataType.String) or
+				(DataFormat.HandleName, DataType.Handle) => $@"
 
 				pub fn set{attribute.Name}(self: {type}, arg: [:0]const u8) {ret} {{
 					c.setStrAttribute({self}, ""{attribute.AttributeName}"", arg);
@@ -127,7 +128,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.Boolean => $@"
+				(DataFormat.Binary, DataType.Boolean) => $@"
 
 				pub fn set{attribute.Name}(self: {type}, arg: bool) {ret} {{
 					c.setBoolAttribute({self}, ""{attribute.AttributeName}"", arg);
@@ -136,7 +137,43 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.Void => $@"
+				(DataFormat.Binary, DataType.Float) => $@"
+
+				pub fn set{attribute.Name}(self: {type}, arg: f32) {ret} {{
+					c.setFloatAttribute({self}, ""{attribute.AttributeName}"", arg);
+					{@return}
+				}}
+
+				",
+
+				(DataFormat.Binary, DataType.Double) => $@"
+
+				pub fn set{attribute.Name}(self: {type}, arg: f64) {ret} {{
+					c.setDoubleAttribute({self}, ""{attribute.AttributeName}"", arg);
+					{@return}
+				}}
+
+				",
+
+				(DataFormat.Binary, DataType.VoidPtr) => $@"
+
+				pub fn set{attribute.Name}(self: {type}, comptime T: type, arg: ?*T) {ret} {{
+					c.setPtrAttribute(T, {self}, ""{attribute.AttributeName}"", arg);
+					{@return}
+				}}
+
+				",
+
+				(DataFormat.Binary, DataType.Handle) when attribute.HandleName != null => $@"
+
+				pub fn set{attribute.Name}(self: {type}, arg: *iup.{attribute.HandleName}) {ret} {{
+					c.setHandleAttribute({self}, ""{attribute.AttributeName}"", arg);
+					{@return}
+				}}
+
+				",
+
+				(DataFormat.Binary, DataType.Void) => $@"
 
 				pub fn {attribute.Name.Camelize()}(self: {type}) {ret} {{
 					c.setStrAttribute({self}, ""{attribute.AttributeName}"", null);
@@ -145,7 +182,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.Size => $@"
+				(DataFormat.Size, DataType.String) => $@"
 
 				pub fn set{attribute.Name}(self: {type}, width: ?i32, height: ?i32) {ret} {{
 					var buffer: [128]u8 = undefined;
@@ -156,7 +193,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.Margin => $@"
+				(DataFormat.Margin, DataType.String) => $@"
 
 				pub fn set{attribute.Name}(self: {type}, horiz: i32, vert: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
@@ -167,7 +204,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.LinColPos => @$"
+				(DataFormat.LinColPos, DataType.String) => @$"
 
 				pub fn set{attribute.Name}(self: {type}, lin: i32, col: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
@@ -178,7 +215,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.XYPos => @$"
+				(DataFormat.XYPos, DataType.String) => @$"
 
 				pub fn set{attribute.Name}(self: {type}, x: i32, y: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
@@ -189,7 +226,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.Range => @$"
+				(DataFormat.Range, DataType.String) => @$"
 
 				pub fn set{attribute.Name}(self: {type}, begin: i32, end: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
@@ -200,7 +237,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.DialogSize => $@"
+				(DataFormat.DialogSize, DataType.String) => $@"
 
 				pub fn set{attribute.Name}(self: {type}, width: ?iup.ScreenSize, height: ?iup.ScreenSize) {ret} {{
 					var buffer: [128]u8 = undefined;
@@ -211,7 +248,34 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.Enum when attribute.EnumAsInteger == true => $@"
+				(DataFormat.Date, DataType.String) => $@"
+
+				pub fn set{attribute.Name}(self: {type}, year: u16, month: u8, day: u8) {ret} {{
+					var buffer: [128]u8 = undefined;
+					var value = Date {{ .year = year, .month = month, .day = day }};
+					c.setStrAttribute({self}, ""{attribute.AttributeName}"", value.toString(&buffer));
+					{@return}
+				}}
+
+				",
+
+				(DataFormat.Rgb, DataType.String) => $@"
+
+				pub fn set{attribute.Name}(self: {type}, rgb: iup.Rgb) {ret} {{
+					var buffer: [128]u8 = undefined;
+					c.setStrAttribute({self}, ""{attribute.AttributeName}"", rgb.toString(&buffer));
+					{@return}
+				}}
+
+				",
+
+				(DataFormat.FloatRange, DataType.String) => $@"",
+				(DataFormat.Alignment, DataType.String) => $@"",
+				(DataFormat.Rect, DataType.String) => $@"",
+				(DataFormat.Selection, DataType.String) => $@"",
+				(DataFormat.MdiActivate, DataType.String) => $@"",
+
+				(DataFormat.Enum, DataType.Int) => $@"
 
 				pub fn set{attribute.Name}(self: {type}, arg: ?{attribute.Name}) {ret} {{
 					if (arg) |value| {{
@@ -223,7 +287,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				}}
 				",
 
-				DataType.Enum => $@"
+				(DataFormat.Enum, DataType.String) => $@"
 
 				pub fn set{attribute.Name}(self: {type}, arg: ?{attribute.Name}) {ret} {{
 					if (arg) |value| switch (value) {{
@@ -235,16 +299,11 @@ namespace IupMetadata.CodeGenerators.Zig
 				}}
 				",
 
-				DataType.Handle when attribute.HandleName != null => $@"
+				//TODO: implement Zig signatures
+				(_, DataType.Unknown) => $"",
+				(_, DataType.Handle) => $"",
 
-				pub fn set{attribute.Name}(self: {type}, arg: *iup.{attribute.HandleName}) {ret} {{
-					c.setHandleAttribute({self}, ""{attribute.AttributeName}"", arg);
-					{@return}
-				}}
-
-				",
-
-				_ => ""
+				_ => throw new NotImplementedException($"{attribute.DataType} {attribute.DataFormat}")
 			};
 
 			if (string.IsNullOrEmpty(decl)) return string.Empty;
@@ -261,9 +320,9 @@ namespace IupMetadata.CodeGenerators.Zig
 			if (attribute.CreationOnly) return string.Empty;
 			if (attribute.WriteOnly) return string.Empty;
 
-			var decl = attribute.DataType switch
+			var decl = (attribute.DataFormat, attribute.DataType) switch
 			{
-				DataType.Int => $@"
+				(DataFormat.Binary, DataType.Int) => $@"
 
 				pub fn get{attribute.Name}(self: *Self) i32 {{
 					return c.getIntAttribute(self, ""{attribute.AttributeName}"");
@@ -271,7 +330,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.String => $@"
+				(DataFormat.Binary, DataType.String) => $@"
 
 				pub fn get{attribute.Name}(self: *Self) [:0]const u8 {{
 					return c.getStrAttribute(self, ""{attribute.AttributeName}"");
@@ -279,68 +338,39 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.Boolean => $@"
+				(DataFormat.Binary, DataType.Boolean) => $@"
 
 				pub fn get{attribute.Name}(self: *Self) bool {{
-					c.getBoolAttribute(self, ""{attribute.AttributeName}"");
+					return c.getBoolAttribute(self, ""{attribute.AttributeName}"");
 				}}
 
 				",
 
-				DataType.Size => $@"
+				(DataFormat.Binary, DataType.Float) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) Size {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
-					return Size.parse(str);
+				pub fn get{attribute.Name}(self: *Self) f32 {{
+					return c.getFloatAttribute(self, ""{attribute.AttributeName}"");
 				}}
 
 				",
 
-				DataType.Margin => $@"
+				(DataFormat.Binary, DataType.Double) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) Margin {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
-					return Margin.parse(str);
+				pub fn get{attribute.Name}(self: *Self) f64 {{
+					return c.getDoubleAttribute(self, ""{attribute.AttributeName}"");
 				}}
 
 				",
 
-				DataType.DialogSize => $@"
+				(DataFormat.Binary, DataType.VoidPtr) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) iup.DialogSize {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
-					return iup.DialogSize.parse(str);
-				}}
-				",
-
-				DataType.LinColPos => @$"
-
-				pub fn get{attribute.Name}(self: *Self) iup.LinColPos {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
-					return iup.LinColPos.parse(str, ',');
+				pub fn get{attribute.Name}(self: *Self, comptime T: type) ?*T {{
+					return c.getPtrAttribute(T, self, ""{attribute.AttributeName}"");
 				}}
 
 				",
 
-				DataType.XYPos => @$"
-
-				pub fn get{attribute.Name}(self: *Self) iup.XYPos {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
-					return iup.XYPos.parse(str, ',');
-				}}
-
-				",
-
-				DataType.Range => @$"
-
-				pub fn get{attribute.Name}(self: *Self) iup.Range {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
-					return iup.Range.parse(str, ',');
-				}}
-
-				",
-
-				DataType.Handle when attribute.HandleName != null => $@"
+				(DataFormat.Binary, DataType.Handle) when attribute.HandleName != null => $@"
 
 				pub fn get{attribute.Name}(self: *Self) ?*iup.{attribute.HandleName} {{
 					if (c.getHandleAttribute(self, ""{attribute.AttributeName}"")) |handle| {{
@@ -352,7 +382,84 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.Enum when attribute.EnumAsInteger == true => $@"
+				(DataFormat.Size, DataType.String) => $@"
+
+				pub fn get{attribute.Name}(self: *Self) Size {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+					return Size.parse(str);
+				}}
+
+				",
+
+				(DataFormat.Margin, DataType.String) => $@"
+
+				pub fn get{attribute.Name}(self: *Self) Margin {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+					return Margin.parse(str);
+				}}
+
+				",
+
+				(DataFormat.DialogSize, DataType.String) => $@"
+
+				pub fn get{attribute.Name}(self: *Self) iup.DialogSize {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+					return iup.DialogSize.parse(str);
+				}}
+				",
+
+				(DataFormat.LinColPos, DataType.String) => @$"
+
+				pub fn get{attribute.Name}(self: *Self) iup.LinColPos {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+					return iup.LinColPos.parse(str, ',');
+				}}
+
+				",
+
+				(DataFormat.XYPos, DataType.String) => @$"
+
+				pub fn get{attribute.Name}(self: *Self) iup.XYPos {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+					return iup.XYPos.parse(str, ',');
+				}}
+
+				",
+
+				(DataFormat.Range, DataType.String) => @$"
+
+				pub fn get{attribute.Name}(self: *Self) iup.Range {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+					return iup.Range.parse(str, ',');
+				}}
+
+				",
+
+				(DataFormat.Date, DataType.String) => $@"
+
+				pub fn get{attribute.Name}(self: *Self) ?iup.Date {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+					return iup.Date.parse(str);
+				}}
+
+				",
+
+				(DataFormat.Rgb, DataType.String) => $@"
+
+				pub fn get{attribute.Name}(self: *Self) ?iup.Rgb {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+					return iup.Rgb.parse(str);
+				}}
+
+				",
+
+				(DataFormat.FloatRange, DataType.String) => $@"",
+				(DataFormat.Alignment, DataType.String) => $@"",
+				(DataFormat.Rect, DataType.String) => $@"",
+				(DataFormat.Selection, DataType.String) => $@"",
+				(DataFormat.MdiActivate, DataType.String) => $@"",
+
+				(DataFormat.Enum, DataType.Int) => $@"
 
 				pub fn get{attribute.Name}(self: *Self) {attribute.Name} {{
 					var ret = c.getIntAttribute(self, ""{attribute.AttributeName}"");
@@ -361,7 +468,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				DataType.Enum => $@"
+				(DataFormat.Enum, DataType.String) => $@"
 
 				pub fn get{attribute.Name}(self: *Self) ?{attribute.Name} {{
 					var ret = c.getStrAttribute(self, ""{attribute.AttributeName}"");
@@ -372,7 +479,11 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				_ => ""
+				//TODO: implement Zig signatures
+				(_, DataType.Unknown) => $"",
+				(_, DataType.Handle) => $"",
+
+				_ => throw new NotImplementedException($"{attribute.DataType} {attribute.DataFormat}")
 			};
 
 			if (string.IsNullOrEmpty(decl)) return string.Empty;
@@ -395,7 +506,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				{Generator.GetDocumentation(callback.Documentation)}
 				pub fn set{callback.Name}Callback(self: {type}, callback: ?On{callback.Name}Fn) {ret} {{
-					const Handler = traits.CallbackHandler(Self, On{callback.Name}Fn, ""{callback.AttributeName}"");
+					const Handler = CallbackHandler(Self, On{callback.Name}Fn, ""{callback.AttributeName}"");
 					Handler.setCallback({self}, callback);
 					{@return}
 				}}
@@ -436,14 +547,14 @@ namespace IupMetadata.CodeGenerators.Zig
 					///
 					/// Adds a tuple of children
 					pub fn appendChildren(self: *Self, tuple: anytype) !void {
-						try traits.container.Body(Self).appendChildren(self, tuple);
+						try Impl(Self).appendChildren(self, tuple);
 					}
 
 					///
 					/// Appends a child on this container
 					/// child must be an Element or
 					pub fn appendChild(self: *Self, child: anytype) !void {
-						try traits.container.Body(Self).appendChild(self, child);
+						try Impl(Self).appendChild(self, child);
 					}
 
 					///
@@ -499,13 +610,13 @@ namespace IupMetadata.CodeGenerators.Zig
 					///
 					/// Converts a (lin, col) character positioning into an absolute position. lin and col starts at 1, pos starts at 0. For single line controls pos is always ""col - 1"". (since 3.0)
 					pub fn convertLinColToPos(self: *Self, lin : i32, col : i32) ?i32 {
-						return traits.container.Body(Self).convertLinColToPos(self, lin, col);
+						return Impl(Self).convertLinColToPos(self, lin, col);
 					}
 
 					///
 					///
 					pub fn convertPosToLinCol(self: *Self, pos: i32) ?iup.LinColPos {
-						return traits.container.Body(Self).convertPosToLinCol(self, pos);
+						return Impl(Self).convertPosToLinCol(self, pos);
 					}
 
 				");
@@ -527,7 +638,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				/// Updates the size and layout of all controls in the same dialog.
 				/// To be used after changing size attributes, or attributes that affect the size of the control. Can be used for any element inside a dialog, but the layout of the dialog and all controls will be updated. It can change the layout of all the controls inside the dialog because of the dynamic layout positioning.
 				pub fn refresh(self: *Self) void {
-					try traits.container.Body(Self).refresh(self);
+					try Impl(Self).refresh(self);
 				}
 
 			");
@@ -543,7 +654,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				if (attribute.EnumValues == null || attribute.EnumValues.Length == 0) continue;
 
 				builder.AppendLine(Generator.GetDocumentation(attribute.Documentation));
-				builder.AppendLine($@"pub const {attribute.Name} = enum{(attribute.EnumAsInteger ? "(i32)" : "")} {{");
+				builder.AppendLine($@"pub const {attribute.Name} = enum{(attribute.DataType == DataType.Int ? "(i32)" : "")} {{");
 
 				foreach (var value in attribute.EnumValues)
 				{
