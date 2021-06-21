@@ -279,7 +279,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				pub fn set{attribute.Name}(self: {type}, arg: ?{attribute.Name}) {ret} {{
 					if (arg) |value| {{
-						c.setIntAttribute({self}, ""{attribute.AttributeName}"", @enumToInt(arg));
+						c.setIntAttribute({self}, ""{attribute.AttributeName}"", @enumToInt(value));
 					}} else {{
 						c.clearAttribute({self}, ""{attribute.AttributeName}"");
 					}}
@@ -753,7 +753,8 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Selection, DataType.String) => (null, null),
 				(DataFormat.MdiActivate, DataType.String) => (null, null),
 
-				(DataFormat.Enum, _) => ($@"set{attribute.Name}(.{attribute.EnumValues[0].Name})", $@"ret != null and ret.? == .{attribute.EnumValues[0].Name}"),
+				(DataFormat.Enum, DataType.Int) => ($@"set{attribute.Name}(.{attribute.EnumValues[0].Name})", $@"ret == .{attribute.EnumValues[0].Name}"),
+				(DataFormat.Enum, DataType.String) => ($@"set{attribute.Name}(.{attribute.EnumValues[0].Name})", $@"ret != null and ret.? == .{attribute.EnumValues[0].Name}"),
 
 				//TODO: implement Zig signatures
 				(_, DataType.Unknown) => (null, null),
