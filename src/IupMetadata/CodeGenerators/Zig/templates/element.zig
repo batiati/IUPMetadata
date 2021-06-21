@@ -18,6 +18,7 @@ const debug = std.debug;
 const trait = std.meta.trait;
 
 const Element = iup.Element;
+const Handle = iup.Handle;
 const Error = iup.Error;
 const ChildrenIterator = iup.ChildrenIterator;
 const Size = iup.Size;
@@ -145,3 +146,5 @@ pub const {{Name}} = opaque {
     {{BodyBlock}}
 
 };
+
+{{TestsBlock}}

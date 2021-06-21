@@ -17,6 +17,7 @@ const iup = @import("iup.zig");
 const c = @import("c.zig");
 const ChildrenIterator = iup.ChildrenIterator;
 
+pub const Handle = c.Ihandle;
 {{Imports}}
 
 ///
@@ -33,7 +34,7 @@ const ChildrenIterator = iup.ChildrenIterator;
 pub const Element = union(enum) {
 
     {{UnionDecl}}
-    Unknown: *c.Ihandle,
+    Unknown: *Handle,
 
     pub fn fromType(comptime T: type, handle: anytype) Element {
         switch (T) {
@@ -61,14 +62,14 @@ pub const Element = union(enum) {
     pub fn fromClassName(className: []const u8, handle: anytype) Element {
 
         {{FromClassName}}
-        return . { .Unknown = @ptrCast(*c.Ihandle, handle) };
+        return . { .Unknown = @ptrCast(*Handle, handle) };
     }   
 
-    pub fn getHandle(self: Element) *c.Ihandle {
+    pub fn getHandle(self: Element) *Handle {
         
         switch (self) {
             {{GetHandle}}
-            .Unknown => |value| return @ptrCast(*c.Ihandle, value),
+            .Unknown => |value| return @ptrCast(*Handle, value),
         }
     }
 

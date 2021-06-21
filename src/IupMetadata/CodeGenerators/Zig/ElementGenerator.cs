@@ -20,6 +20,7 @@ namespace IupMetadata.CodeGenerators.Zig
 			template = template.Replace("{{BodyBlock}}", GetBodyBlock(item));
 			template = template.Replace("{{BodyTraits}}", GetBodyTraits(item));
 			template = template.Replace("{{InitializerTraits}}", GetInitializerTraits(item));
+			template = template.Replace("{{TestsBlock}}", GetTestsBlock(item));
 
 			var fileName = item.Name.Underscore();
 			var path = Path.Combine(basePath, $"elements\\{fileName}.zig");
@@ -262,8 +263,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Rgb, DataType.String) => $@"
 
 				pub fn set{attribute.Name}(self: {type}, rgb: iup.Rgb) {ret} {{
-					var buffer: [128]u8 = undefined;
-					c.setStrAttribute({self}, ""{attribute.AttributeName}"", rgb.toString(&buffer));
+					c.setRgb({self}, ""{attribute.AttributeName}"", rgb);
 					{@return}
 				}}
 
@@ -447,8 +447,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Rgb, DataType.String) => $@"
 
 				pub fn get{attribute.Name}(self: *Self) ?iup.Rgb {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
-					return iup.Rgb.parse(str);
+					return c.getRgb(self, ""{attribute.AttributeName}"");
 				}}
 
 				",
@@ -571,7 +570,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				builder.AppendLine(@"
 
 					pub fn showXY(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) !void {
-						const ret = c.IupShowXY(@ptrCast(*c.Ihandle, self), @enumToInt(x) , @enumToInt(y));
+						const ret = c.IupShowXY(@ptrCast(*Handle, self), @enumToInt(x) , @enumToInt(y));
 						if (ret == c.IUP_ERROR) {
 							debug.print(""{} ret={}\n"", .{ Error.OpenFailed, ret });
 							return Error.OpenFailed;
@@ -586,6 +585,19 @@ namespace IupMetadata.CodeGenerators.Zig
 						_ = c.IupHide(c.getHandle(self));
 					}
 				");
+
+				if (item.ClassName == "messagedlg")
+				{
+					builder.Append(@"
+						pub fn alert(parent: *iup.Dialog, title: ?[:0]const u8, message: [:0]const u8) !void {
+							try Impl(Self).messageDialogAlert(parent, title, message);
+						}
+
+						pub fn confirm(parent: *iup.Dialog, title: ?[:0]const u8, message: [:0]const u8) !bool {
+							return try Impl(Self).messageDialogAlertConfirm(parent, title, message);
+						}
+					");
+				}
 			}
 			else
 			{
@@ -665,6 +677,92 @@ namespace IupMetadata.CodeGenerators.Zig
 			}
 
 			return builder.ToString();
+		}
+
+		private static string GetTestsBlock(IupClass item)
+		{
+			// Mosts operations on those elements will segfault without propper initialization
+			// skiping tests until we don't have a better idea to generate them
+			if (new[] { "image", "imagergb", "imagergba", "param", "parambox" }.Any(x => x == item.ClassName)) return "";
+
+			var builder = new StringBuilder();
+
+			foreach (var attribute in item.Attributes)
+			{
+				if (attribute.CreationOnly || attribute.ReadOnly || attribute.WriteOnly) continue;
+
+				var (setStatement, assertStatement) = GetTestBlock(attribute);
+				if (setStatement == null || assertStatement == null) continue;
+
+				builder.AppendLine(@$"
+					test ""{item.Name} {attribute.Name}"" {{
+						try iup.MainLoop.open();
+						defer iup.MainLoop.close();
+
+						var item = try (iup.{item.Name}.init().{setStatement}.unwrap());
+						defer item.deinit();
+
+						var ret = item.get{attribute.Name}();
+
+						try std.testing.expect({assertStatement});
+					}}
+				");
+			}
+
+			return builder.ToString();
+		}
+
+		private static (string, string) GetTestBlock(IupAttribute attribute)
+		{
+			var (setStatement, assertStatement) = (attribute.DataFormat, attribute.DataType) switch
+			{
+				(DataFormat.Binary, DataType.Int) => ($@"set{attribute.Name}(42)", $@"ret == 42"),
+
+				(DataFormat.Binary, DataType.String) => ($@"set{attribute.Name}(""Hello"")", $@"std.mem.eql(u8, ret, ""Hello"")"),
+
+				(DataFormat.HandleName, DataType.Handle) => (null, null),
+
+				(DataFormat.Binary, DataType.Boolean) => ($@"set{attribute.Name}(true)", $@"ret == true"),
+
+				(DataFormat.Binary, DataType.Float) => ($@"set{attribute.Name}(3.14)", $@"ret) == @as(f32, 3.14)"),
+
+				(DataFormat.Binary, DataType.Double) => ($@"set{attribute.Name}(3.14)", $@"ret == @as(f64, 3.14)"),
+
+				(DataFormat.Binary, DataType.VoidPtr) => (null, null),
+
+				(DataFormat.Binary, DataType.Handle) => (null, null),
+
+				(DataFormat.Size, DataType.String) => ($@"set{attribute.Name}(9, 10)", $@"ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10"),
+
+				(DataFormat.Margin, DataType.String) => ($@"set{attribute.Name}(9, 10)", $@"ret.horiz == 9 and ret.vert == 10"),
+
+				(DataFormat.LinColPos, DataType.String) => ($@"set{attribute.Name}(9, 10)", $@"ret.lin == 9 and ret.col == 10"),
+
+				(DataFormat.XYPos, DataType.String) => ($@"set{attribute.Name}(9, 10)", $@"ret.x == 9 and ret.y == 10"),
+
+				(DataFormat.Range, DataType.String) => ($@"set{attribute.Name}(9, 10)", $@"ret.begin == 9 and ret.end == 10"),
+
+				(DataFormat.DialogSize, DataType.String) => (null, null),
+				(DataFormat.Date, DataType.String) => (null, null),
+
+				(DataFormat.Rgb, DataType.String) => ($@"set{attribute.Name}(.{{ .r = 9, .g = 10, .b = 11 }})", $@"ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11"),
+
+				(DataFormat.FloatRange, DataType.String) => (null, null),
+				(DataFormat.Alignment, DataType.String) => (null, null),
+				(DataFormat.Rect, DataType.String) => (null, null),
+				(DataFormat.Selection, DataType.String) => (null, null),
+				(DataFormat.MdiActivate, DataType.String) => (null, null),
+
+				(DataFormat.Enum, _) => ($@"set{attribute.Name}(.{attribute.EnumValues[0].Name})", $@"ret != null and ret.? == .{attribute.EnumValues[0].Name}"),
+
+				//TODO: implement Zig signatures
+				(_, DataType.Unknown) => (null, null),
+				(_, DataType.Handle) => (null, null),
+
+				_ => throw new NotImplementedException($"{attribute.DataType} {attribute.DataFormat}")
+			};
+
+			return (setStatement, assertStatement);
 		}
 	}
 }

@@ -158,9 +158,9 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "ORIGINALSCALE", DataType=DataType.String, DataFormat=DataFormat.Size,}, // Used by 3 controls: Image, ImageRgb, ImageRgba
 			new AttributeType { AttributeName = "RESHAPE", DataType=DataType.String, DataFormat=DataFormat.Size,}, // Used by 3 controls: Image, ImageRgb, ImageRgba
 			new AttributeType { AttributeName = "SCALED", DataType=DataType.Boolean}, // Used by 3 controls: Image, ImageRgb, ImageRgba
-			new AttributeType { AttributeName = "HOTSPOT", DataType=DataType.String, DataFormat=DataFormat.Range,}, // Used by 3 controls: Image, ImageRgb, ImageRgba
+			new AttributeType { AttributeName = "HOTSPOT" }, // Used by 3 controls: Image, ImageRgb, ImageRgba
 			new AttributeType { AttributeName = "HEIGHT", DataType=DataType.Int}, // Used by 3 controls: Image, ImageRgb, ImageRgba
-			new AttributeType { AttributeName = "DPI", DataType=DataType.Int}, // Used by 3 controls: Image, ImageRgb, ImageRgba
+			new AttributeType { AttributeName = "DPI" }, // Used by 3 controls: Image, ImageRgb, ImageRgba
 			new AttributeType { AttributeName = "CHANNELS", DataType=DataType.Int}, // Used by 3 controls: Image, ImageRgb, ImageRgba
 			new AttributeType { AttributeName = "CLEARCACHE", DataType=DataType.Void}, // Used by 3 controls: Image, ImageRgb, ImageRgba
 			new AttributeType { AttributeName = "AUTOSCALE", DataType=DataType.Boolean}, // Used by 3 controls: Image, ImageRgb, ImageRgba
@@ -312,8 +312,13 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "RESIZE", ClassName = "image", DataType=DataType.String, DataFormat=DataFormat.Size},
 
 			new AttributeType { AttributeName = "COUNT", DataType = DataType.Int}, // Used by 10 controls: ColorBar, FlatList, FlatTabs, FlatTree, List, Multiline, ProgressDlg, Tabs, Text, Tree
-			new AttributeType { AttributeName = "ALIGNMENT", DataType=DataType.String, DataFormat=DataFormat.Alignment}, // Used by 16 controls: AnimatedLabel, Button, DropButton, FlatButton, FlatLabel, FlatList, FlatToggle, HBox, Label, Link, Multiline, Spin, Text, Toggle, VBox, ZBox
-			new AttributeType { ClassName = "Param", AttributeName = "CONTROL"},
+
+			new AttributeType { AttributeName = "ALIGNMENT", ClassName="vbox", DataType=DataType.String, DataFormat = DataFormat.Enum, EnumValues = new EnumValue[] { "ARIGHT", "ACENTER", "ALEFT" }  },
+			new AttributeType { AttributeName = "ALIGNMENT", ClassName="hbox", DataType=DataType.String, DataFormat = DataFormat.Enum, EnumValues = new EnumValue[] { "ABOTTOM", "ACENTER", "ATOP" }  },
+			new AttributeType { AttributeName = "ALIGNMENT", ClassName="zbox", DataType=DataType.String, DataFormat = DataFormat.Enum, EnumValues = new EnumValue[] { "NORTH", "SOUTH", "WEST", "EAST", "NE", "SE", "NW", "SW", "ACENTER" }  },
+			new AttributeType { AttributeName = "ALIGNMENT", DataType=DataType.String, DataFormat=DataFormat.Alignment}, // Used by 16 controls: AnimatedLabel, Button, DropButton, FlatButton, FlatLabel, FlatList, FlatToggle, Label, Link, Multiline, Spin, Text, Toggle,
+
+			new AttributeType { AttributeName = "CONTROL", ClassName = "Param",},
 			new AttributeType { AttributeName = "CHILDOFFSET", DataType=DataType.String, DataFormat=DataFormat.Size,}, // Used by 13 controls: BackgroundBox, ColorDlg, Dialog, FileDlg, FlatFrame, FlatScrollBox, FlatTabs, FontDlg, Frame, MessageDlg, ProgressDlg, ScrollBox, Tabs
 			new AttributeType { AttributeName = "PADDING", DataType=DataType.String, DataFormat=DataFormat.Size,}, // Used by 14 controls: AnimatedLabel, Button, DropButton, FlatButton, FlatLabel, FlatList, FlatToggle, Gauge, Label, Link, List, Multiline, Text, Toggle
 			new AttributeType { AttributeName = "CPADDING", DataType=DataType.String, DataFormat=DataFormat.Size,}, // Used by 14 controls: AnimatedLabel, Button, DropButton, FlatButton, FlatLabel, FlatList, FlatToggle, Gauge, Label, Link, List, Multiline, Text, Tree
@@ -409,7 +414,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "RENAMECARET", DataType = DataType.String}, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "RENAMESELECTION", DataType = DataType.String}, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "ROOTCOUNT", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "IDVALUE", DataType = DataType.Int}, // Used by 3 controls: FlatList, Image, List
+			new AttributeType { AttributeName = "IDVALUE" }, // Used by 3 controls: FlatList, Image, List
 			new AttributeType { AttributeName = "CHILDSIZEALL", DataType = DataType.Boolean}, // Used by 3 controls: FlatTabs, Tabs, ZBox
 			new AttributeType { AttributeName = "VALUEPOS", DataType = DataType.Int}, // Used by 3 controls: FlatTabs, Tabs, ZBox
 			new AttributeType { AttributeName = "USERDATA", DataType = DataType.VoidPtr}, // Used by 3 controls: FlatTree, ParamBox, Tree
@@ -446,9 +451,9 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "MINSIZE", Group = AttributeGroup.Common, DataType=DataType.String, DataFormat=DataFormat.Size,}, // Used by 55 controls: AnimatedLabel, BackgroundBox, Button, Calendar, Canvas, CBox, ColorBar, ColorBrowser, ColorDlg, DatePick, DetachBox, Dial, Dialog, DropButton, Expander, FileDlg, Fill, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Frame, Gauge, GridBox, HBox, Label, Link, List, MessageDlg, MultiBox, Multiline, ParamBox, ProgressBar, ProgressDlg, Radio, SBox, ScrollBox, Space, Spin, SpinBox, Split, Tabs, Text, Toggle, Tree, Val, VBox, ZBox
 			new AttributeType { AttributeName = "FONT", Group = AttributeGroup.Common, DataType = DataType.String,}, // Used by 55 controls: AnimatedLabel, BackgroundBox, Button, Calendar, Canvas, CBox, ColorBar, ColorBrowser, ColorDlg, DatePick, DetachBox, Dial, Dialog, DropButton, Expander, FileDlg, Fill, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Frame, Gauge, GridBox, HBox, Label, Link, List, MessageDlg, MultiBox, Multiline, ParamBox, ProgressBar, ProgressDlg, Radio, SBox, ScrollBox, Space, Spin, SpinBox, Split, Tabs, Text, Toggle, Tree, Val, VBox, ZBox
 			new AttributeType { AttributeName = "FONTFACE", Group = AttributeGroup.Common, DataType = DataType.String,}, // Used by 55 controls: AnimatedLabel, BackgroundBox, Button, Calendar, Canvas, CBox, ColorBar, ColorBrowser, ColorDlg, DatePick, DetachBox, Dial, Dialog, DropButton, Expander, FileDlg, Fill, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Frame, Gauge, GridBox, HBox, Label, Link, List, MessageDlg, MultiBox, Multiline, ParamBox, ProgressBar, ProgressDlg, Radio, SBox, ScrollBox, Space, Spin, SpinBox, Split, Tabs, Text, Toggle, Tree, Val, VBox, ZBox
-			new AttributeType { AttributeName = "FONTSIZE", Group = AttributeGroup.Common, DataType = DataType.String,}, // Used by 55 controls: AnimatedLabel, BackgroundBox, Button, Calendar, Canvas, CBox, ColorBar, ColorBrowser, ColorDlg, DatePick, DetachBox, Dial, Dialog, DropButton, Expander, FileDlg, Fill, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Frame, Gauge, GridBox, HBox, Label, Link, List, MessageDlg, MultiBox, Multiline, ParamBox, ProgressBar, ProgressDlg, Radio, SBox, ScrollBox, Space, Spin, SpinBox, Split, Tabs, Text, Toggle, Tree, Val, VBox, ZBox
+			new AttributeType { AttributeName = "FONTSIZE", Group = AttributeGroup.Common, DataType = DataType.Int,}, // Used by 55 controls: AnimatedLabel, BackgroundBox, Button, Calendar, Canvas, CBox, ColorBar, ColorBrowser, ColorDlg, DatePick, DetachBox, Dial, Dialog, DropButton, Expander, FileDlg, Fill, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Frame, Gauge, GridBox, HBox, Label, Link, List, MessageDlg, MultiBox, Multiline, ParamBox, ProgressBar, ProgressDlg, Radio, SBox, ScrollBox, Space, Spin, SpinBox, Split, Tabs, Text, Toggle, Tree, Val, VBox, ZBox
 			new AttributeType { AttributeName = "FONTSTYLE", Group = AttributeGroup.Common, DataType = DataType.String,}, // Used by 55 controls: AnimatedLabel, BackgroundBox, Button, Calendar, Canvas, CBox, ColorBar, ColorBrowser, ColorDlg, DatePick, DetachBox, Dial, Dialog, DropButton, Expander, FileDlg, Fill, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Frame, Gauge, GridBox, HBox, Label, Link, List, MessageDlg, MultiBox, Multiline, ParamBox, ProgressBar, ProgressDlg, Radio, SBox, ScrollBox, Space, Spin, SpinBox, Split, Tabs, Text, Toggle, Tree, Val, VBox, ZBox
-			new AttributeType { AttributeName = "HFONT", Group = AttributeGroup.Common, DataType = DataType.String,}, // Used by 55 controls: AnimatedLabel, BackgroundBox, Button, Calendar, Canvas, CBox, ColorBar, ColorBrowser, ColorDlg, DatePick, DetachBox, Dial, Dialog, DropButton, Expander, FileDlg, Fill, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Frame, Gauge, GridBox, HBox, Label, Link, List, MessageDlg, MultiBox, Multiline, ParamBox, ProgressBar, ProgressDlg, Radio, SBox, ScrollBox, Space, Spin, SpinBox, Split, Tabs, Text, Toggle, Tree, Val, VBox, ZBox
+			new AttributeType { AttributeName = "HFONT", Group = AttributeGroup.Common, DataType = DataType.Handle,}, // Used by 55 controls: AnimatedLabel, BackgroundBox, Button, Calendar, Canvas, CBox, ColorBar, ColorBrowser, ColorDlg, DatePick, DetachBox, Dial, Dialog, DropButton, Expander, FileDlg, Fill, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Frame, Gauge, GridBox, HBox, Label, Link, List, MessageDlg, MultiBox, Multiline, ParamBox, ProgressBar, ProgressDlg, Radio, SBox, ScrollBox, Space, Spin, SpinBox, Split, Tabs, Text, Toggle, Tree, Val, VBox, ZBox
 
 			//iupBaseRegisterVisualAttrib
 			new AttributeType { AttributeName = "VISIBLE", Group = AttributeGroup.Visual, DataType = DataType.Boolean}, // Used by 55 controls: AnimatedLabel, BackgroundBox, Button, Calendar, Canvas, CBox, ColorBar, ColorBrowser, ColorDlg, DatePick, DetachBox, Dial, Dialog, DropButton, Expander, FileDlg, Fill, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Frame, Gauge, GridBox, HBox, Label, Link, List, MessageDlg, MultiBox, Multiline, ParamBox, ProgressBar, ProgressDlg, Radio, SBox, ScrollBox, Space, Spin, SpinBox, Split, Tabs, Text, Toggle, Tree, Val, VBox, ZBox
@@ -663,7 +668,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "ITEMBGCOLOR", ClassName = "flatlist"},
 			new AttributeType { AttributeName = "ITEMFGCOLOR", ClassName = "flatlist"},
 			new AttributeType { AttributeName = "ITEMFONT", ClassName = "flatlist"},
-			new AttributeType { AttributeName = "ITEMFONTSIZE", ClassName = "flatlist"},
+			new AttributeType { AttributeName = "ITEMFONTSIZE", ClassName = "flatlist", DataType = DataType.Int},
 			new AttributeType { AttributeName = "ITEMFONTSTYLE", ClassName = "flatlist"},
 
 			new AttributeType { AttributeName = "STYLE", ClassName = "flatseparator"},
@@ -672,14 +677,14 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "TABBACKCOLOR", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "TABCHANGEONCHECK", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "TABFONT", ClassName = "flattabs"},
-			new AttributeType { AttributeName = "TABFONTSIZE", ClassName = "flattabs"},
+			new AttributeType { AttributeName = "TABFONTSIZE", ClassName = "flattabs", DataType = DataType.Int},
 			new AttributeType { AttributeName = "TABFONTSTYLE", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "TABFORECOLOR", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "TABHIGHCOLOR", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "TABSALIGNMENT", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "TABSBACKCOLOR", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "TABSFONT", ClassName = "flattabs"},
-			new AttributeType { AttributeName = "TABSFONTSIZE", ClassName = "flattabs"},
+			new AttributeType { AttributeName = "TABSFONTSIZE", ClassName = "flattabs", DataType = DataType.Int},
 			new AttributeType { AttributeName = "TABSFONTSTYLE", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "TABSFORECOLOR", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "TABSHIGHCOLOR", ClassName = "flattabs"},
@@ -797,9 +802,10 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "DROPDOWN", ClassName = "list"},
 			new AttributeType { AttributeName = "SHOWIMAGE", ClassName = "list"},
 
-			new AttributeType { AttributeName = "BUTTONRESPONSE", ClassName = "messagedlg", DataType = DataType.Int},
+			new AttributeType { AttributeName = "BUTTONRESPONSE", ClassName = "messagedlg", DataType = DataType.Int, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { new EnumValue("Button1", 1), new EnumValue("Button2", 2), new EnumValue("Button3", 3) } },
+			new AttributeType { AttributeName = "BUTTONDEFAULT", ClassName = "messagedlg", DataType = DataType.Int, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { new EnumValue("Button1", 1), new EnumValue("Button2", 2), new EnumValue("Button3", 3) } },
 			new AttributeType { AttributeName = "BUTTONS", ClassName = "messagedlg", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { "OKCANCEL", "RETRYCANCEL", "YESNO", "YESNOCANCEL", "OK" } },
-			new AttributeType { AttributeName = "BUTTONDEFAULT", ClassName = "messagedlg", DataType = DataType.Int },
+			new AttributeType { AttributeName = "DIALOGTYPE", ClassName = "messagedlg", DataType = DataType.Int, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { new EnumValue("Message", 0), new EnumValue("Error", 1), new EnumValue("Warning", 2), new EnumValue("Question", 3), new EnumValue("Information", 4) } },
 			new AttributeType { AttributeName = "AUTOMODAL", ClassName = "messagedlg", DataType = DataType.Boolean},
 
 			new AttributeType { AttributeName = "CGAPVERT", ClassName = "multibox"},
@@ -862,6 +868,8 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "RIGHTBUTTON", ClassName = "toggle"},
 			new AttributeType { AttributeName = "3STATE", ClassName = "toggle"},
 			new AttributeType { AttributeName = "VALUE", ClassName = "toggle", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { "ON", "OFF", "NOTDEF" } },
+
+			new AttributeType { AttributeName = "VALUE", ClassName = "radio", DataType=DataType.Handle, HandleName="Toggle" },
 
 			new AttributeType { AttributeName = "ADDROOT", ClassName = "tree"},
 			new AttributeType { AttributeName = "CTRL", ClassName = "tree"},

@@ -93,7 +93,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 			foreach (var item in metadata)
 			{
-				builder.AppendLine($".{item.Name} => |value| return @ptrCast(*c.Ihandle, value),");
+				builder.AppendLine($".{item.Name} => |value| return @ptrCast(*Handle, value),");
 			}
 
 			return builder.ToString();
