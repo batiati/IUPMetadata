@@ -136,6 +136,45 @@ All metadata are available in JSON format and can be consumed by any tool indepe
 
 Download: [iup.json](https://github.com/batiati/IUPMetadata/raw/master/iup.json)
 
+### Data types
+
+|DataType|Description|
+|--------|-----------|
+Unknown  | Not mapped yet
+Void     | Call-style attribute, with no argument.
+String   | C-style null terminated string attribute
+Boolean  | C-style 32bits integer boolean 1 or 0
+Int      | C-style 32bits signed integer
+Float    |  C-style 32bits signed float
+Double   | C-style 64bits signed float
+RefInt   | By ref (address of) a 32bits signed integer
+Char     | 8bits char
+Handle   | Pointer to a IUP element, See HandleType property if a well-known class, otherwise it can be any IUP element.
+VoidPtr	 | C-style *void pointer
+Canvas   | Pointer to IUP's Icanvas structure
+
+### Formats for string attributes
+
+|DataFormat|Description|
+|----------|-----------|
+Binary |This value may be not a string, see DataType for propper binary representation
+HandleName | String containing a HandleName
+Date | String "TODAY" or a date formated as "`yyyy`/`MM`/`dd`"
+Size | String formatted as "`widht`x`height`", both parts are int and optional.
+Margin | String formatted as "`horiz`x`vert`", both parts are int and required
+DialogSize | String formatted as "`ScaleWidth`x`ScaleHeight`", where `ScaleWidth` can be "FULL", "HALF", "THIRD", "QUARTER", "EIGHTH" or absolute width integer value and `ScaleHeight` can be "FULL", "HALF", "THIRD", "QUARTER", "EIGHTH" or absolute height integer value.
+Alignment | String formatted as "`HAlignment`:`VAlignment`", where `HAlignment` can be "ALEFT", "ACENTER", "ARIGHT" and `VAlignment` can be "ATOP", "ACENTER", "ABOTTOM".
+LinColPos | String formatted as "`lin`,`col`", both parts are int and required
+XYPos | String formatted as "`x`,`y`", both parts are int and required
+Range| String formatted as "`begin`,`end`", both parts are int and required
+FloatRange | String formatted as "`begin`,`end`", both parts are float and required
+Rgb | String formated with three or four values "255 255 255" representing the RGB or RGBA components
+Rect| String formated with four coordinates "`x`,`y`,`x + width`,`y + height`", all parts are int and required
+Selection | String "NONE", "ALL" or formated  as "`startlin`,`startcol`:`endlin`,`endcol`", all parts are int and required.
+MdiActivate | String "NEXT", "PREVIOUS" or a HandleName
+Enum |  One of defined values in `EnumValues`.
+
+
 ## IUP for Zig
 
 For more information about using IUP on [Zig](https://ziglang.org/), please visit [IUP for Zig](https://github.com/batiati/IUPforZig) repository.
