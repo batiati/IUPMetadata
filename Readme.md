@@ -102,13 +102,13 @@ bt_close.setPadding(10, 2);
 Additionally, this project also provides documentation snippets extracted directly from the official HTML page, allowing the generated code to use the target programing language documentation conventions and IDE convenience tools.
 
 ```Json
-	{
-	"Documentation": "SIZE (non inheritable): Dialogs size. Additionally the following values can also be defined for width and/or height: \"FULL\": Defines the dialogs width (or height) equal to the screen's width (or height) \"HALF\": Defines the dialogs width (or height) equal to half the screen's width (or height) \"THIRD\": Defines the dialogs width (or height) equal to 1/3 the screen's width (or height) \"QUARTER\": Defines the dialogs width (or height) equal to 1/4 of the screen's width (or height) \"EIGHTH\": Defines the dialogs width (or height) equal to 1/8 of the screen's width (or height)",
-	"AttributeName": "SIZE",
-	"Name": "Size",
-	"DataType": "String",
-	"DataFormat": "DialogSize",
-	}
+{
+"Documentation": "SIZE (non inheritable): Dialogs size. Additionally the following values can also be defined for width and/or height: \"FULL\": Defines the dialogs width (or height) equal to the screen's width (or height) \"HALF\": Defines the dialogs width (or height) equal to half the screen's width (or height) \"THIRD\": Defines the dialogs width (or height) equal to 1/3 the screen's width (or height) \"QUARTER\": Defines the dialogs width (or height) equal to 1/4 of the screen's width (or height) \"EIGHTH\": Defines the dialogs width (or height) equal to 1/8 of the screen's width (or height)",
+"AttributeName": "SIZE",
+"Name": "Size",
+"DataType": "String",
+"DataFormat": "DialogSize",
+}
 ```
 
 Automatically generated documentation in Zig code:
@@ -143,7 +143,7 @@ For more information about using IUP on [Zig](https://ziglang.org/), please visi
 ## Pending work
 
 - [ ] Review DataType and formating for several attributes.
-- [ ] Improve Zig Code Generator (support for indexed items in list items for example)
+- [ ] Metadata for Id and lin,col attributes (list items for example)
 - [ ] Fix UPPERCASE converter algorithm (for example `SCROLLTOPOS` is rendered as `ScrollTopOs` instead of `ScrollToPos`)
 - [ ] Add C# Code Generator
 - [ ] Improve documentation extractor
