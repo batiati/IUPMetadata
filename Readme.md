@@ -13,6 +13,65 @@ This project aims to collect rich metadata information about IUP's elements, ena
 
 As IUP's API is largely based on key-value string attributes, this metadata can be useful to improve the developer experience through a fully typed and idiomatic API by removing the need for string based actions.
 
+Metadata:
+
+```Json
+  {
+    "ClassName": "dialog",
+    "Name": "Dialog",
+    "Attributes": [
+      {
+        "AttributeName": "TITLE",
+        "Name": "Title",
+        "DataType": "String",
+      },
+      {
+        "AttributeName": "DIALOGFRAME",
+        "Name": "DialogFrame",
+        "DataType": "Boolean",
+      }
+    ]
+  },
+  {
+    "ClassName": "button",
+    "Name": "Button",
+    "Attributes": [
+      {
+        "AttributeName": "PADDING",
+        "Name": "Padding",
+        "DataType": "String",
+        "DataFormat": "Size",
+        "Default": "0x0"
+      },
+      {
+        "AttributeName": "IMAGEPOSITION",
+        "Name": "ImagePosition",
+        "DataType": "String",
+        "DataFormat": "Enum",
+        "EnumValues": [
+          {
+            "Name": "Left",
+            "StrValue": "LEFT",
+          },
+          {
+            "Name": "Right",
+            "StrValue": "RIGHT",
+          },
+          {
+            "Name": "Bottom",
+            "StrValue": "BOTTOM",
+          },
+          {
+            "Name": "Top",
+            "StrValue": "TOP",
+          }
+        ],
+        "Default": "LEFT",
+      }
+    ]
+  }
+```
+
 Original IUP API in C:
 
 ```C
@@ -21,11 +80,11 @@ IupSetAttribute(dlg, "TITLE", "Find");
 IupSetAttribute(dlg, "DIALOGFRAME", "Yes");
 
 Ihandle* bt_close = IupButton("Close", NULL);
-IupSetCallback(bt_close, "ACTION", (Icallback)close_action_cb);
+IupSetCallback(bt_close, "IMAGEPOSITION", "LEFT");
 IupSetAttribute(bt_close, "PADDING", "10x2");
 ```
 
-Type-checked API in Zig
+Type-checked Zig API generated from metadata:
 
 ```Zig
 var dlg = Dialog.init();
@@ -34,13 +93,25 @@ dlg.setDialogFrame(true);
 
 var bt_close = Button.init();
 bt_close.setTitle("Close");
-bt_close.setActionCallback(close_action_cb);
+bt_close.setImagePosition(.Left);
 bt_close.setPadding(10, 2);
 ```
 
 ## Documentation
 
 Additionally, this project also provides documentation snippets extracted directly from the official HTML page, allowing the generated code to use the target programing language documentation conventions and IDE convenience tools.
+
+```Json
+	{
+	"Documentation": "SIZE (non inheritable): Dialogs size. Additionally the following values can also be defined for width and/or height: \"FULL\": Defines the dialogs width (or height) equal to the screen's width (or height) \"HALF\": Defines the dialogs width (or height) equal to half the screen's width (or height) \"THIRD\": Defines the dialogs width (or height) equal to 1/3 the screen's width (or height) \"QUARTER\": Defines the dialogs width (or height) equal to 1/4 of the screen's width (or height) \"EIGHTH\": Defines the dialogs width (or height) equal to 1/8 of the screen's width (or height)",
+	"AttributeName": "SIZE",
+	"Name": "Size",
+	"DataType": "String",
+	"DataFormat": "DialogSize",
+	}
+```
+
+Automatically generated documentation in Zig code:
 
 ```Zig
 /// 
