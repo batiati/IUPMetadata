@@ -34,6 +34,8 @@
 
 		public bool IsNullable { get; set; }
 
+		public bool Deprecated { get; set; }
+
 		#endregion Properties
 	}
 }

@@ -92,6 +92,10 @@ namespace IupMetadata
 						for (; ; )
 						{
 							if (firstChild == null) break;
+							if (firstChild.Name == "font")
+							{
+								firstChild = firstChild.FirstChild;
+							}
 
 							var value = Normalize(firstChild.InnerText);
 							if (!string.IsNullOrEmpty(value))
@@ -122,6 +126,7 @@ namespace IupMetadata
 				if (attributeNames == null) break;
 
 				var builder = new StringBuilder();
+
 				for (; ; )
 				{
 					if (next == null) break;
@@ -148,7 +153,20 @@ namespace IupMetadata
 
 					if (attribute != null)
 					{
-						attribute.Documentation = doc;
+						if (attribute.Documentation == null)
+						{
+							attribute.Documentation = doc;
+						}
+						else
+						{
+							builder = new StringBuilder(attribute.Documentation);
+							if (!attribute.Documentation.EndsWith('.')) builder.Append('.');
+							builder.Append(' ');
+							builder.Append(doc);
+
+							attribute.Documentation = builder.ToString();
+						}
+						
 						attribute.CreationOnly = isCreationOnly;
 						attribute.AtChildrenOnly = atChildrenOnly;
 						continue;

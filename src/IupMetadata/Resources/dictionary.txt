@@ -89,7 +89,6 @@ density
 execute
 handler
 hotspot
-impress
 lighted
 marquee
 message

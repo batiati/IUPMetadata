@@ -33,6 +33,8 @@ namespace IupMetadata
 			public string HandleName { get; set; }
 
 			public bool? AtChildrenOnly { get; set; }
+
+			public bool? Deprecated { get; set; }
 		}
 
 		#endregion InnerTypes
@@ -774,7 +776,7 @@ namespace IupMetadata
 
 			new AttributeType { AttributeName = "SUNKEN", ClassName = "frame"},
 
-			new AttributeType { AttributeName = "SHOW_TEXT", ClassName = "gauge"},
+			new AttributeType { AttributeName = "SHOW_TEXT", Deprecated=true, ClassName = "gauge"},
 
 			new AttributeType { AttributeName = "SIZECOL", ClassName = "gridbox"},
 			new AttributeType { AttributeName = "SIZELIN", ClassName = "gridbox"},
@@ -798,11 +800,12 @@ namespace IupMetadata
 
 			new AttributeType { AttributeName = "URL", ClassName = "link", DataType = DataType.String},
 
-			new AttributeType { AttributeName = "VISIBLE_ITEMS", ClassName = "list"},
-			new AttributeType { AttributeName = "EDITBOX", ClassName = "list"},
-			new AttributeType { AttributeName = "DROPEXPAND", ClassName = "list"},
-			new AttributeType { AttributeName = "DROPDOWN", ClassName = "list"},
-			new AttributeType { AttributeName = "SHOWIMAGE", ClassName = "list"},
+			new AttributeType { AttributeName = "VISIBLE_ITEMS", Deprecated=true,  ClassName = "list", DataType = DataType.Int},
+			new AttributeType { AttributeName = "VISIBLEITEMS", ClassName = "list", DataType = DataType.Int},
+			new AttributeType { AttributeName = "EDITBOX", ClassName = "list", DataType = DataType.Boolean},
+			new AttributeType { AttributeName = "DROPEXPAND", ClassName = "list", DataType = DataType.Boolean},
+			new AttributeType { AttributeName = "DROPDOWN", ClassName = "list", DataType = DataType.Boolean},
+			new AttributeType { AttributeName = "SHOWIMAGE", ClassName = "list", DataType = DataType.Boolean},
 
 			new AttributeType { AttributeName = "BUTTONRESPONSE", ClassName = "messagedlg", DataType = DataType.Int, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { new EnumValue("Button1", 1), new EnumValue("Button2", 2), new EnumValue("Button3", 3) } },
 			new AttributeType { AttributeName = "BUTTONDEFAULT", ClassName = "messagedlg", DataType = DataType.Int, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { new EnumValue("Button1", 1), new EnumValue("Button2", 2), new EnumValue("Button3", 3) } },
@@ -877,7 +880,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "CTRL", ClassName = "tree"},
 			new AttributeType { AttributeName = "EMPTYAS3STATE", ClassName = "tree"},
 			new AttributeType { AttributeName = "SHIFT", ClassName = "tree"},
-			new AttributeType { AttributeName = "STARTING", ClassName = "tree"},
+			new AttributeType { AttributeName = "STARTING", Deprecated=true, ClassName = "tree"},
 			new AttributeType { AttributeName = "INFOTIP", ClassName = "tree"},
 
 			new AttributeType { AttributeName = "CLEARATTRIBUTES", ClassName = "user"},
@@ -917,6 +920,7 @@ namespace IupMetadata
 					attribute.EnumValues = match.EnumValues;
 					attribute.IsNullable = match.IsNullable;
 					if (match.AtChildrenOnly != null) attribute.AtChildrenOnly = match.AtChildrenOnly.Value;
+					if (match.Deprecated != null) attribute.Deprecated = match.Deprecated.Value;
 				}
 			}
 		}

@@ -70,6 +70,7 @@ namespace IupMetadata.CodeGenerators.Zig
 			var builder = new StringBuilder();
 			foreach (var attribute in item.Attributes)
 			{
+				if (attribute.Deprecated) continue;
 				builder.AppendLine(GetBodySetBlock(attribute, isInitializer: true));
 			}
 
@@ -86,6 +87,7 @@ namespace IupMetadata.CodeGenerators.Zig
 			var builder = new StringBuilder();
 			foreach (var attribute in item.Attributes)
 			{
+				if (attribute.Deprecated) continue;
 				builder.AppendLine(GetBodyGetBlock(attribute));
 				builder.AppendLine(GetBodySetBlock(attribute, isInitializer: false));
 			}
