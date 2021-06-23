@@ -16,7 +16,9 @@
 
 		public bool WriteOnly { get; set; }
 
-		public bool HasIndex { get; set; }
+		public NumberedAttribute NumberedAttribute { get; set; }
+
+		public bool AtChildrenOnly { get; set; }
 
 		public bool NonInheritable { get; set; }
 

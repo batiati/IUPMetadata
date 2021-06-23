@@ -17,9 +17,9 @@ namespace IupMetadata
 			public int nativetype;
 			public int childtype;
 			public int is_interactive;
-			public int unknown1;
 			public int has_attrib_id;
 			public int is_internal;
+			public int unknown1;
 			public IntPtr parent;
 			public IntPtr attrib_func;
 		}

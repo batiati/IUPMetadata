@@ -16,6 +16,10 @@
 
 		public NativeType NativeType { get; set; }
 
+		public NumberedAttribute NumberedAttributes { get; set; }
+
+		public bool IsInteractive { get; set; }
+
 		public IupAttribute[] Attributes { get; set; }
 
 		public IupCallback[] Callbacks { get; set; }

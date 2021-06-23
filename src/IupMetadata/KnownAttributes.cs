@@ -31,6 +31,8 @@ namespace IupMetadata
 			public bool IsNullable { get; set; }
 
 			public string HandleName { get; set; }
+
+			public bool? AtChildrenOnly { get; set; }
 		}
 
 		#endregion InnerTypes
@@ -914,6 +916,7 @@ namespace IupMetadata
 					attribute.HandleName = match.HandleName;
 					attribute.EnumValues = match.EnumValues;
 					attribute.IsNullable = match.IsNullable;
+					if (match.AtChildrenOnly != null) attribute.AtChildrenOnly = match.AtChildrenOnly.Value;
 				}
 			}
 		}

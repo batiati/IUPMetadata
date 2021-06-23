@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -51,33 +52,57 @@ namespace IupMetadata
 
 		private static void EnrichAttributes(IupClass item, HtmlAgilityPack.HtmlNode next)
 		{
-			// Find the "Attributes" section
-			// All attributes are placed inside <h> tag
-			// Sometimes many attributes have the same documentation
+			// Find the "Attributes" or "Callbacks" section
+			// All content sections are placed inside <h> tag
+			// All attributes/callbacks names starts with <p> tag
 
-			for (; ; )
+			var sectionNames = new string[] { "attributes", "callbacks" };
+			bool isAnySection(HtmlAgilityPack.HtmlNode node) => node != null && node.Name.StartsWith("h", StringComparison.InvariantCultureIgnoreCase);
+			bool isContentSection(HtmlAgilityPack.HtmlNode node) => isAnySection(node) && sectionNames.Any(x => node.InnerText.StartsWith(x, StringComparison.InvariantCultureIgnoreCase));
+			bool isAttribute(HtmlAgilityPack.HtmlNode node) => node != null && node.Name.Equals("p", StringComparison.InvariantCultureIgnoreCase);
+
+			void findContentSection(ref HtmlAgilityPack.HtmlNode node, bool stopOnAttributes = true)
 			{
 				if (next == null) return;
-				if (next.Name.StartsWith("h") && next.InnerText == "Attributes") break;
-				next = next.NextSibling;
-			}
 
-			for (; ; )
-			{
-				if (next == null) return;
-
-				string[] attributeNames;
 				for (; ; )
 				{
-					if (next.Name == "p")
+					if (isContentSection(next)) break;
+					if (stopOnAttributes && isAttribute(node)) break;
+
+					next = next.NextSibling;
+					if (next == null) break;
+				}
+			}
+
+			findContentSection(ref next, stopOnAttributes: false);
+
+			for (; ; )
+			{
+				string[] attributeNames = null;
+
+				for (; ; )
+				{
+					if (next == null) return;
+
+					if (isAttribute(next))
 					{
 						var firstChild = next.FirstChild;
+
 						for (; ; )
 						{
+							if (firstChild == null) break;
+
 							var value = Normalize(firstChild.InnerText);
 							if (!string.IsNullOrEmpty(value))
 							{
-								attributeNames = value.Split(',').Select(x => x.Trim()).ToArray();
+								// Sometimes many attributes have the same documentation
+								// Split at ';' and ' '
+
+								attributeNames = value.Split(',', ' ')
+									.Select(x => x.Replace(":", "").Trim())
+									.Where(x => !string.IsNullOrEmpty(x))
+									.ToArray();
 								break;
 							}
 							else
@@ -94,28 +119,51 @@ namespace IupMetadata
 					}
 				}
 
+				if (attributeNames == null) break;
+
 				var builder = new StringBuilder();
 				for (; ; )
 				{
-					if (next.Name.StartsWith("h")) return;
+					if (next == null) break;
+					if (isAnySection(next)) break;
 
 					builder.Append(next.InnerText);
 					next = next.NextSibling;
-					if (next == null || next.Name == "p") break;
+
+					if (isAttribute(next)) break;
 				}
 
 				var doc = Normalize(builder.ToString());
 				bool isCreationOnly = doc.Contains("creation only");
+				bool atChildrenOnly = doc.Contains("children only");
 
 				foreach (var attributeName in attributeNames)
 				{
 					var attribute = item.Attributes.FirstOrDefault(x => x.AttributeName == attributeName);
+
+					if (attribute == null && attributeName.Last() is 'n')
+					{
+						attribute = item.Attributes.FirstOrDefault(x => x.AttributeName == attributeName.Substring(0, attributeName.Length - 1));
+					}
+
 					if (attribute != null)
 					{
 						attribute.Documentation = doc;
 						attribute.CreationOnly = isCreationOnly;
+						attribute.AtChildrenOnly = atChildrenOnly;
+						continue;
+					}
+
+					var callback = item.Callbacks.FirstOrDefault(x => x.AttributeName == attributeName);
+
+					if (callback != null)
+					{
+						callback.Documentation = doc;
+						continue;
 					}
 				}
+
+				findContentSection(ref next, stopOnAttributes: true);
 			}
 		}
 

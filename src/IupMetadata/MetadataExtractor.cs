@@ -70,6 +70,8 @@ namespace IupMetadata
 				}
 
 				item.NativeType = (NativeType)iupClass.nativetype;
+				item.NumberedAttributes = (NumberedAttribute)iupClass.has_attrib_id;
+				item.IsInteractive = iupClass.is_interactive == 1;
 				item.Attributes = GetAttributes(classname, iupClass);
 				item.Callbacks = GetCallbacks(classname, iupClass);
 
@@ -97,16 +99,23 @@ namespace IupMetadata
 				var attrHandle = Interop.iupTableGet(iupClass.attrib_func, name);
 				var attrData = Marshal.PtrToStructure<Interop.IAttribFunc>(attrHandle);
 
-				var isNoString = ((Interop.IAttribFlags)attrData.flags).HasFlag(Interop.IAttribFlags.IUPAF_NO_STRING);
+				var flags = (Interop.IAttribFlags)attrData.flags;
+				var isNoString = flags.HasFlag(Interop.IAttribFlags.IUPAF_NO_STRING);
+
+				var numberedAttributeType =
+					flags.HasFlag(Interop.IAttribFlags.IUPAF_HAS_ID) ? NumberedAttribute.OneID :
+					flags.HasFlag(Interop.IAttribFlags.IUPAF_HAS_ID2) ? NumberedAttribute.TwoIDs :
+					NumberedAttribute.No;
 
 				var attribute = new IupAttribute
 				{
 					AttributeName = name,
 					Name = UpperCaseConverter.ToTitleCase(name),
-					WriteOnly = ((Interop.IAttribFlags)attrData.flags).HasFlag(Interop.IAttribFlags.IUPAF_WRITEONLY),
-					ReadOnly = ((Interop.IAttribFlags)attrData.flags).HasFlag(Interop.IAttribFlags.IUPAF_READONLY),
+					WriteOnly = flags.HasFlag(Interop.IAttribFlags.IUPAF_WRITEONLY),
+					ReadOnly = flags.HasFlag(Interop.IAttribFlags.IUPAF_READONLY),
 					Default = attrData.default_value,
 					DataType = isNoString ? DataType.Unknown : DataType.String,
+					NumberedAttribute = numberedAttributeType,
 				};
 
 				attributes.Add(attribute);
