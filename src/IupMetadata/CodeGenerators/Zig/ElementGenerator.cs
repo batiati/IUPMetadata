@@ -104,9 +104,9 @@ namespace IupMetadata.CodeGenerators.Zig
 		{
 			return attribute.NumberedAttribute switch
 			{
-				NumberedAttribute.No => ("", ",void, void"),
-				NumberedAttribute.OneID => (", index: i32", ",index, void"),
-				NumberedAttribute.TwoIDs => (", index_lin: i32, index_col: i32", ",index_lin, index_col"),
+				NumberedAttribute.No => ("", ", .{}"),
+				NumberedAttribute.OneID => (", index: i32", ", .{ index }"),
+				NumberedAttribute.TwoIDs => (", index_lin: i32, index_col: i32", ", .{ index_lin, index_col }"),
 				_ => throw new NotImplementedException()
 			};
 		}
