@@ -100,22 +100,36 @@ namespace IupMetadata.CodeGenerators.Zig
 			return builder.ToString();
 		}
 
+		private static (string, string) GetNumberedParamsInfo(IupAttribute attribute)
+		{
+			return attribute.NumberedAttribute switch
+			{
+				NumberedAttribute.No => ("", ",void, void"),
+				NumberedAttribute.OneID => (", index: i32", ",index, void"),
+				NumberedAttribute.TwoIDs => (", index_lin: i32, index_col: i32", ",index_lin, index_col"),
+				_ => throw new NotImplementedException()
+			};
+		}
+
 		private static string GetBodySetBlock(IupAttribute attribute, bool isInitializer)
 		{
 			if (attribute.CreationOnly && !isInitializer) return string.Empty;
 			if (attribute.ReadOnly) return string.Empty;
 
+			var (idArgs, idParams) = GetNumberedParamsInfo(attribute);
 			var type = isInitializer ? "*Initializer" : "*Self";
 			var ret = isInitializer ? "Initializer" : "void";
 			var self = isInitializer ? "self.ref" : "self";
 			var @return = isInitializer ? "return self.*;" : "";
 
+			var fnName = attribute.WriteOnly && !attribute.CreationOnly ? attribute.Name.Camelize() : $"set{attribute.Name}";
+
 			var decl = (attribute.DataFormat, attribute.DataType) switch
 			{
 				(DataFormat.Binary, DataType.Int) => $@"
 
-				pub fn set{attribute.Name}(self: {type}, arg: i32) {ret} {{
-					c.setIntAttribute({self}, ""{attribute.AttributeName}"", arg);
+				pub fn {fnName}(self: {type}{idArgs},arg: i32) {ret} {{
+					c.setIntAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -124,8 +138,8 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.String) or
 				(DataFormat.HandleName, DataType.Handle) => $@"
 
-				pub fn set{attribute.Name}(self: {type}, arg: [:0]const u8) {ret} {{
-					c.setStrAttribute({self}, ""{attribute.AttributeName}"", arg);
+				pub fn {fnName}(self: {type}{idArgs},arg: [:0]const u8) {ret} {{
+					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -133,8 +147,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Binary, DataType.Boolean) => $@"
 
-				pub fn set{attribute.Name}(self: {type}, arg: bool) {ret} {{
-					c.setBoolAttribute({self}, ""{attribute.AttributeName}"", arg);
+				pub fn {fnName}(self: {type}{idArgs},arg: bool) {ret} {{
+					c.setBoolAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -142,8 +156,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Binary, DataType.Float) => $@"
 
-				pub fn set{attribute.Name}(self: {type}, arg: f32) {ret} {{
-					c.setFloatAttribute({self}, ""{attribute.AttributeName}"", arg);
+				pub fn {fnName}(self: {type}{idArgs},arg: f32) {ret} {{
+					c.setFloatAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -151,8 +165,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Binary, DataType.Double) => $@"
 
-				pub fn set{attribute.Name}(self: {type}, arg: f64) {ret} {{
-					c.setDoubleAttribute({self}, ""{attribute.AttributeName}"", arg);
+				pub fn {fnName}(self: {type}{idArgs}, arg: f64) {ret} {{
+					c.setDoubleAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -160,8 +174,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Binary, DataType.VoidPtr) => $@"
 
-				pub fn set{attribute.Name}(self: {type}, comptime T: type, arg: ?*T) {ret} {{
-					c.setPtrAttribute(T, {self}, ""{attribute.AttributeName}"", arg);
+				pub fn {fnName}(self: {type}, comptime T: type{idArgs}, arg: ?*T) {ret} {{
+					c.setPtrAttribute(T, {self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -169,8 +183,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Binary, DataType.Handle) when attribute.HandleName != null => $@"
 
-				pub fn set{attribute.Name}(self: {type}, arg: *iup.{attribute.HandleName}) {ret} {{
-					c.setHandleAttribute({self}, ""{attribute.AttributeName}"", arg);
+				pub fn {fnName}(self: {type}{idArgs}, arg: *iup.{attribute.HandleName}) {ret} {{
+					c.setHandleAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -178,8 +192,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Binary, DataType.Void) => $@"
 
-				pub fn {attribute.Name.Camelize()}(self: {type}) {ret} {{
-					c.setStrAttribute({self}, ""{attribute.AttributeName}"", null);
+				pub fn {fnName}(self: {type}{idArgs}) {ret} {{
+					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},null);
 					{@return}
 				}}
 
@@ -187,10 +201,10 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Size, DataType.String) => $@"
 
-				pub fn set{attribute.Name}(self: {type}, width: ?i32, height: ?i32) {ret} {{
+				pub fn {fnName}(self: {type}{idArgs}, width: ?i32, height: ?i32) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var value = Size.intIntToString(&buffer, width, height);
-					c.setStrAttribute({self}, ""{attribute.AttributeName}"", value);
+					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
 					{@return}
 				}}
 
@@ -198,10 +212,10 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Margin, DataType.String) => $@"
 
-				pub fn set{attribute.Name}(self: {type}, horiz: i32, vert: i32) {ret} {{
+				pub fn {fnName}(self: {type}{idArgs}, horiz: i32, vert: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var value = Margin.intIntToString(&buffer, horiz, vert);
-					c.setStrAttribute({self}, ""{attribute.AttributeName}"", value);
+					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
 					{@return}
 				}}
 
@@ -209,10 +223,10 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.LinColPos, DataType.String) => @$"
 
-				pub fn set{attribute.Name}(self: {type}, lin: i32, col: i32) {ret} {{
+				pub fn {fnName}(self: {type}{idArgs}, lin: i32, col: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var value = iup.LinColPos.intIntToString(&buffer, lin, col, ',');
-					c.setStrAttribute({self}, ""{attribute.AttributeName}"", value);
+					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
 					{@return}
 				}}
 
@@ -220,10 +234,10 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.XYPos, DataType.String) => @$"
 
-				pub fn set{attribute.Name}(self: {type}, x: i32, y: i32) {ret} {{
+				pub fn {fnName}(self: {type}{idArgs}, x: i32, y: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
-					c.setStrAttribute({self}, ""{attribute.AttributeName}"", value);
+					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
 					{@return}
 				}}
 
@@ -231,10 +245,10 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Range, DataType.String) => @$"
 
-				pub fn set{attribute.Name}(self: {type}, begin: i32, end: i32) {ret} {{
+				pub fn {fnName}(self: {type}{idArgs}, begin: i32, end: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-					c.setStrAttribute({self}, ""{attribute.AttributeName}"", value);
+					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
 					{@return}
 				}}
 
@@ -242,10 +256,10 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.DialogSize, DataType.String) => $@"
 
-				pub fn set{attribute.Name}(self: {type}, width: ?iup.ScreenSize, height: ?iup.ScreenSize) {ret} {{
+				pub fn {fnName}(self: {type}{idArgs}, width: ?iup.ScreenSize, height: ?iup.ScreenSize) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var str = iup.DialogSize.screenSizeToString(&buffer, width, height);
-					c.setStrAttribute({self}, ""{attribute.AttributeName}"", str);
+					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},str);
 					{@return}
 				}}
 
@@ -253,10 +267,10 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Date, DataType.String) => $@"
 
-				pub fn set{attribute.Name}(self: {type}, year: u16, month: u8, day: u8) {ret} {{
+				pub fn {fnName}(self: {type}{idArgs}, year: u16, month: u8, day: u8) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var value = Date {{ .year = year, .month = month, .day = day }};
-					c.setStrAttribute({self}, ""{attribute.AttributeName}"", value.toString(&buffer));
+					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value.toString(&buffer));
 					{@return}
 				}}
 
@@ -264,8 +278,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Rgb, DataType.String) => $@"
 
-				pub fn set{attribute.Name}(self: {type}, rgb: iup.Rgb) {ret} {{
-					c.setRgb({self}, ""{attribute.AttributeName}"", rgb);
+				pub fn {fnName}(self: {type}{idArgs}, rgb: iup.Rgb) {ret} {{
+					c.setRgb({self}, ""{attribute.AttributeName}""{idParams},rgb);
 					{@return}
 				}}
 
@@ -279,11 +293,11 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Enum, DataType.Int) => $@"
 
-				pub fn set{attribute.Name}(self: {type}, arg: ?{attribute.Name}) {ret} {{
+				pub fn {fnName}(self: {type}{idArgs}, arg: ?{attribute.Name}) {ret} {{
 					if (arg) |value| {{
-						c.setIntAttribute({self}, ""{attribute.AttributeName}"", @enumToInt(value));
+						c.setIntAttribute({self}, ""{attribute.AttributeName}""{idParams},@enumToInt(value));
 					}} else {{
-						c.clearAttribute({self}, ""{attribute.AttributeName}"");
+						c.clearAttribute({self}, ""{attribute.AttributeName}""{idParams});
 					}}
 					{@return}
 				}}
@@ -291,11 +305,11 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Enum, DataType.String) => $@"
 
-				pub fn set{attribute.Name}(self: {type}, arg: ?{attribute.Name}) {ret} {{
+				pub fn {fnName}(self: {type}{idArgs}, arg: ?{attribute.Name}) {ret} {{
 					if (arg) |value| switch (value) {{
-						{string.Join("\n", attribute.EnumValues.Select(x => $@".{x.Name} => c.setStrAttribute({self}, ""{attribute.AttributeName}"", ""{x.StrValue}""),"))}
+						{string.Join("\n", attribute.EnumValues.Select(x => $@".{x.Name} => c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},""{x.StrValue}""),"))}
 					}} else {{
-						c.clearAttribute({self}, ""{attribute.AttributeName}"");
+						c.clearAttribute({self}, ""{attribute.AttributeName}""{idParams});
 					}}
 					{@return}
 				}}
@@ -322,60 +336,62 @@ namespace IupMetadata.CodeGenerators.Zig
 			if (attribute.CreationOnly) return string.Empty;
 			if (attribute.WriteOnly) return string.Empty;
 
+			var (idArgs, idParams) = GetNumberedParamsInfo(attribute);
+
 			var decl = (attribute.DataFormat, attribute.DataType) switch
 			{
 				(DataFormat.Binary, DataType.Int) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) i32 {{
-					return c.getIntAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) i32 {{
+					return c.getIntAttribute(self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
 
 				(DataFormat.Binary, DataType.String) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) [:0]const u8 {{
-					return c.getStrAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) [:0]const u8 {{
+					return c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
 
 				(DataFormat.Binary, DataType.Boolean) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) bool {{
-					return c.getBoolAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) bool {{
+					return c.getBoolAttribute(self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
 
 				(DataFormat.Binary, DataType.Float) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) f32 {{
-					return c.getFloatAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) f32 {{
+					return c.getFloatAttribute(self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
 
 				(DataFormat.Binary, DataType.Double) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) f64 {{
-					return c.getDoubleAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) f64 {{
+					return c.getDoubleAttribute(self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
 
 				(DataFormat.Binary, DataType.VoidPtr) => $@"
 
-				pub fn get{attribute.Name}(self: *Self, comptime T: type) ?*T {{
-					return c.getPtrAttribute(T, self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self, comptime T: type{idArgs}) ?*T {{
+					return c.getPtrAttribute(T, self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
 
 				(DataFormat.Binary, DataType.Handle) when attribute.HandleName != null => $@"
 
-				pub fn get{attribute.Name}(self: *Self) ?*iup.{attribute.HandleName} {{
-					if (c.getHandleAttribute(self, ""{attribute.AttributeName}"")) |handle| {{
+				pub fn get{attribute.Name}(self: *Self{idArgs}) ?*iup.{attribute.HandleName} {{
+					if (c.getHandleAttribute(self, ""{attribute.AttributeName}""{idParams})) |handle| {{
 						return @ptrCast(*iup.{attribute.HandleName}, handle);
 					}} else {{
 						return null;
@@ -386,8 +402,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Size, DataType.String) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) Size {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) Size {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return Size.parse(str);
 				}}
 
@@ -395,8 +411,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Margin, DataType.String) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) Margin {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) Margin {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return Margin.parse(str);
 				}}
 
@@ -404,16 +420,16 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.DialogSize, DataType.String) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) iup.DialogSize {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) iup.DialogSize {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return iup.DialogSize.parse(str);
 				}}
 				",
 
 				(DataFormat.LinColPos, DataType.String) => @$"
 
-				pub fn get{attribute.Name}(self: *Self) iup.LinColPos {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) iup.LinColPos {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return iup.LinColPos.parse(str, ',');
 				}}
 
@@ -421,8 +437,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.XYPos, DataType.String) => @$"
 
-				pub fn get{attribute.Name}(self: *Self) iup.XYPos {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) iup.XYPos {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return iup.XYPos.parse(str, ',');
 				}}
 
@@ -430,8 +446,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Range, DataType.String) => @$"
 
-				pub fn get{attribute.Name}(self: *Self) iup.Range {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) iup.Range {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return iup.Range.parse(str, ',');
 				}}
 
@@ -439,8 +455,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Date, DataType.String) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) ?iup.Date {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) ?iup.Date {{
+					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return iup.Date.parse(str);
 				}}
 
@@ -448,8 +464,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Rgb, DataType.String) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) ?iup.Rgb {{
-					return c.getRgb(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) ?iup.Rgb {{
+					return c.getRgb(self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
@@ -462,8 +478,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Enum, DataType.Int) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) {attribute.Name} {{
-					var ret = c.getIntAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) {attribute.Name} {{
+					var ret = c.getIntAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return @intToEnum({attribute.Name}, ret);
 				}}
 
@@ -471,8 +487,8 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Enum, DataType.String) => $@"
 
-				pub fn get{attribute.Name}(self: *Self) ?{attribute.Name} {{
-					var ret = c.getStrAttribute(self, ""{attribute.AttributeName}"");
+				pub fn get{attribute.Name}(self: *Self{idArgs}) ?{attribute.Name} {{
+					var ret = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					{string.Join("", attribute.EnumValues.Select(x => $@"
 					if (std.ascii.eqlIgnoreCase(""{x.StrValue}"", ret)) return .{x.Name};"))}
 					return null;
@@ -696,6 +712,14 @@ namespace IupMetadata.CodeGenerators.Zig
 				var (setStatement, assertStatement) = GetTestBlock(attribute);
 				if (setStatement == null || assertStatement == null) continue;
 
+				var indexArgs = attribute.NumberedAttribute switch
+				{
+					NumberedAttribute.No => "",
+					NumberedAttribute.OneID => "0",
+					NumberedAttribute.TwoIDs => "0,0",
+					_ => throw new NotImplementedException()
+				};
+
 				builder.AppendLine(@$"
 					test ""{item.Name} {attribute.Name}"" {{
 						try iup.MainLoop.open();
@@ -704,7 +728,7 @@ namespace IupMetadata.CodeGenerators.Zig
 						var item = try (iup.{item.Name}.init().{setStatement}.unwrap());
 						defer item.deinit();
 
-						var ret = item.get{attribute.Name}();
+						var ret = item.get{attribute.Name}({indexArgs});
 
 						try std.testing.expect({assertStatement});
 					}}
@@ -716,38 +740,46 @@ namespace IupMetadata.CodeGenerators.Zig
 
 		private static (string, string) GetTestBlock(IupAttribute attribute)
 		{
+			var indexArgs = attribute.NumberedAttribute switch
+			{
+				NumberedAttribute.No => "",
+				NumberedAttribute.OneID => "0,",
+				NumberedAttribute.TwoIDs => "0,0,",
+				_ => throw new NotImplementedException()
+			};
+
 			var (setStatement, assertStatement) = (attribute.DataFormat, attribute.DataType) switch
 			{
-				(DataFormat.Binary, DataType.Int) => ($@"set{attribute.Name}(42)", $@"ret == 42"),
+				(DataFormat.Binary, DataType.Int) => ($@"set{attribute.Name}({indexArgs}42)", $@"ret == 42"),
 
-				(DataFormat.Binary, DataType.String) => ($@"set{attribute.Name}(""Hello"")", $@"std.mem.eql(u8, ret, ""Hello"")"),
+				(DataFormat.Binary, DataType.String) => ($@"set{attribute.Name}({indexArgs}""Hello"")", $@"std.mem.eql(u8, ret, ""Hello"")"),
 
 				(DataFormat.HandleName, DataType.Handle) => (null, null),
 
-				(DataFormat.Binary, DataType.Boolean) => ($@"set{attribute.Name}(true)", $@"ret == true"),
+				(DataFormat.Binary, DataType.Boolean) => ($@"set{attribute.Name}({indexArgs}true)", $@"ret == true"),
 
-				(DataFormat.Binary, DataType.Float) => ($@"set{attribute.Name}(3.14)", $@"ret) == @as(f32, 3.14)"),
+				(DataFormat.Binary, DataType.Float) => ($@"set{attribute.Name}({indexArgs}3.14)", $@"ret) == @as(f32, 3.14)"),
 
-				(DataFormat.Binary, DataType.Double) => ($@"set{attribute.Name}(3.14)", $@"ret == @as(f64, 3.14)"),
+				(DataFormat.Binary, DataType.Double) => ($@"set{attribute.Name}({indexArgs}3.14)", $@"ret == @as(f64, 3.14)"),
 
 				(DataFormat.Binary, DataType.VoidPtr) => (null, null),
 
 				(DataFormat.Binary, DataType.Handle) => (null, null),
 
-				(DataFormat.Size, DataType.String) => ($@"set{attribute.Name}(9, 10)", $@"ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10"),
+				(DataFormat.Size, DataType.String) => ($@"set{attribute.Name}({indexArgs}9, 10)", $@"ret.width != null and ret.width.? == 9 and ret.height != null and ret.height.? == 10"),
 
-				(DataFormat.Margin, DataType.String) => ($@"set{attribute.Name}(9, 10)", $@"ret.horiz == 9 and ret.vert == 10"),
+				(DataFormat.Margin, DataType.String) => ($@"set{attribute.Name}({indexArgs}9, 10)", $@"ret.horiz == 9 and ret.vert == 10"),
 
-				(DataFormat.LinColPos, DataType.String) => ($@"set{attribute.Name}(9, 10)", $@"ret.lin == 9 and ret.col == 10"),
+				(DataFormat.LinColPos, DataType.String) => ($@"set{attribute.Name}({indexArgs}9, 10)", $@"ret.lin == 9 and ret.col == 10"),
 
-				(DataFormat.XYPos, DataType.String) => ($@"set{attribute.Name}(9, 10)", $@"ret.x == 9 and ret.y == 10"),
+				(DataFormat.XYPos, DataType.String) => ($@"set{attribute.Name}({indexArgs}9, 10)", $@"ret.x == 9 and ret.y == 10"),
 
-				(DataFormat.Range, DataType.String) => ($@"set{attribute.Name}(9, 10)", $@"ret.begin == 9 and ret.end == 10"),
+				(DataFormat.Range, DataType.String) => ($@"set{attribute.Name}({indexArgs}9, 10)", $@"ret.begin == 9 and ret.end == 10"),
 
 				(DataFormat.DialogSize, DataType.String) => (null, null),
 				(DataFormat.Date, DataType.String) => (null, null),
 
-				(DataFormat.Rgb, DataType.String) => ($@"set{attribute.Name}(.{{ .r = 9, .g = 10, .b = 11 }})", $@"ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11"),
+				(DataFormat.Rgb, DataType.String) => ($@"set{attribute.Name}({indexArgs}.{{ .r = 9, .g = 10, .b = 11 }})", $@"ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11"),
 
 				(DataFormat.FloatRange, DataType.String) => (null, null),
 				(DataFormat.Alignment, DataType.String) => (null, null),
@@ -755,8 +787,8 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Selection, DataType.String) => (null, null),
 				(DataFormat.MdiActivate, DataType.String) => (null, null),
 
-				(DataFormat.Enum, DataType.Int) => ($@"set{attribute.Name}(.{attribute.EnumValues[0].Name})", $@"ret == .{attribute.EnumValues[0].Name}"),
-				(DataFormat.Enum, DataType.String) => ($@"set{attribute.Name}(.{attribute.EnumValues[0].Name})", $@"ret != null and ret.? == .{attribute.EnumValues[0].Name}"),
+				(DataFormat.Enum, DataType.Int) => ($@"set{attribute.Name}({indexArgs}.{attribute.EnumValues[0].Name})", $@"ret == .{attribute.EnumValues[0].Name}"),
+				(DataFormat.Enum, DataType.String) => ($@"set{attribute.Name}({indexArgs}.{attribute.EnumValues[0].Name})", $@"ret != null and ret.? == .{attribute.EnumValues[0].Name}"),
 
 				//TODO: implement Zig signatures
 				(_, DataType.Unknown) => (null, null),
