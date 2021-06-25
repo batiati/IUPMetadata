@@ -20,6 +20,8 @@ namespace IupMetadata
 
 			public string AttributeName { get; set; }
 
+			public string Name { get; set; }
+
 			public AttributeGroup Group { get; set; }
 
 			public DataType DataType { get; set; }
@@ -314,6 +316,9 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "RESIZE", ClassName = "imagergb", DataType=DataType.String, DataFormat=DataFormat.Size},
 			new AttributeType { AttributeName = "RESIZE", ClassName = "imagergba", DataType=DataType.String, DataFormat=DataFormat.Size},
 			new AttributeType { AttributeName = "RESIZE", ClassName = "image", DataType=DataType.String, DataFormat=DataFormat.Size},
+			new AttributeType { AttributeName = "IDVALUE", ClassName = "image", Name="Colors", DataType=DataType.String, DataFormat=DataFormat.Rgb },
+			new AttributeType { AttributeName = "IDVALUE", ClassName = "imagergb", Name="Colors", DataType=DataType.String, DataFormat=DataFormat.Rgb },
+			new AttributeType { AttributeName = "IDVALUE", ClassName = "imagergba", Name="Colors", DataType=DataType.String, DataFormat=DataFormat.Rgb },
 
 			new AttributeType { AttributeName = "COUNT", DataType = DataType.Int}, // Used by 10 controls: ColorBar, FlatList, FlatTabs, FlatTree, List, Multiline, ProgressDlg, Tabs, Text, Tree
 
@@ -919,6 +924,8 @@ namespace IupMetadata
 					attribute.HandleName = match.HandleName;
 					attribute.EnumValues = match.EnumValues;
 					attribute.IsNullable = match.IsNullable;
+
+					if (match.Name != null) attribute.Name = match.Name;
 					if (match.AtChildrenOnly != null) attribute.AtChildrenOnly = match.AtChildrenOnly.Value;
 					if (match.Deprecated != null) attribute.Deprecated = match.Deprecated.Value;
 				}
