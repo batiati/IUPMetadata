@@ -85,7 +85,7 @@
 
 		#endregion Documentation
 
-		LinColPos,
+		LinColPosCommaSeparated,
 
 		#region Documentation
 
@@ -95,7 +95,18 @@
 
 		#endregion Documentation
 
-		XYPos,
+		XYPosCommaSeparated,
+
+		#region Documentation
+
+		/// <summary>
+		/// C-style null terminated string formatted as "x:y", int, both required
+		/// </summary>
+
+		#endregion Documentation
+
+		XYPosColonSeparated,
+
 
 		#region Documentation
 
@@ -105,7 +116,7 @@
 
 		#endregion Documentation
 
-		Range,
+		RangeCommaSeparated,
 
 		#region Documentation
 
@@ -115,7 +126,7 @@
 
 		#endregion Documentation
 
-		FloatRange,
+		FloatRangeCommaSeparated,
 
 		#region Documentation
 

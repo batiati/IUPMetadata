@@ -230,7 +230,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				(DataFormat.LinColPos, DataType.String) => @$"
+				(DataFormat.LinColPosCommaSeparated, DataType.String) => @$"
 
 				pub fn {fnName}(self: {type}{idArgs}, lin: i32, col: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
@@ -241,18 +241,18 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				(DataFormat.XYPos, DataType.String) => @$"
+				(DataFormat.XYPosCommaSeparated or DataFormat.XYPosColonSeparated, DataType.String) x => @$"
 
 				pub fn {fnName}(self: {type}{idArgs}, x: i32, y: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
-					var value = iup.XYPos.intIntToString(&buffer, x, y, ',');
+					var value = iup.XYPos.intIntToString(&buffer, x, y, '{(x.DataFormat == DataFormat.XYPosCommaSeparated ? ',' : ':')}');
 					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
 					{@return}
 				}}
 
 				",
 
-				(DataFormat.Range, DataType.String) => @$"
+				(DataFormat.RangeCommaSeparated, DataType.String) => @$"
 
 				pub fn {fnName}(self: {type}{idArgs}, begin: i32, end: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
@@ -294,7 +294,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				(DataFormat.FloatRange, DataType.String) => $@"",
+				(DataFormat.FloatRangeCommaSeparated, DataType.String) => $@"",
 				(DataFormat.Alignment, DataType.String) => $@"",
 				(DataFormat.Rect, DataType.String) => $@"",
 				(DataFormat.Selection, DataType.String) => $@"",
@@ -435,7 +435,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				}}
 				",
 
-				(DataFormat.LinColPos, DataType.String) => @$"
+				(DataFormat.LinColPosCommaSeparated, DataType.String) => @$"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) iup.LinColPos {{
 					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
@@ -444,16 +444,16 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				(DataFormat.XYPos, DataType.String) => @$"
+				(DataFormat.XYPosCommaSeparated or DataFormat.XYPosColonSeparated, DataType.String) x => @$"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) iup.XYPos {{
 					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
-					return iup.XYPos.parse(str, ',');
+					return iup.XYPos.parse(str, '{(x.DataFormat == DataFormat.XYPosCommaSeparated ? ',' : ':')}');
 				}}
 
 				",
 
-				(DataFormat.Range, DataType.String) => @$"
+				(DataFormat.RangeCommaSeparated, DataType.String) => @$"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) iup.Range {{
 					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
@@ -479,7 +479,7 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
-				(DataFormat.FloatRange, DataType.String) => $@"",
+				(DataFormat.FloatRangeCommaSeparated, DataType.String) => $@"",
 				(DataFormat.Alignment, DataType.String) => $@"",
 				(DataFormat.Rect, DataType.String) => $@"",
 				(DataFormat.Selection, DataType.String) => $@"",
@@ -846,18 +846,18 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				(DataFormat.Margin, DataType.String) => ($@"set{attribute.Name}({indexArgs}9, 10)", $@"ret.horiz == 9 and ret.vert == 10"),
 
-				(DataFormat.LinColPos, DataType.String) => ($@"set{attribute.Name}({indexArgs}9, 10)", $@"ret.lin == 9 and ret.col == 10"),
+				(DataFormat.LinColPosCommaSeparated, DataType.String) => ($@"set{attribute.Name}({indexArgs}9, 10)", $@"ret.lin == 9 and ret.col == 10"),
 
-				(DataFormat.XYPos, DataType.String) => ($@"set{attribute.Name}({indexArgs}9, 10)", $@"ret.x == 9 and ret.y == 10"),
+				(DataFormat.XYPosCommaSeparated, DataType.String) => ($@"set{attribute.Name}({indexArgs}9, 10)", $@"ret.x == 9 and ret.y == 10"),
 
-				(DataFormat.Range, DataType.String) => ($@"set{attribute.Name}({indexArgs}9, 10)", $@"ret.begin == 9 and ret.end == 10"),
+				(DataFormat.RangeCommaSeparated, DataType.String) => ($@"set{attribute.Name}({indexArgs}9, 10)", $@"ret.begin == 9 and ret.end == 10"),
 
 				(DataFormat.DialogSize, DataType.String) => (null, null),
 				(DataFormat.Date, DataType.String) => (null, null),
 
 				(DataFormat.Rgb, DataType.String) => ($@"set{attribute.Name}({indexArgs}.{{ .r = 9, .g = 10, .b = 11 }})", $@"ret != null and ret.?.r == 9 and ret.?.g == 10 and ret.?.b == 11"),
 
-				(DataFormat.FloatRange, DataType.String) => (null, null),
+				(DataFormat.FloatRangeCommaSeparated, DataType.String) => (null, null),
 				(DataFormat.Alignment, DataType.String) => (null, null),
 				(DataFormat.Rect, DataType.String) => (null, null),
 				(DataFormat.Selection, DataType.String) => (null, null),
