@@ -423,7 +423,6 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "RENAMECARET", DataType = DataType.String}, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "RENAMESELECTION", DataType = DataType.String}, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "ROOTCOUNT", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "IDVALUE" }, // Used by 3 controls: FlatList, Image, List
 			new AttributeType { AttributeName = "CHILDSIZEALL", DataType = DataType.Boolean}, // Used by 3 controls: FlatTabs, Tabs, ZBox
 			new AttributeType { AttributeName = "VALUEPOS", DataType = DataType.Int}, // Used by 3 controls: FlatTabs, Tabs, ZBox
 			new AttributeType { AttributeName = "USERDATA", DataType = DataType.VoidPtr}, // Used by 3 controls: FlatTree, ParamBox, Tree
@@ -679,6 +678,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "ITEMFONT", ClassName = "flatlist"},
 			new AttributeType { AttributeName = "ITEMFONTSIZE", ClassName = "flatlist", DataType = DataType.Int},
 			new AttributeType { AttributeName = "ITEMFONTSTYLE", ClassName = "flatlist"},
+			new AttributeType { AttributeName = "IDVALUE", ClassName = "flatlist", Name="Items", DataType=DataType.String},
 
 			new AttributeType { AttributeName = "STYLE", ClassName = "flatseparator"},
 
@@ -811,6 +811,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "DROPEXPAND", ClassName = "list", DataType = DataType.Boolean},
 			new AttributeType { AttributeName = "DROPDOWN", ClassName = "list", DataType = DataType.Boolean},
 			new AttributeType { AttributeName = "SHOWIMAGE", ClassName = "list", DataType = DataType.Boolean},
+			new AttributeType { AttributeName = "IDVALUE", ClassName = "list", Name="Items", DataType=DataType.String},
 
 			new AttributeType { AttributeName = "BUTTONRESPONSE", ClassName = "messagedlg", DataType = DataType.Int, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { new EnumValue("Button1", 1), new EnumValue("Button2", 2), new EnumValue("Button3", 3) } },
 			new AttributeType { AttributeName = "BUTTONDEFAULT", ClassName = "messagedlg", DataType = DataType.Int, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { new EnumValue("Button1", 1), new EnumValue("Button2", 2), new EnumValue("Button3", 3) } },
