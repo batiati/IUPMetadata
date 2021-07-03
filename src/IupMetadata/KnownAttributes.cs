@@ -244,7 +244,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "MDICLIENT", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "MDICLOSEALL", DataType=DataType.Void}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "MDIFRAME", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
-			new AttributeType { AttributeName = "MDIMENU", DataType=DataType.String}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
+			new AttributeType { AttributeName = "MDIMENU", DataType=DataType.Handle, HandleName="Menu"}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "MDINEXT", DataType=DataType.String}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "MENU", DataType=DataType.Handle, HandleName = "Menu"}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "MENUBOX", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
@@ -332,7 +332,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "PADDING", DataType=DataType.String, DataFormat=DataFormat.Size,}, // Used by 14 controls: AnimatedLabel, Button, DropButton, FlatButton, FlatLabel, FlatList, FlatToggle, Gauge, Label, Link, List, Multiline, Text, Toggle
 			new AttributeType { AttributeName = "CPADDING", DataType=DataType.String, DataFormat=DataFormat.Size,}, // Used by 14 controls: AnimatedLabel, Button, DropButton, FlatButton, FlatLabel, FlatList, FlatToggle, Gauge, Label, Link, List, Multiline, Text, Tree
 			new AttributeType { AttributeName = "ORIENTATION",DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { "HORIZONTAL", "VERTICAL" }, }, // Used by 14 controls: ColorBar, DetachBox, Dial, FlatSeparator, FlatVal, Gauge, GridBox, HBox, MultiBox, ProgressBar, Spin, Split, Val, VBox
-			new AttributeType { AttributeName = "IMAGE", DataType=DataType.String}, // Used by 18 controls: AnimatedLabel, Button, Clipboard, DropButton, Expander, FlatButton, FlatLabel, FlatList, FlatToggle, FlatTree, FlatVal, Item, Label, Link, List, SubMenu, Toggle, Tree
+			new AttributeType { AttributeName = "IMAGE", DataType=DataType.String, DataFormat=DataFormat.HandleName}, // Used by 18 controls: AnimatedLabel, Button, Clipboard, DropButton, Expander, FlatButton, FlatLabel, FlatList, FlatToggle, FlatTree, FlatVal, Item, Label, Link, List, SubMenu, Toggle, Tree
 			new AttributeType { AttributeName = "HDC_WMPAINT"}, // Used by 18 controls: BackgroundBox, Canvas, ColorBar, ColorBrowser, Dial, DropButton, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, Gauge, ScrollBox
 			new AttributeType { AttributeName = "DRAWANTIALIAS", DataType = DataType.Int}, // Used by 18 controls: BackgroundBox, Canvas, ColorBar, ColorBrowser, Dial, DropButton, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, Gauge, ScrollBox
 			new AttributeType { AttributeName = "DRAWBGCOLOR", DataType=DataType.String, DataFormat=DataFormat.Rgb,}, // Used by 18 controls: BackgroundBox, Canvas, ColorBar, ColorBrowser, Dial, DropButton, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, Gauge, ScrollBox
@@ -479,38 +479,40 @@ namespace IupMetadata
 
 			new AttributeType { AttributeName = "SEPARATOR", ClassName = "label", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { "HORIZONTAL", "VERTICAL" } },
 
-			new AttributeType { AttributeName = "PREVIOUS"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "NEXT"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "MARKWHENTOGGLE"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "MOVENODE"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "PARENT"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "IMAGELEAF"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "INSERTLEAF"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "INSERTBRANCH"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "INDENTATION"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "KIND"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "MARK"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "MARKED"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "MARKEDNODES"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "MARKMODE"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "MARKSTART"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "LAST"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "LASTADDNODE"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "ADDLEAF"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "ADDBRANCH"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "ADDEXPANDED"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "DELNODE"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "DEPTH"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "COPYNODE"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "CHILDCOUNT"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "DRAGDROPTREE"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "DROPEQUALDRAG"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "IMAGEBRANCHCOLLAPSED"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "IMAGEBRANCHEXPANDED"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "IMAGEEXPANDED"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "HIDEBUTTONS"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "HIDELINES"}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "FIRST"}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "VALUE", ClassName="tree", DataType = DataType.Int},
+			new AttributeType { AttributeName = "VALUE", ClassName="flattree", DataType = DataType.Int},
+			new AttributeType { AttributeName = "PREVIOUS", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "NEXT", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "MARKWHENTOGGLE", DataType = DataType.Boolean}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "MOVENODE", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "PARENT", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "IMAGELEAF", DataType = DataType.String, DataFormat=DataFormat.HandleName}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "INSERTLEAF", DataType=DataType.String}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "INSERTBRANCH", DataType=DataType.String}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "INDENTATION", DataType=DataType.Int}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "KIND", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues= new EnumValue[] { "BRANCH", "LEAF" }}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "MARK", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues= new EnumValue[] { "BLOCK", "CLEARALL", "MARKALL", "INVERTALL", "INVERT" } }, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "MARKED",DataType=DataType.Boolean}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "MARKEDNODES", DataType=DataType.String}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "MARKMODE", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues= new EnumValue[] { "SINGLE", "MULTIPLE" } }, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "MARKSTART",DataType=DataType.Boolean}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "LAST", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "LASTADDNODE", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "ADDLEAF", DataType=DataType.String}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "ADDBRANCH", DataType=DataType.String }, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "ADDEXPANDED",DataType=DataType.Boolean}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "DELNODE", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues= new EnumValue[] { "ALL", "SELECTED", "CHILDREN", "MARKED", }}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "DEPTH", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "COPYNODE", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "CHILDCOUNT", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "DRAGDROPTREE",DataType=DataType.Boolean}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "DROPEQUALDRAG",DataType=DataType.Boolean}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "IMAGEBRANCHCOLLAPSED", DataType = DataType.String, DataFormat=DataFormat.HandleName }, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "IMAGEBRANCHEXPANDED", DataType = DataType.String, DataFormat=DataFormat.HandleName }, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "IMAGEEXPANDED", DataType = DataType.String, DataFormat=DataFormat.HandleName }, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "HIDEBUTTONS", DataType=DataType.Boolean }, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "HIDELINES", DataType=DataType.Boolean}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "FIRST", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
 
 			new AttributeType { AttributeName = "PAGESTEP"}, // Used by 2 controls: FlatVal, Val
 

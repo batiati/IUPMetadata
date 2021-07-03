@@ -129,7 +129,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.Int) => $@"
 
 				pub fn {fnName}(self: {type}{idArgs},arg: i32) {ret} {{
-					c.setIntAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
+					interop.setIntAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -138,17 +138,18 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.String) when attribute.AttributeName == "HANDLENAME" => $@"
 
 				pub fn {fnName}(self: {type}, arg: [:0]const u8) {ret} {{
-					c.setHandle({self}, arg);
+					interop.setHandle({self}, arg);
 					{@return}
 				}}
 
 				",
 
 				(DataFormat.Binary, DataType.String) or
-				(DataFormat.HandleName, DataType.Handle) => $@"
+				(DataFormat.HandleName, DataType.Handle) or
+				(DataFormat.HandleName, DataType.String) => $@"
 
 				pub fn {fnName}(self: {type}{idArgs},arg: [:0]const u8) {ret} {{
-					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
+					interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -157,7 +158,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.Boolean) => $@"
 
 				pub fn {fnName}(self: {type}{idArgs},arg: bool) {ret} {{
-					c.setBoolAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
+					interop.setBoolAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -166,7 +167,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.Float) => $@"
 
 				pub fn {fnName}(self: {type}{idArgs},arg: f32) {ret} {{
-					c.setFloatAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
+					interop.setFloatAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -175,7 +176,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.Double) => $@"
 
 				pub fn {fnName}(self: {type}{idArgs}, arg: f64) {ret} {{
-					c.setDoubleAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
+					interop.setDoubleAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -184,7 +185,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.VoidPtr) => $@"
 
 				pub fn {fnName}(self: {type}, comptime T: type{idArgs}, arg: ?*T) {ret} {{
-					c.setPtrAttribute(T, {self}, ""{attribute.AttributeName}""{idParams},arg);
+					interop.setPtrAttribute(T, {self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -193,7 +194,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.Handle) when attribute.HandleName != null => $@"
 
 				pub fn {fnName}(self: {type}{idArgs}, arg: *iup.{attribute.HandleName}) {ret} {{
-					c.setHandleAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
+					interop.setHandleAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
 					{@return}
 				}}
 
@@ -202,7 +203,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.Void) => $@"
 
 				pub fn {fnName}(self: {type}{idArgs}) {ret} {{
-					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},null);
+					interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},null);
 					{@return}
 				}}
 
@@ -213,7 +214,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				pub fn {fnName}(self: {type}{idArgs}, width: ?i32, height: ?i32) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var value = Size.intIntToString(&buffer, width, height);
-					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
+					interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
 					{@return}
 				}}
 
@@ -224,7 +225,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				pub fn {fnName}(self: {type}{idArgs}, horiz: i32, vert: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var value = Margin.intIntToString(&buffer, horiz, vert);
-					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
+					interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
 					{@return}
 				}}
 
@@ -235,7 +236,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				pub fn {fnName}(self: {type}{idArgs}, lin: i32, col: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var value = iup.LinColPos.intIntToString(&buffer, lin, col, ',');
-					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
+					interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
 					{@return}
 				}}
 
@@ -246,7 +247,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				pub fn {fnName}(self: {type}{idArgs}, x: i32, y: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var value = iup.XYPos.intIntToString(&buffer, x, y, '{(x.DataFormat == DataFormat.XYPosCommaSeparated ? ',' : ':')}');
-					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
+					interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
 					{@return}
 				}}
 
@@ -257,7 +258,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				pub fn {fnName}(self: {type}{idArgs}, begin: i32, end: i32) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var value = iup.Range.intIntToString(&buffer, begin, end, ',');
-					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
+					interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
 					{@return}
 				}}
 
@@ -268,7 +269,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				pub fn {fnName}(self: {type}{idArgs}, width: ?iup.ScreenSize, height: ?iup.ScreenSize) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var str = iup.DialogSize.screenSizeToString(&buffer, width, height);
-					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},str);
+					interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},str);
 					{@return}
 				}}
 
@@ -279,7 +280,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				pub fn {fnName}(self: {type}{idArgs}, year: u16, month: u8, day: u8) {ret} {{
 					var buffer: [128]u8 = undefined;
 					var value = Date {{ .year = year, .month = month, .day = day }};
-					c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value.toString(&buffer));
+					interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value.toString(&buffer));
 					{@return}
 				}}
 
@@ -288,7 +289,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Rgb, DataType.String) => $@"
 
 				pub fn {fnName}(self: {type}{idArgs}, rgb: iup.Rgb) {ret} {{
-					c.setRgb({self}, ""{attribute.AttributeName}""{idParams},rgb);
+					interop.setRgb({self}, ""{attribute.AttributeName}""{idParams},rgb);
 					{@return}
 				}}
 
@@ -304,9 +305,9 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				pub fn {fnName}(self: {type}{idArgs}, arg: ?{attribute.Name}) {ret} {{
 					if (arg) |value| {{
-						c.setIntAttribute({self}, ""{attribute.AttributeName}""{idParams},@enumToInt(value));
+						interop.setIntAttribute({self}, ""{attribute.AttributeName}""{idParams},@enumToInt(value));
 					}} else {{
-						c.clearAttribute({self}, ""{attribute.AttributeName}""{idParams});
+						interop.clearAttribute({self}, ""{attribute.AttributeName}""{idParams});
 					}}
 					{@return}
 				}}
@@ -316,9 +317,9 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				pub fn {fnName}(self: {type}{idArgs}, arg: ?{attribute.Name}) {ret} {{
 					if (arg) |value| switch (value) {{
-						{string.Join("\n", attribute.EnumValues.Select(x => $@".{x.Name} => c.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},""{x.StrValue}""),"))}
+						{string.Join("\n", attribute.EnumValues.Select(x => $@".{x.Name} => interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},""{x.StrValue}""),"))}
 					}} else {{
-						c.clearAttribute({self}, ""{attribute.AttributeName}""{idParams});
+						interop.clearAttribute({self}, ""{attribute.AttributeName}""{idParams});
 					}}
 					{@return}
 				}}
@@ -352,15 +353,16 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.Int) => $@"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) i32 {{
-					return c.getIntAttribute(self, ""{attribute.AttributeName}""{idParams});
+					return interop.getIntAttribute(self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
 
-				(DataFormat.Binary, DataType.String) => $@"
+				(DataFormat.Binary, DataType.String) or
+				(DataFormat.HandleName, DataType.String) => $@"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) [:0]const u8 {{
-					return c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
+					return interop.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
@@ -368,7 +370,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.Boolean) => $@"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) bool {{
-					return c.getBoolAttribute(self, ""{attribute.AttributeName}""{idParams});
+					return interop.getBoolAttribute(self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
@@ -376,7 +378,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.Float) => $@"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) f32 {{
-					return c.getFloatAttribute(self, ""{attribute.AttributeName}""{idParams});
+					return interop.getFloatAttribute(self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
@@ -384,7 +386,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.Double) => $@"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) f64 {{
-					return c.getDoubleAttribute(self, ""{attribute.AttributeName}""{idParams});
+					return interop.getDoubleAttribute(self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
@@ -392,7 +394,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.VoidPtr) => $@"
 
 				pub fn get{attribute.Name}(self: *Self, comptime T: type{idArgs}) ?*T {{
-					return c.getPtrAttribute(T, self, ""{attribute.AttributeName}""{idParams});
+					return interop.getPtrAttribute(T, self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
@@ -400,7 +402,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Binary, DataType.Handle) when attribute.HandleName != null => $@"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) ?*iup.{attribute.HandleName} {{
-					if (c.getHandleAttribute(self, ""{attribute.AttributeName}""{idParams})) |handle| {{
+					if (interop.getHandleAttribute(self, ""{attribute.AttributeName}""{idParams})) |handle| {{
 						return @ptrCast(*iup.{attribute.HandleName}, handle);
 					}} else {{
 						return null;
@@ -412,7 +414,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Size, DataType.String) => $@"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) Size {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
+					var str = interop.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return Size.parse(str);
 				}}
 
@@ -421,7 +423,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Margin, DataType.String) => $@"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) Margin {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
+					var str = interop.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return Margin.parse(str);
 				}}
 
@@ -430,7 +432,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.DialogSize, DataType.String) => $@"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) iup.DialogSize {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
+					var str = interop.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return iup.DialogSize.parse(str);
 				}}
 				",
@@ -438,7 +440,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.LinColPosCommaSeparated, DataType.String) => @$"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) iup.LinColPos {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
+					var str = interop.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return iup.LinColPos.parse(str, ',');
 				}}
 
@@ -447,7 +449,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.XYPosCommaSeparated or DataFormat.XYPosColonSeparated, DataType.String) x => @$"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) iup.XYPos {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
+					var str = interop.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return iup.XYPos.parse(str, '{(x.DataFormat == DataFormat.XYPosCommaSeparated ? ',' : ':')}');
 				}}
 
@@ -456,7 +458,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.RangeCommaSeparated, DataType.String) => @$"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) iup.Range {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
+					var str = interop.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return iup.Range.parse(str, ',');
 				}}
 
@@ -465,7 +467,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Date, DataType.String) => $@"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) ?iup.Date {{
-					var str = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
+					var str = interop.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return iup.Date.parse(str);
 				}}
 
@@ -474,7 +476,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Rgb, DataType.String) => $@"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) ?iup.Rgb {{
-					return c.getRgb(self, ""{attribute.AttributeName}""{idParams});
+					return interop.getRgb(self, ""{attribute.AttributeName}""{idParams});
 				}}
 
 				",
@@ -488,7 +490,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Enum, DataType.Int) => $@"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) {attribute.Name} {{
-					var ret = c.getIntAttribute(self, ""{attribute.AttributeName}""{idParams});
+					var ret = interop.getIntAttribute(self, ""{attribute.AttributeName}""{idParams});
 					return @intToEnum({attribute.Name}, ret);
 				}}
 
@@ -497,7 +499,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				(DataFormat.Enum, DataType.String) => $@"
 
 				pub fn get{attribute.Name}(self: *Self{idArgs}) ?{attribute.Name} {{
-					var ret = c.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
+					var ret = interop.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
 					{string.Join("", attribute.EnumValues.Select(x => $@"
 					if (std.ascii.eqlIgnoreCase(""{x.StrValue}"", ret)) return .{x.Name};"))}
 					return null;
@@ -581,7 +583,7 @@ namespace IupMetadata.CodeGenerators.Zig
 					/// Origin is at the top-left corner and data is oriented top to bottom, and left to right.
 					/// The pixels array is duplicated internally so you can discard it after the call.
 					pub fn init(width: i32, height: i32, imgdata: ?[]const u8) Initializer {
-						var handle = c.create_image(Self, width, height, imgdata);
+						var handle = interop.create_image(Self, width, height, imgdata);
             
 						if (handle) |valid| {
 							return .{
@@ -604,7 +606,7 @@ namespace IupMetadata.CodeGenerators.Zig
 					/// Creates an interface element given its class name and parameters.
 					/// After creation the element still needs to be attached to a container and mapped to the native system so it can be visible.
 					pub fn init() Initializer {
-						var handle = c.create(Self);
+						var handle = interop.create(Self);
             
 						if (handle) |valid| {
 							return .{
@@ -626,7 +628,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				/// Destroys an interface element and all its children.
 				/// Only dialogs, timers, popup menus and images should be normally destroyed, but detached elements can also be destroyed.        
 				pub fn deinit(self: *Self) void {
-					c.destroy(self);
+					interop.destroy(self);
 				} 
 
 			");
@@ -659,24 +661,26 @@ namespace IupMetadata.CodeGenerators.Zig
 				");
 			}
 
+			if (item.NativeType == NativeType.Dialog || item.ClassName == "menu")
+			{
+				builder.Append(@"
+
+					pub fn popup(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) !void {
+						try interop.popup(self, x, y);
+					}
+
+					pub fn hide(self: *Self) !void {
+						try interop.hide(self);
+					}
+				");
+			}
+
 			if (item.NativeType == NativeType.Dialog)
 			{
 				builder.AppendLine(@"
 
 					pub fn showXY(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) !void {
-						const ret = c.IupShowXY(@ptrCast(*Handle, self), @enumToInt(x) , @enumToInt(y));
-						if (ret == c.IUP_ERROR) {
-							debug.print(""{} ret={}\n"", .{ Error.OpenFailed, ret });
-							return Error.OpenFailed;
-						}
-					}
-
-					pub fn popup(self: *Self, x: iup.DialogPosX, y: iup.DialogPosY) void {
-						_ = c.IupPopup(c.getHandle(self), @enumToInt(x) , @enumToInt(y));
-					}
-
-					pub fn hide(self: *Self) !void {
-						_ = c.IupHide(c.getHandle(self));
+						try interop.showXY(self, x, y);
 					}
 				");
 
@@ -700,11 +704,7 @@ namespace IupMetadata.CodeGenerators.Zig
 					///
 					///
 					pub fn getDialog(self: *Self) ?*iup.Dialog {
-						if (c.IupGetDialog(c.getHandle(self))) |handle| {
-							return c.fromHandle(iup.Dialog, handle);
-						} else {
-							return null;
-						}
+						return interop.getDialog(self);
 					}
 				");
 			}
@@ -734,17 +734,14 @@ namespace IupMetadata.CodeGenerators.Zig
 				/// Returns the the child element that has the NAME attribute equals to the given value on the same dialog hierarchy.
 				/// Works also for children of a menu that is associated with a dialog.
 				pub fn getDialogChild(self: *Self, byName: [:0]const u8) ?Element {
-					var child = c.IupGetDialogChild(c.getHandle(self), c.toCStr(byName)) orelse return null;
-					var className = c.fromCStr(c.IupGetClassName(child));
-
-					return Element.fromClassName(className, child);
+					return interop.getDialogChild(self, byName);
 				}
 
 				///
 				/// Updates the size and layout of all controls in the same dialog.
 				/// To be used after changing size attributes, or attributes that affect the size of the control. Can be used for any element inside a dialog, but the layout of the dialog and all controls will be updated. It can change the layout of all the controls inside the dialog because of the dynamic layout positioning.
 				pub fn refresh(self: *Self) void {
-					try Impl(Self).refresh(self);
+					Impl(Self).refresh(self);
 				}
 
 			");
@@ -828,7 +825,8 @@ namespace IupMetadata.CodeGenerators.Zig
 			{
 				(DataFormat.Binary, DataType.Int) => ($@"set{attribute.Name}({indexArgs}42)", $@"ret == 42"),
 
-				(DataFormat.Binary, DataType.String) => ($@"set{attribute.Name}({indexArgs}""Hello"")", $@"std.mem.eql(u8, ret, ""Hello"")"),
+				(DataFormat.Binary, DataType.String) or
+				(DataFormat.HandleName, DataType.String) => ($@"set{attribute.Name}({indexArgs}""Hello"")", $@"std.mem.eql(u8, ret, ""Hello"")"),
 
 				(DataFormat.HandleName, DataType.Handle) => (null, null),
 

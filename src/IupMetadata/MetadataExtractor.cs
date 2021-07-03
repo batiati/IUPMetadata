@@ -65,8 +65,8 @@ namespace IupMetadata
 
 				if (iupClass.parent != IntPtr.Zero)
 				{
-					var parentIc = Marshal.PtrToStructure<Interop.IClass>(iupClass.parent);
-					item.ParentClassName = parentIc.name;
+					var parentIclass = Marshal.PtrToStructure<Interop.IClass>(iupClass.parent);
+					item.ParentClassName = parentIclass.name;
 				}
 
 				item.NativeType = (NativeType)iupClass.nativetype;

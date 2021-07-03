@@ -8,7 +8,7 @@
 
 const std = @import("std");
 
-const c = @import("../c.zig");
+const interop = @import("../interop.zig");
 const iup = @import("../iup.zig");
 
 const Impl = @import("../impl.zig").Impl; 
@@ -85,35 +85,35 @@ pub const {{Name}} = opaque {
     };
 
     pub fn setStrAttribute(self: *Self, attribute: [:0]const u8, arg: [:0]const u8) void {
-        c.setStrAttribute(self, attribute, .{}, arg);
+        interop.setStrAttribute(self, attribute, .{}, arg);
     }  
 
     pub fn getStrAttribute(self: *Self, attribute: [:0]const u8) [:0]const u8 {
-        return c.getStrAttribute(self, attribute, .{});
+        return interop.getStrAttribute(self, attribute, .{});
     }  
 
     pub fn setIntAttribute(self: *Self, attribute: [:0]const u8, arg: i32) void {
-        c.setIntAttribute(self, attribute, .{}, arg);
+        interop.setIntAttribute(self, attribute, .{}, arg);
     }  
 
     pub fn getIntAttribute(self: *Self, attribute: [:0]const u8) i32 {
-        return c.getIntAttribute(self, attribute, .{});
+        return interop.getIntAttribute(self, attribute, .{});
     }
 
     pub fn setBoolAttribute(self: *Self, attribute: [:0]const u8, arg: bool) void {
-        c.setBoolAttribute(self, attribute, .{}, arg);
+        interop.setBoolAttribute(self, attribute, .{}, arg);
     }  
 
     pub fn getBoolAttribute(self: *Self, attribute: [:0]const u8) bool {
-        return c.getBoolAttribute(self, attribute, .{});
+        return interop.getBoolAttribute(self, attribute, .{});
     } 
 
     pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return c.getPtrAttribute(T, handle, attribute, .{});
+        return interop.getPtrAttribute(T, handle, attribute, .{});
     }
 
     pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        c.setPtrAttribute(T, handle, attribute, .{}, value);
+        interop.setPtrAttribute(T, handle, attribute, .{}, value);
     }
 
     {{BodyTraits}}

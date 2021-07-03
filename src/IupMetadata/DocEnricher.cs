@@ -24,10 +24,10 @@ namespace IupMetadata
 			var path = GetPath(docsPath, item);
 			if (!File.Exists(path)) return;
 
-			var doc = new HtmlAgilityPack.HtmlDocument();
-			doc.Load(path);
+			var document = new HtmlAgilityPack.HtmlDocument();
+			document.Load(path);
 
-			var title = doc.DocumentNode.Descendants("h2").FirstOrDefault();
+			var title = document.DocumentNode.Descendants("h2").FirstOrDefault();
 			var builder = new StringBuilder();
 			var next = title.NextSibling;
 
@@ -138,9 +138,9 @@ namespace IupMetadata
 					if (isAttribute(next)) break;
 				}
 
-				var doc = Normalize(builder.ToString());
-				bool isCreationOnly = doc.Contains("creation only");
-				bool atChildrenOnly = doc.Contains("children only");
+				var documentation = Normalize(builder.ToString());
+				bool isCreationOnly = documentation.Contains("creation only");
+				bool atChildrenOnly = documentation.Contains("children only");
 
 				foreach (var attributeName in attributeNames)
 				{
@@ -155,14 +155,14 @@ namespace IupMetadata
 					{
 						if (attribute.Documentation == null)
 						{
-							attribute.Documentation = doc;
+							attribute.Documentation = documentation;
 						}
 						else
 						{
 							builder = new StringBuilder(attribute.Documentation);
 							if (!attribute.Documentation.EndsWith('.')) builder.Append('.');
 							builder.Append(' ');
-							builder.Append(doc);
+							builder.Append(documentation);
 
 							attribute.Documentation = builder.ToString();
 						}
@@ -176,7 +176,7 @@ namespace IupMetadata
 
 					if (callback != null)
 					{
-						callback.Documentation = doc;
+						callback.Documentation = documentation;
 						continue;
 					}
 				}
@@ -190,10 +190,10 @@ namespace IupMetadata
 			var path = docsPath + $"/en/call/iup_{iupCallback.AttributeName.ToLower()}.html";
 			if (!File.Exists(path)) return;
 
-			var doc = new HtmlAgilityPack.HtmlDocument();
-			doc.Load(path);
+			var document = new HtmlAgilityPack.HtmlDocument();
+			document.Load(path);
 
-			iupCallback.Documentation = Normalize(doc.DocumentNode.InnerText);
+			iupCallback.Documentation = Normalize(document.DocumentNode.InnerText);
 		}
 
 		private static string Normalize(string str)
