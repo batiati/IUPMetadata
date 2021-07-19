@@ -32,9 +32,11 @@ namespace IupMetadata
 
 			public bool IsNullable { get; set; }
 
-			public string HandleName { get; set; }
+			public IupHandle Handle { get; set; }
 
 			public bool? AtChildrenOnly { get; set; }
+
+			public NativeType[] TargetChildren { get; set; }
 
 			public bool? Deprecated { get; set; }
 		}
@@ -79,7 +81,7 @@ namespace IupMetadata
 
 			new AttributeType { ClassName="gridbox", AttributeName = "EXPANDCHILDREN", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { "YES", "HORIZONTAL", "VERTICAL" , "NONE" } },
 
-			new AttributeType { AttributeName = "VALUE_HANDLE", ClassName="radio", DataType = DataType.Handle, HandleName = "Toggle"}, // Used by 4 controls: FlatTabs, Radio, Tabs, ZBox
+			new AttributeType { AttributeName = "VALUE_HANDLE", ClassName="radio", DataType = DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Control, ElementName = "Toggle" } }, // Used by 4 controls: FlatTabs, Radio, Tabs, ZBox
 
 			new AttributeType { AttributeName = "SIZE", IsNullable = true, ClassName = "ColorDlg", Group = AttributeGroup.Common, DataType = DataType.String, DataFormat=DataFormat.DialogSize },
 			new AttributeType { AttributeName = "SIZE", IsNullable = true, ClassName = "Dialog", Group = AttributeGroup.Common, DataType = DataType.String, DataFormat=DataFormat.DialogSize },
@@ -93,7 +95,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "DECORATION", DataType=DataType.Boolean}, // Used by 2 controls: BackgroundBox, FlatFrame
 			new AttributeType { AttributeName = "DECOROFFSET", DataType=DataType.String, DataFormat=DataFormat.Size,}, // Used by 2 controls: BackgroundBox, FlatFrame
 			new AttributeType { AttributeName = "DECORSIZE", DataType=DataType.String, DataFormat=DataFormat.Size,}, // Used by 2 controls: BackgroundBox, FlatFrame
-			new AttributeType { AttributeName = "IMINACTIVE", DataType=DataType.String}, // Used by 2 controls: Button, Toggle
+			new AttributeType { AttributeName = "IMINACTIVE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 2 controls: Button, Toggle
 			new AttributeType { AttributeName = "TODAY", DataType=DataType.String, DataFormat=DataFormat.Date,}, // Used by 2 controls: Calendar, DatePick
 			new AttributeType { AttributeName = "FORMAT", DataType=DataType.String}, // Used by 2 controls: Clipboard, DatePick
 			new AttributeType { AttributeName = "TEXT", DataType=DataType.String}, // Used by 2 controls: Clipboard, Gauge
@@ -130,7 +132,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "TABSIZE", DataType = DataType.Int}, // Used by 2 controls: Multiline, Text
 			new AttributeType { AttributeName = "CHANGECASE",DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues=new EnumValue[] { "UPPER" , "LOWER" , "TOGGLE", "TITLE" } }, // Used by 2 controls: Multiline, Text
 			new AttributeType { AttributeName = "ADDFORMATTAG", DataType = DataType.String}, // Used by 2 controls: Multiline, Text
-			new AttributeType { AttributeName = "ADDFORMATTAG_HANDLE", DataType = DataType.Handle, HandleName = "User"}, // Used by 2 controls: Multiline, Text
+			new AttributeType { AttributeName = "ADDFORMATTAG_HANDLE", DataType = DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Void, ElementName = "User" }}, // Used by 2 controls: Multiline, Text
 			new AttributeType { AttributeName = "APPENDNEWLINE", DataType = DataType.Boolean}, // Used by 2 controls: Multiline, Text
 			new AttributeType { AttributeName = "FORMATTING", DataType = DataType.Boolean}, // Used by 2 controls: Multiline, Text
 			new AttributeType { AttributeName = "BUTTON1", DataType = DataType.String}, // Used by 2 controls: Param, ParamBox
@@ -140,7 +142,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "FIRST_CONTROL_HANDLE", DataType = DataType.Handle}, // Used by 3 controls: AnimatedLabel, DropButton, Normalizer
 			new AttributeType { AttributeName = "NEXT_CONTROL_HANDLE", DataType = DataType.Handle}, // Used by 3 controls: AnimatedLabel, DropButton, Normalizer
 			new AttributeType { AttributeName = "ELLIPSIS", DataType = DataType.Boolean}, // Used by 3 controls: AnimatedLabel, Label, Link
-			new AttributeType { AttributeName = "IMPRESS", DataType = DataType.String}, // Used by 3 controls: Button, Item, Toggle
+			new AttributeType { AttributeName = "IMPRESS", DataType = DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: Button, Item, Toggle
 			new AttributeType { AttributeName = "FLATCOLOR", DataType=DataType.String, DataFormat=DataFormat.Rgb,}, // Used by 3 controls: ColorBar, Dial, Gauge
 			new AttributeType { AttributeName = "SHOWDROPDOWN", DataType = DataType.Boolean}, // Used by 3 controls: DatePick, DropButton, List
 			new AttributeType { AttributeName = "SHOWGRIP", DataType = DataType.Boolean}, // Used by 3 controls: DetachBox, SBox, Split
@@ -148,12 +150,12 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "SHOWBORDER", DataType = DataType.Boolean}, // Used by 3 controls: DropButton, FlatButton, FlatToggle
 			new AttributeType { AttributeName = "PRESSED", DataType = DataType.Boolean}, // Used by 3 controls: DropButton, FlatButton, FlatToggle
 			new AttributeType { AttributeName = "HIGHLIGHTED", DataType = DataType.Boolean}, // Used by 3 controls: DropButton, FlatButton, FlatToggle
-			new AttributeType { AttributeName = "FRONTIMAGEHIGHLIGHT"}, // Used by 3 controls: DropButton, FlatButton, FlatToggle
-			new AttributeType { AttributeName = "FRONTIMAGEPRESS"}, // Used by 3 controls: DropButton, FlatButton, FlatToggle
-			new AttributeType { AttributeName = "BACKIMAGEHIGHLIGHT"}, // Used by 3 controls: DropButton, FlatButton, FlatToggle
-			new AttributeType { AttributeName = "BACKIMAGEINACTIVE"}, // Used by 3 controls: DropButton, FlatButton, FlatToggle
-			new AttributeType { AttributeName = "BACKIMAGEPRESS"}, // Used by 3 controls: DropButton, FlatButton, FlatToggle
-			new AttributeType { AttributeName = "TITLEIMAGE", DataType=DataType.String}, // Used by 3 controls: Expander, FlatFrame, Item
+			new AttributeType { AttributeName = "FRONTIMAGEHIGHLIGHT", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: DropButton, FlatButton, FlatToggle
+			new AttributeType { AttributeName = "FRONTIMAGEPRESS", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: DropButton, FlatButton, FlatToggle
+			new AttributeType { AttributeName = "BACKIMAGEHIGHLIGHT", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: DropButton, FlatButton, FlatToggle
+			new AttributeType { AttributeName = "BACKIMAGEINACTIVE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: DropButton, FlatButton, FlatToggle
+			new AttributeType { AttributeName = "BACKIMAGEPRESS", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: DropButton, FlatButton, FlatToggle
+			new AttributeType { AttributeName = "TITLEIMAGE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: Expander, FlatFrame, Item
 			new AttributeType { AttributeName = "DIALOGTYPE", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { "SAVE", "DIR", "OPEN" }, },
 			new AttributeType { AttributeName = "IGNORERADIO", DataType = DataType.Boolean}, // Used by 3 controls: FlatButton, FlatToggle, Toggle
 			new AttributeType { AttributeName = "CGAP", DataType=DataType.Int}, // Used by 3 controls: HBox, Spin, VBox
@@ -194,13 +196,13 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "CANVASBOX", DataType=DataType.Boolean}, // Used by 4 controls: BackgroundBox, FlatFrame, FlatScrollBox, ScrollBox
 			new AttributeType { AttributeName = "STATUS", DataType=DataType.Int}, // Used by 4 controls: ColorDlg, FileDlg, FontDlg, ParamBox
 			new AttributeType { AttributeName = "STATUS", ClassName="filedlg", DataType=DataType.Int, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { new EnumValue("Normal", 0), new EnumValue("NewFile", 1), new EnumValue("Cancelled", -1) } }, // Used by 4 controls: ColorDlg, FileDlg, FontDlg, ParamBox
-			new AttributeType { AttributeName = "FRONTIMAGEINACTIVE"}, // Used by 4 controls: DropButton, FlatButton, FlatLabel, FlatToggle
-			new AttributeType { AttributeName = "FRONTIMAGE", DataType=DataType.String }, // Used by 4 controls: DropButton, FlatButton, FlatLabel, FlatToggle
+			new AttributeType { AttributeName = "FRONTIMAGEINACTIVE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 4 controls: DropButton, FlatButton, FlatLabel, FlatToggle
+			new AttributeType { AttributeName = "FRONTIMAGE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image } }, // Used by 4 controls: DropButton, FlatButton, FlatLabel, FlatToggle
 			new AttributeType { AttributeName = "TEXTORIENTATION", DataType = DataType.Double}, // Used by 4 controls: DropButton, FlatButton, FlatLabel, FlatToggle
 			new AttributeType { AttributeName = "TEXTCLIP"}, // Used by 4 controls: DropButton, FlatButton, FlatLabel, FlatToggle
 			new AttributeType { AttributeName = "BORDERHLCOLOR", DataType=DataType.String, DataFormat=DataFormat.Rgb,}, // Used by 4 controls: DropButton, FlatButton, FlatToggle, FlatVal
 			new AttributeType { AttributeName = "BORDERPSCOLOR", DataType=DataType.String, DataFormat=DataFormat.Rgb,}, // Used by 4 controls: DropButton, FlatButton, FlatToggle, FlatVal
-			new AttributeType { AttributeName = "IMAGEPRESS"}, // Used by 4 controls: DropButton, FlatButton, FlatToggle, FlatVal
+			new AttributeType { AttributeName = "IMAGEPRESS", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 4 controls: DropButton, FlatButton, FlatToggle, FlatVal
 			new AttributeType { AttributeName = "ARROWIMAGES", DataType=DataType.Int}, // Used by 4 controls: DropButton, FlatList, FlatScrollBox, FlatTree
 			new AttributeType { AttributeName = "RADIO", DataType=DataType.Boolean}, // Used by 4 controls: FlatButton, FlatToggle, Menu, Toggle
 			new AttributeType { AttributeName = "MASK", DataType=DataType.String}, // Used by 4 controls: List, Multiline, Param, Text
@@ -211,11 +213,11 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "BACKCOLOR", DataType=DataType.String, DataFormat=DataFormat.Rgb,}, // Used by 5 controls: BackgroundBox, Expander, FlatFrame, FlatTree, Gauge
 			new AttributeType { AttributeName = "FLAT", DataType=DataType.Boolean}, // Used by 5 controls: Button, ColorBar, Dial, Gauge, Toggle
 			new AttributeType { AttributeName = "BARSIZE", DataType=DataType.Int}, // Used by 5 controls: DetachBox, Expander, FlatSeparator, SBox, Split
-			new AttributeType { AttributeName = "IMAGEHIGHLIGHT", DataType=DataType.String}, // Used by 5 controls: DropButton, Expander, FlatButton, FlatToggle, FlatVal
+			new AttributeType { AttributeName = "IMAGEHIGHLIGHT", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 5 controls: DropButton, Expander, FlatButton, FlatToggle, FlatVal
 			new AttributeType { AttributeName = "TEXTELLIPSIS", DataType=DataType.Boolean}, // Used by 5 controls: DropButton, FlatButton, FlatLabel, FlatList, FlatToggle
 			new AttributeType { AttributeName = "TEXTALIGNMENT", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { "ARIGHT", "ALEFT", "ACENTER" } }, // Used by 5 controls: DropButton, FlatButton, FlatLabel, FlatList, FlatToggle
 			new AttributeType { AttributeName = "TEXTWRAP", DataType=DataType.Boolean}, // Used by 5 controls: DropButton, FlatButton, FlatLabel, FlatList, FlatToggle
-			new AttributeType { AttributeName = "IMAGEINACTIVE"}, // Used by 5 controls: DropButton, FlatButton, FlatLabel, FlatToggle, FlatVal
+			new AttributeType { AttributeName = "IMAGEINACTIVE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 5 controls: DropButton, FlatButton, FlatLabel, FlatToggle, FlatVal
 			new AttributeType { AttributeName = "TEXTPSCOLOR", DataType=DataType.String, DataFormat=DataFormat.Rgb,}, // Used by 5 controls: DropButton, FlatButton, FlatList, FlatToggle, FlatTree
 			new AttributeType { AttributeName = "VISIBLECOLUMNS", DataType = DataType.Int, IsNullable = true}, // Used by 5 controls: DropButton, FlatList, List, Multiline, Text
 			new AttributeType { AttributeName = "FILTER", ClassName = "text", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { "LOWERCASE", "NUMBER", "UPPERCASE" }, IsNullable = true },
@@ -241,16 +243,19 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "MDIACTIVE", DataType=DataType.String}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "MDIARRANGE", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { "TILEHORIZONTAL", "TILEVERTICAL", "CASCADE", "ICON" } }, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "MDICHILD", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
-			new AttributeType { AttributeName = "MDICLIENT", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
+			
+			new AttributeType { AttributeName = "MDICLIENT", DataType=DataType.Boolean, AtChildrenOnly = true, TargetChildren = new NativeType[] { NativeType.Canvas } }, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
+			new AttributeType { AttributeName = "MDIMENU", DataType=DataType.Handle, AtChildrenOnly = true, TargetChildren = new NativeType[] { NativeType.Canvas }, Handle = new IupHandle { NativeType = NativeType.Menu, ElementName = "Menu" } }, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
+
 			new AttributeType { AttributeName = "MDICLOSEALL", DataType=DataType.Void}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "MDIFRAME", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
-			new AttributeType { AttributeName = "MDIMENU", DataType=DataType.Handle, HandleName="Menu"}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
+			
 			new AttributeType { AttributeName = "MDINEXT", DataType=DataType.String}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
-			new AttributeType { AttributeName = "MENU", DataType=DataType.Handle, HandleName = "Menu"}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
+			new AttributeType { AttributeName = "MENU", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Menu, ElementName = "Menu" } }, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "MENUBOX", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "LAYERALPHA", DataType=DataType.Int}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "NOFLUSH", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
-			new AttributeType { AttributeName = "PARENTDIALOG", DataType=DataType.Handle, HandleName = "Dialog"}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
+			new AttributeType { AttributeName = "PARENTDIALOG", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Dialog } }, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "OPACITY", DataType=DataType.Int}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "OPACITYIMAGE", DataType=DataType.String}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "NATIVEPARENT", DataType=DataType.Handle}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
@@ -274,8 +279,8 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "DIALOGFRAME", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "DIALOGHINT", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "COMPOSITED", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
-			new AttributeType { AttributeName = "DEFAULTENTER", DataType=DataType.Handle, HandleName = "Button"}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
-			new AttributeType { AttributeName = "DEFAULTESC", DataType=DataType.Handle, HandleName = "Button"}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
+			new AttributeType { AttributeName = "DEFAULTENTER", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Control, ElementName = "Button" } }, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
+			new AttributeType { AttributeName = "DEFAULTESC", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Control, ElementName = "Button" } }, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "CUSTOMFRAME", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "CUSTOMFRAMECAPTIONHEIGHT", DataType=DataType.Int}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "CUSTOMFRAMECAPTIONLIMITS", DataType=DataType.String, DataFormat=DataFormat.RangeCommaSeparated, IsNullable = true}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
@@ -291,7 +296,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "TASKBARPROGRESSVALUE", DataType = DataType.Int}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "TOPMOST", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "TRAY", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
-			new AttributeType { AttributeName = "TRAYIMAGE", DataType=DataType.String}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
+			new AttributeType { AttributeName = "TRAYIMAGE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "TRAYTIP", DataType=DataType.String}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "TRAYTIPBALLOON", DataType=DataType.Boolean}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
 			new AttributeType { AttributeName = "TRAYTIPBALLOONTITLE", DataType=DataType.String}, // Used by 6 controls: ColorDlg, Dialog, FileDlg, FontDlg, MessageDlg, ProgressDlg
@@ -307,7 +312,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "FOCUSFEEDBACK", DataType = DataType.Boolean}, // Used by 7 controls: DropButton, FlatButton, FlatList, FlatTabs, FlatToggle, FlatTree, FlatVal
 			new AttributeType { AttributeName = "HASFOCUS", DataType = DataType.Boolean}, // Used by 7 controls: DropButton, FlatButton, FlatList, FlatTabs, FlatToggle, FlatTree, FlatVal
 			new AttributeType { AttributeName = "HLCOLOR", DataType=DataType.String, DataFormat=DataFormat.Rgb,}, // Used by 7 controls: DropButton, FlatButton, FlatList, FlatToggle, FlatTree, FlatVal, Tree
-			new AttributeType { AttributeName = "BACKIMAGE", DataType=DataType.String}, // Used by 9 controls: BackgroundBox, DropButton, FlatButton, FlatFrame, FlatLabel, FlatList, FlatToggle, FlatTree, FlatVal
+			new AttributeType { AttributeName = "BACKIMAGE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 9 controls: BackgroundBox, DropButton, FlatButton, FlatFrame, FlatLabel, FlatList, FlatToggle, FlatTree, FlatVal
 			new AttributeType { AttributeName = "BACKIMAGEZOOM", DataType = DataType.Boolean}, // Used by 9 controls: BackgroundBox, DropButton, FlatButton, FlatFrame, FlatLabel, FlatList, FlatToggle, FlatTree, FlatVal
 			new AttributeType { AttributeName = "CSPACING", DataType = DataType.Int, IsNullable = true}, // Used by 9 controls: Button, DropButton, FlatButton, FlatLabel, FlatList, FlatToggle, FlatTree, List, Tree
 			new AttributeType { AttributeName = "SPACING", DataType = DataType.Int, IsNullable = true}, // Used by 9 controls: Button, DropButton, FlatButton, FlatLabel, FlatList, FlatToggle, FlatTree, List, Tree
@@ -332,7 +337,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "PADDING", DataType=DataType.String, DataFormat=DataFormat.Size,}, // Used by 14 controls: AnimatedLabel, Button, DropButton, FlatButton, FlatLabel, FlatList, FlatToggle, Gauge, Label, Link, List, Multiline, Text, Toggle
 			new AttributeType { AttributeName = "CPADDING", DataType=DataType.String, DataFormat=DataFormat.Size,}, // Used by 14 controls: AnimatedLabel, Button, DropButton, FlatButton, FlatLabel, FlatList, FlatToggle, Gauge, Label, Link, List, Multiline, Text, Tree
 			new AttributeType { AttributeName = "ORIENTATION",DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { "HORIZONTAL", "VERTICAL" }, }, // Used by 14 controls: ColorBar, DetachBox, Dial, FlatSeparator, FlatVal, Gauge, GridBox, HBox, MultiBox, ProgressBar, Spin, Split, Val, VBox
-			new AttributeType { AttributeName = "IMAGE", DataType=DataType.String, DataFormat=DataFormat.HandleName}, // Used by 18 controls: AnimatedLabel, Button, Clipboard, DropButton, Expander, FlatButton, FlatLabel, FlatList, FlatToggle, FlatTree, FlatVal, Item, Label, Link, List, SubMenu, Toggle, Tree
+			new AttributeType { AttributeName = "IMAGE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 18 controls: AnimatedLabel, Button, Clipboard, DropButton, Expander, FlatButton, FlatLabel, FlatList, FlatToggle, FlatTree, FlatVal, Item, Label, Link, List, SubMenu, Toggle, Tree
 			new AttributeType { AttributeName = "HDC_WMPAINT"}, // Used by 18 controls: BackgroundBox, Canvas, ColorBar, ColorBrowser, Dial, DropButton, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, Gauge, ScrollBox
 			new AttributeType { AttributeName = "DRAWANTIALIAS", DataType = DataType.Int}, // Used by 18 controls: BackgroundBox, Canvas, ColorBar, ColorBrowser, Dial, DropButton, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, Gauge, ScrollBox
 			new AttributeType { AttributeName = "DRAWBGCOLOR", DataType=DataType.String, DataFormat=DataFormat.Rgb,}, // Used by 18 controls: BackgroundBox, Canvas, ColorBar, ColorBrowser, Dial, DropButton, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, Gauge, ScrollBox
@@ -372,7 +377,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "SCROLLBAR", DataType = DataType.Boolean}, // Used by 21 controls: BackgroundBox, Canvas, ColorBar, ColorBrowser, Dial, DropButton, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, Gauge, List, Multiline, ScrollBox, Text
 			new AttributeType { AttributeName = "TITLE", DataType = DataType.String}, // Used by 23 controls: AnimatedLabel, Button, ColorDlg, Dialog, DropButton, Expander, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatToggle, FlatTree, FontDlg, Frame, Item, Label, Link, MessageDlg, Param, ProgressDlg, SubMenu, Toggle, Tree
 			new AttributeType { AttributeName = "HWND", DataType=DataType.Handle}, // Used by 24 controls: BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, MessageDlg, ProgressDlg, ScrollBox
-			new AttributeType { AttributeName = "CURSOR", DataType = DataType.String}, // Used by 25 controls: BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, Link, MessageDlg, ProgressDlg, ScrollBox
+			new AttributeType { AttributeName = "CURSOR", DataType = DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 25 controls: BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, Link, MessageDlg, ProgressDlg, ScrollBox
 			new AttributeType { AttributeName = "BORDER", DataType = DataType.Boolean}, // Used by 26 controls: BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, MessageDlg, Multiline, ProgressDlg, ScrollBox, Text
 			new AttributeType { AttributeName = "CLIENTOFFSET", DataType=DataType.String, DataFormat=DataFormat.Size}, // Used by 27 controls: BackgroundBox, CBox, ColorDlg, DetachBox, Dialog, Expander, FileDlg, FlatFrame, FlatScrollBox, FlatTabs, FontDlg, Frame, GridBox, HBox, MessageDlg, MultiBox, ParamBox, ProgressDlg, Radio, SBox, ScrollBox, Spin, SpinBox, Split, Tabs, VBox, ZBox
 			new AttributeType { AttributeName = "CLIENTSIZE", DataType=DataType.String, DataFormat=DataFormat.Size}, // Used by 27 controls: BackgroundBox, CBox, ColorDlg, DetachBox, Dialog, Expander, FileDlg, FlatFrame, FlatScrollBox, FlatTabs, FontDlg, Frame, GridBox, HBox, MessageDlg, MultiBox, ParamBox, ProgressDlg, Radio, SBox, ScrollBox, Spin, SpinBox, Split, Tabs, VBox, ZBox
@@ -380,8 +385,8 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "DROPFILESTARGET", DataType = DataType.Boolean}, // Used by 31 controls: AnimatedLabel, BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, Label, Link, List, MessageDlg, Multiline, ProgressDlg, ScrollBox, Text, Tree
 			new AttributeType { AttributeName = "DROPTARGET", DataType = DataType.Boolean}, // Used by 31 controls: AnimatedLabel, BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, Label, Link, List, MessageDlg, Multiline, ProgressDlg, ScrollBox, Text, Tree
 			new AttributeType { AttributeName = "DROPTYPES", DataType = DataType.String}, // Used by 31 controls: AnimatedLabel, BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, Label, Link, List, MessageDlg, Multiline, ProgressDlg, ScrollBox, Text, Tree
-			new AttributeType { AttributeName = "DRAGCURSOR", DataType = DataType.String}, // Used by 31 controls: AnimatedLabel, BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, Label, Link, List, MessageDlg, Multiline, ProgressDlg, ScrollBox, Text, Tree
-			new AttributeType { AttributeName = "DRAGCURSORCOPY", DataType = DataType.String}, // Used by 31 controls: AnimatedLabel, BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, Label, Link, List, MessageDlg, Multiline, ProgressDlg, ScrollBox, Text, Tree
+			new AttributeType { AttributeName = "DRAGCURSOR", DataType = DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 31 controls: AnimatedLabel, BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, Label, Link, List, MessageDlg, Multiline, ProgressDlg, ScrollBox, Text, Tree
+			new AttributeType { AttributeName = "DRAGCURSORCOPY", DataType = DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 31 controls: AnimatedLabel, BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, Label, Link, List, MessageDlg, Multiline, ProgressDlg, ScrollBox, Text, Tree
 			new AttributeType { AttributeName = "DRAGDROP", DataType = DataType.Boolean}, // Used by 31 controls: AnimatedLabel, BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, Label, Link, List, MessageDlg, Multiline, ProgressDlg, ScrollBox, Text, Tree
 			new AttributeType { AttributeName = "DRAGSOURCE", DataType = DataType.Boolean}, // Used by 31 controls: AnimatedLabel, BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, Label, Link, List, MessageDlg, Multiline, ProgressDlg, ScrollBox, Text, Tree
 			new AttributeType { AttributeName = "DRAGSOURCEMOVE", DataType = DataType.Boolean}, // Used by 31 controls: AnimatedLabel, BackgroundBox, Canvas, ColorBar, ColorBrowser, ColorDlg, Dial, Dialog, DropButton, FileDlg, FlatButton, FlatFrame, FlatLabel, FlatList, FlatScrollBox, FlatSeparator, FlatTabs, FlatToggle, FlatTree, FlatVal, FontDlg, Gauge, Label, Link, List, MessageDlg, Multiline, ProgressDlg, ScrollBox, Text, Tree
@@ -406,7 +411,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "SCROLLTOCHILD", DataType = DataType.String}, // Used by 2 controls: FlatScrollBox, ScrollBox
 			new AttributeType { AttributeName = "SCROLLTOCHILD_HANDLE", DataType = DataType.Handle}, // Used by 2 controls: FlatScrollBox, ScrollBox
 			new AttributeType { AttributeName = "SHOWCLOSE", DataType = DataType.Boolean}, // Used by 2 controls: FlatTabs, Tabs
-			new AttributeType { AttributeName = "TABIMAGE", DataType = DataType.String}, // Used by 2 controls: FlatTabs, Tabs
+			new AttributeType { AttributeName = "TABIMAGE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 2 controls: FlatTabs, Tabs
 			new AttributeType { AttributeName = "TABORIENTATION", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { "HORIZONTAL", "VERTICAL" } }, // Used by 2 controls: FlatTabs, Tabs
 			new AttributeType { AttributeName = "TABTITLE", DataType = DataType.String}, // Used by 2 controls: FlatTabs, Tabs
 			new AttributeType { AttributeName = "TABTYPE", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { "BOTTOM", "LEFT" , "RIGHT" , "TOP" } }, // Used by 2 controls: FlatTabs, Tabs
@@ -486,7 +491,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "MARKWHENTOGGLE", DataType = DataType.Boolean}, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "MOVENODE", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "PARENT", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "IMAGELEAF", DataType = DataType.String, DataFormat=DataFormat.HandleName}, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "IMAGELEAF", DataType = DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "INSERTLEAF", DataType=DataType.String}, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "INSERTBRANCH", DataType=DataType.String}, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "INDENTATION", DataType=DataType.Int}, // Used by 2 controls: FlatTree, Tree
@@ -507,9 +512,9 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "CHILDCOUNT", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "DRAGDROPTREE",DataType=DataType.Boolean}, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "DROPEQUALDRAG",DataType=DataType.Boolean}, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "IMAGEBRANCHCOLLAPSED", DataType = DataType.String, DataFormat=DataFormat.HandleName }, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "IMAGEBRANCHEXPANDED", DataType = DataType.String, DataFormat=DataFormat.HandleName }, // Used by 2 controls: FlatTree, Tree
-			new AttributeType { AttributeName = "IMAGEEXPANDED", DataType = DataType.String, DataFormat=DataFormat.HandleName }, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "IMAGEBRANCHCOLLAPSED", DataType = DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image } }, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "IMAGEBRANCHEXPANDED", DataType = DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image } }, // Used by 2 controls: FlatTree, Tree
+			new AttributeType { AttributeName = "IMAGEEXPANDED", DataType = DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image } }, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "HIDEBUTTONS", DataType=DataType.Boolean }, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "HIDELINES", DataType=DataType.Boolean}, // Used by 2 controls: FlatTree, Tree
 			new AttributeType { AttributeName = "FIRST", DataType = DataType.Int}, // Used by 2 controls: FlatTree, Tree
@@ -523,29 +528,29 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "SB_BACKCOLOR"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
 			new AttributeType { AttributeName = "SB_FORECOLOR"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
 			new AttributeType { AttributeName = "SB_HIGHCOLOR"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGEBOTTOM"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGEBOTTOMHIGHLIGHT"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGEBOTTOMINACTIVE"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGEBOTTOMPRESS"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGELEFT"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGELEFTHIGHLIGHT"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGELEFTINACTIVE"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGELEFTPRESS"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGERIGHT"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGERIGHTHIGHLIGHT"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGERIGHTINACTIVE"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGERIGHTPRESS"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGETOP"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGETOPHIGHLIGHT"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGETOPINACTIVE"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
-			new AttributeType { AttributeName = "SB_IMAGETOPPRESS"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGEBOTTOM", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGEBOTTOMHIGHLIGHT", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGEBOTTOMINACTIVE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGEBOTTOMPRESS", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGELEFT", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGELEFTHIGHLIGHT", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGELEFTINACTIVE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGELEFTPRESS", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGERIGHT", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGERIGHTHIGHLIGHT", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGERIGHTINACTIVE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGERIGHTPRESS", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGETOP", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGETOPHIGHLIGHT", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGETOPINACTIVE", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
+			new AttributeType { AttributeName = "SB_IMAGETOPPRESS", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
 			new AttributeType { AttributeName = "SB_PRESSCOLOR"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
 			new AttributeType { AttributeName = "SHOWARROWS"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
 			new AttributeType { AttributeName = "SCROLLBARSIZE"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
 			new AttributeType { AttributeName = "SHOWFLOATING"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
 			new AttributeType { AttributeName = "SHOWTRANSPARENT"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
 
-			new AttributeType { AttributeName = "ANIMATION_HANDLE", ClassName = "animatedlabel", DataType = DataType.Handle},
+			new AttributeType { AttributeName = "ANIMATION", ClassName = "animatedlabel", DataType = DataType.Handle},
 			new AttributeType { AttributeName = "FRAMECOUNT", ClassName = "animatedlabel"},
 			new AttributeType { AttributeName = "RUNNING", ClassName = "animatedlabel"},
 			new AttributeType { AttributeName = "STOP", ClassName = "animatedlabel"},
@@ -612,10 +617,10 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "ARROWACTIVE", ClassName = "dropbutton"},
 			new AttributeType { AttributeName = "ARROWALIGN", ClassName = "dropbutton"},
 			new AttributeType { AttributeName = "ARROWCOLOR", ClassName = "dropbutton"},
-			new AttributeType { AttributeName = "ARROWIMAGE", ClassName = "dropbutton"},
-			new AttributeType { AttributeName = "ARROWIMAGEHIGHLIGHT", ClassName = "dropbutton"},
-			new AttributeType { AttributeName = "ARROWIMAGEINACTIVE", ClassName = "dropbutton"},
-			new AttributeType { AttributeName = "ARROWIMAGEPRESS", ClassName = "dropbutton"},
+			new AttributeType { AttributeName = "ARROWIMAGE", ClassName = "dropbutton", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "ARROWIMAGEHIGHLIGHT", ClassName = "dropbutton", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "ARROWIMAGEINACTIVE", ClassName = "dropbutton", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "ARROWIMAGEPRESS", ClassName = "dropbutton", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
 			new AttributeType { AttributeName = "DROPCHILD", ClassName = "dropbutton"},
 			new AttributeType { AttributeName = "DROPCHILD_HANDLE", ClassName = "dropbutton", DataType = DataType.Handle},
 			new AttributeType { AttributeName = "DROPONARROW", ClassName = "dropbutton"},
@@ -626,20 +631,20 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "STATEREFRESH", ClassName = "expander"},
 			new AttributeType { AttributeName = "NUMFRAMES", ClassName = "expander"},
 			new AttributeType { AttributeName = "OPENCOLOR", ClassName = "expander"},
-			new AttributeType { AttributeName = "IMAGEOPEN", ClassName = "expander"},
-			new AttributeType { AttributeName = "IMAGEOPENHIGHLIGHT", ClassName = "expander"},
-			new AttributeType { AttributeName = "IMAGEEXTRA1", ClassName = "expander"},
-			new AttributeType { AttributeName = "IMAGEEXTRA2", ClassName = "expander"},
-			new AttributeType { AttributeName = "IMAGEEXTRA3", ClassName = "expander"},
-			new AttributeType { AttributeName = "IMAGEEXTRAHIGHLIGHT1", ClassName = "expander"},
-			new AttributeType { AttributeName = "IMAGEEXTRAHIGHLIGHT2", ClassName = "expander"},
-			new AttributeType { AttributeName = "IMAGEEXTRAHIGHLIGHT3", ClassName = "expander"},
-			new AttributeType { AttributeName = "IMAGEEXTRAPRESS1", ClassName = "expander"},
-			new AttributeType { AttributeName = "IMAGEEXTRAPRESS2", ClassName = "expander"},
-			new AttributeType { AttributeName = "IMAGEEXTRAPRESS3", ClassName = "expander"},
-			new AttributeType { AttributeName = "TITLEIMAGEHIGHLIGHT", ClassName = "expander"},
-			new AttributeType { AttributeName = "TITLEIMAGEOPEN", ClassName = "expander"},
-			new AttributeType { AttributeName = "TITLEIMAGEOPENHIGHLIGHT", ClassName = "expander"},
+			new AttributeType { AttributeName = "IMAGEOPEN", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "IMAGEOPENHIGHLIGHT", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "IMAGEEXTRA1", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "IMAGEEXTRA2", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "IMAGEEXTRA3", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "IMAGEEXTRAHIGHLIGHT1", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "IMAGEEXTRAHIGHLIGHT2", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "IMAGEEXTRAHIGHLIGHT3", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "IMAGEEXTRAPRESS1", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "IMAGEEXTRAPRESS2", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "IMAGEEXTRAPRESS3", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "TITLEIMAGEHIGHLIGHT", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "TITLEIMAGEOPEN", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "TITLEIMAGEOPENHIGHLIGHT", ClassName = "expander", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
 			new AttributeType { AttributeName = "TITLEEXPAND", ClassName = "expander"},
 
 			new AttributeType { AttributeName = "NOPLACESBAR", ClassName = "filedlg"},
@@ -714,20 +719,20 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "EXTRAFONT", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "EXTRAFORECOLOR", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "EXTRAHIGHCOLOR", ClassName = "flattabs"},
-			new AttributeType { AttributeName = "EXTRAIMAGE", ClassName = "flattabs"},
-			new AttributeType { AttributeName = "EXTRAIMAGEHIGHLIGHT", ClassName = "flattabs"},
-			new AttributeType { AttributeName = "EXTRAIMAGEINACTIVE", ClassName = "flattabs"},
-			new AttributeType { AttributeName = "EXTRAIMAGEPRESS", ClassName = "flattabs"},
+			new AttributeType { AttributeName = "EXTRAIMAGE", ClassName = "flattabs", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "EXTRAIMAGEHIGHLIGHT", ClassName = "flattabs", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "EXTRAIMAGEINACTIVE", ClassName = "flattabs", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "EXTRAIMAGEPRESS", ClassName = "flattabs", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
 			new AttributeType { AttributeName = "EXTRAPRESSCOLOR", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "EXTRASHOWBORDER", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "EXPANDBUTTON", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "EXPANDBUTTONPOS", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "EXPANDBUTTONSTATE", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "CLOSEHIGHCOLOR", ClassName = "flattabs"},
-			new AttributeType { AttributeName = "CLOSEIMAGE", ClassName = "flattabs"},
-			new AttributeType { AttributeName = "CLOSEIMAGEHIGHLIGHT", ClassName = "flattabs"},
-			new AttributeType { AttributeName = "CLOSEIMAGEINACTIVE", ClassName = "flattabs"},
-			new AttributeType { AttributeName = "CLOSEIMAGEPRESS", ClassName = "flattabs"},
+			new AttributeType { AttributeName = "CLOSEIMAGE", ClassName = "flattabs", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CLOSEIMAGEHIGHLIGHT", ClassName = "flattabs", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CLOSEIMAGEINACTIVE", ClassName = "flattabs", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CLOSEIMAGEPRESS", ClassName = "flattabs", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
 			new AttributeType { AttributeName = "CLOSEPRESSCOLOR", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "TABSLINECOLOR", ClassName = "flattabs"},
 			new AttributeType { AttributeName = "TABSPADDING", ClassName = "flattabs"},
@@ -742,18 +747,18 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "CHECKBGCOLOR", ClassName = "flattoggle"},
 			new AttributeType { AttributeName = "CHECKFGCOLOR", ClassName = "flattoggle"},
 			new AttributeType { AttributeName = "CHECKHLCOLOR", ClassName = "flattoggle"},
-			new AttributeType { AttributeName = "CHECKIMAGE", ClassName = "flattoggle"},
-			new AttributeType { AttributeName = "CHECKIMAGEHIGHLIGHT", ClassName = "flattoggle"},
-			new AttributeType { AttributeName = "CHECKIMAGEINACTIVE", ClassName = "flattoggle"},
-			new AttributeType { AttributeName = "CHECKIMAGENOTDEF", ClassName = "flattoggle"},
-			new AttributeType { AttributeName = "CHECKIMAGENOTDEFHIGHLIGHT", ClassName = "flattoggle"},
-			new AttributeType { AttributeName = "CHECKIMAGENOTDEFINACTIVE", ClassName = "flattoggle"},
-			new AttributeType { AttributeName = "CHECKIMAGENOTDEFPRESS", ClassName = "flattoggle"},
-			new AttributeType { AttributeName = "CHECKIMAGEON", ClassName = "flattoggle"},
-			new AttributeType { AttributeName = "CHECKIMAGEONHIGHLIGHT", ClassName = "flattoggle"},
-			new AttributeType { AttributeName = "CHECKIMAGEONINACTIVE", ClassName = "flattoggle"},
-			new AttributeType { AttributeName = "CHECKIMAGEONPRESS", ClassName = "flattoggle"},
-			new AttributeType { AttributeName = "CHECKIMAGEPRESS", ClassName = "flattoggle"},
+			new AttributeType { AttributeName = "CHECKIMAGE", ClassName = "flattoggle", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CHECKIMAGEHIGHLIGHT", ClassName = "flattoggle", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CHECKIMAGEINACTIVE", ClassName = "flattoggle", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CHECKIMAGENOTDEF", ClassName = "flattoggle", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CHECKIMAGENOTDEFHIGHLIGHT", ClassName = "flattoggle", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CHECKIMAGENOTDEFINACTIVE", ClassName = "flattoggle", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CHECKIMAGENOTDEFPRESS", ClassName = "flattoggle", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CHECKIMAGEON", ClassName = "flattoggle", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CHECKIMAGEONHIGHLIGHT", ClassName = "flattoggle", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CHECKIMAGEONINACTIVE", ClassName = "flattoggle", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CHECKIMAGEONPRESS", ClassName = "flattoggle", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "CHECKIMAGEPRESS", ClassName = "flattoggle", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
 			new AttributeType { AttributeName = "CHECKPSCOLOR", ClassName = "flattoggle"},
 			new AttributeType { AttributeName = "CHECKRIGHT", ClassName = "flattoggle"},
 			new AttributeType { AttributeName = "CHECKSIZE", ClassName = "flattoggle"},
@@ -765,8 +770,8 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "BUTTONBRDCOLOR", ClassName = "flattree"},
 			new AttributeType { AttributeName = "BUTTONSIZE", ClassName = "flattree"},
 			new AttributeType { AttributeName = "BUTTONFGCOLOR", ClassName = "flattree"},
-			new AttributeType { AttributeName = "BUTTONMINUSIMAGE", ClassName = "flattree"},
-			new AttributeType { AttributeName = "BUTTONPLUSIMAGE", ClassName = "flattree"},
+			new AttributeType { AttributeName = "BUTTONMINUSIMAGE", ClassName = "flattree", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
+			new AttributeType { AttributeName = "BUTTONPLUSIMAGE", ClassName = "flattree", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Image }},
 			new AttributeType { AttributeName = "EXTRATEXT", ClassName = "flattree"},
 			new AttributeType { AttributeName = "EXTRATEXTWIDTH", ClassName = "flattree"},
 			new AttributeType { AttributeName = "EMPTYTOGGLE", ClassName = "flattree"},
@@ -878,11 +883,11 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "RUN", ClassName = "timer"},
 			new AttributeType { AttributeName = "TIME", ClassName = "timer"},
 
-			new AttributeType { AttributeName = "RIGHTBUTTON", ClassName = "toggle"},
-			new AttributeType { AttributeName = "3STATE", ClassName = "toggle"},
+			new AttributeType { AttributeName = "RIGHTBUTTON", ClassName = "toggle", DataType = DataType.Boolean },
+			new AttributeType { AttributeName = "3STATE", ClassName = "toggle", DataType = DataType.Boolean},
 			new AttributeType { AttributeName = "VALUE", ClassName = "toggle", DataType=DataType.String, DataFormat=DataFormat.Enum, EnumValues = new EnumValue[] { "ON", "OFF", "NOTDEF" } },
 
-			new AttributeType { AttributeName = "VALUE", ClassName = "radio", DataType=DataType.Handle, HandleName="Toggle" },
+			new AttributeType { AttributeName = "VALUE", ClassName = "radio", DataType=DataType.Handle, Handle = new IupHandle { NativeType = NativeType.Control, ElementName = "Toggle" } },
 
 			new AttributeType { AttributeName = "ADDROOT", ClassName = "tree"},
 			new AttributeType { AttributeName = "CTRL", ClassName = "tree"},
@@ -924,12 +929,13 @@ namespace IupMetadata
 				{
 					attribute.DataType = match.DataType;
 					attribute.DataFormat = match.DataFormat;
-					attribute.HandleName = match.HandleName;
 					attribute.EnumValues = match.EnumValues;
 					attribute.IsNullable = match.IsNullable;
 
+					if (match.Handle != null) attribute.Handle = match.Handle;
 					if (match.Name != null) attribute.Name = match.Name;
 					if (match.AtChildrenOnly != null) attribute.AtChildrenOnly = match.AtChildrenOnly.Value;
+					if (match.TargetChildren != null) attribute.TargetChildren = match.TargetChildren;
 					if (match.Deprecated != null) attribute.Deprecated = match.Deprecated.Value;
 				}
 			}

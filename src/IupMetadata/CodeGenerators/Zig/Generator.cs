@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using System.Linq;
 
 namespace IupMetadata.CodeGenerators.Zig
 {
@@ -13,8 +14,21 @@ namespace IupMetadata.CodeGenerators.Zig
 
 			foreach (var item in metadata)
 			{
-				ElementGenerator.Generate(basePath, item);
+				var parentAttributes = GetParentAttributes(metadata, item);
+				ElementGenerator.Generate(basePath, item, parentAttributes);
 			}
+		}
+
+		private static IupAttribute[] GetParentAttributes(IupClass[] metadata, IupClass item)
+		{
+			return metadata
+					.SelectMany(x => x.Attributes)
+					.Where(x => x.AtChildrenOnly)
+					.Where(x => x.TargetChildren == null || x.TargetChildren.Any(y => y == item.NativeType))
+					.Where(x => !item.Attributes.Any(y => string.Equals(y.Name, x.AttributeName, System.StringComparison.InvariantCultureIgnoreCase)))
+					.GroupBy(x => x.AttributeName)
+					.Select(x => x.First())
+					.ToArray();
 		}
 
 		internal static string GetDocumentation(string text)

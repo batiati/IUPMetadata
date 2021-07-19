@@ -16,16 +16,6 @@
 		#region Documentation
 
 		/// <summary>
-		/// C-style null terminated string containing a HandleName
-		/// </summary>
-
-		#endregion Documentation
-
-		HandleName,
-
-		#region Documentation
-
-		/// <summary>
 		/// C-style null terminated string "TODAY" or "yyyy/MM/dd"
 		/// </summary>
 

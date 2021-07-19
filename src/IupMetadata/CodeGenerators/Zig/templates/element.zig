@@ -27,6 +27,7 @@ const Margin = iup.Margin;
 {{ElementDocumentation}}
 pub const {{Name}} = opaque {
     pub const CLASS_NAME = "{{ClassName}}";
+    pub const NATIVE_TYPE = iup.NativeType.{{NativeType}};
     const Self = @This();
 
     {{CallbacksDecl}}
@@ -80,6 +81,12 @@ pub const {{Name}} = opaque {
             return self.*;
         }
 
+        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self.*;
+		    interop.setHandle(self.ref, arg);
+            return self.*;
+	    }
+
         {{InitializerTraits}}
         {{InitializerBlock}}
     };
@@ -108,13 +115,17 @@ pub const {{Name}} = opaque {
         return interop.getBoolAttribute(self, attribute, .{});
     } 
 
-    pub fn getPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
-        return interop.getPtrAttribute(T, handle, attribute, .{});
+    pub fn getPtrAttribute(self: *Self, comptime T: type, attribute: [:0]const u8) ?*T {
+        return interop.getPtrAttribute(T, self, attribute, .{});
     }
 
-    pub fn setPtrAttribute(handle: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
-        interop.setPtrAttribute(T, handle, attribute, .{}, value);
+    pub fn setPtrAttribute(self: *Self, comptime T: type, attribute: [:0]const u8, value: ?*T) void {
+        interop.setPtrAttribute(T, self, attribute, .{}, value);
     }
+
+    pub fn setHandle(self: *Self, arg: [:0]const u8) void {
+		interop.setHandle(self, arg);
+	}
 
     {{BodyTraits}}
     {{BodyBlock}}

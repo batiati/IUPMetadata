@@ -1,5 +1,12 @@
 ﻿namespace IupMetadata
 {
+	public record IupHandle
+	{
+		public NativeType NativeType { get; set; }
+
+		public string ElementName { get; set; }
+	}
+
 	public record IupAttribute
 	{
 		#region Properties
@@ -20,13 +27,15 @@
 
 		public bool AtChildrenOnly { get; set; }
 
+		public NativeType[] TargetChildren { get; set; }
+
 		public bool NonInheritable { get; set; }
 
 		public DataType DataType { get; set; }
 
 		public DataFormat DataFormat { get; set; }
 
-		public string HandleName { get; set; }
+		public IupHandle Handle { get; set; }
 
 		public EnumValue[] EnumValues { get; set; }
 
