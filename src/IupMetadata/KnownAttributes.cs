@@ -228,6 +228,10 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "AUTOREDRAW", DataType=DataType.Boolean}, // Used by 5 controls: FlatTree, List, Multiline, Text, Tree
 			new AttributeType { AttributeName = "MAX", DataType=DataType.Double}, // Used by 5 controls: FlatVal, Gauge, Param, ProgressBar, Val
 			new AttributeType { AttributeName = "MIN", DataType=DataType.Double}, // Used by 5 controls: FlatVal, Gauge, Param, ProgressBar, Val
+			
+			new AttributeType { AttributeName = "VALUE", DataType=DataType.Double, ClassName = "gauge"},
+			new AttributeType { AttributeName = "VALUE", DataType=DataType.Double, ClassName = "progressbar"},
+
 			new AttributeType { AttributeName = "MARGIN", DataType=DataType.String, DataFormat=DataFormat.Margin }, // Used by 5 controls: GridBox, HBox, MultiBox, Spin, VBox
 			new AttributeType { AttributeName = "NCMARGIN", DataType=DataType.String, DataFormat=DataFormat.Margin}, // Used by 5 controls: GridBox, HBox, MultiBox, Spin, VBox
 			new AttributeType { AttributeName = "NMARGIN", DataType=DataType.String, DataFormat=DataFormat.Margin}, // Used by 5 controls: GridBox, HBox, MultiBox, Spin, VBox
@@ -521,7 +525,7 @@ namespace IupMetadata
 
 			new AttributeType { AttributeName = "PAGESTEP"}, // Used by 2 controls: FlatVal, Val
 
-			new AttributeType { AttributeName = "DASHED"}, // Used by 2 controls: Gauge, ProgressBar
+			new AttributeType { AttributeName = "DASHED", DataType = DataType.Boolean}, // Used by 2 controls: Gauge, ProgressBar
 
 			new AttributeType { AttributeName = "FLATSCROLLBAR"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
 			new AttributeType { AttributeName = "FLOATINGDELAY"}, // Used by 3 controls: FlatList, FlatScrollBox, FlatTree
@@ -784,11 +788,12 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "SLIDERCOLOR", ClassName = "flatval"},
 			new AttributeType { AttributeName = "SLIDERSIZE", ClassName = "flatval"},
 
-			new AttributeType { AttributeName = "SHOWCOLOR", ClassName = "fontdlg"},
+			new AttributeType { AttributeName = "SHOWCOLOR", DataType=DataType.Boolean, ClassName = "fontdlg"},
 
 			new AttributeType { AttributeName = "SUNKEN", ClassName = "frame"},
 
-			new AttributeType { AttributeName = "SHOW_TEXT", Deprecated=true, ClassName = "gauge"},
+			new AttributeType { AttributeName = "SHOWTEXT", DataType=DataType.Boolean, ClassName = "gauge"},
+			new AttributeType { AttributeName = "SHOW_TEXT", Deprecated = true},
 
 			new AttributeType { AttributeName = "SIZECOL", ClassName = "gridbox"},
 			new AttributeType { AttributeName = "SIZELIN", ClassName = "gridbox"},

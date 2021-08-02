@@ -127,6 +127,10 @@ pub const {{Name}} = opaque {
 		interop.setHandle(self, arg);
 	}
 
+    pub fn fromHandleName(handle_name: [:0]const u8) ?*Self {
+        return interop.fromHandleName(Self, handle_name);
+    }
+
     {{BodyTraits}}
     {{BodyBlock}}
 
