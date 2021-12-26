@@ -57,8 +57,11 @@ namespace IupMetadata
 
 		#region Fields
 
-		//TODO: Add linux support
+		#if Linux
+		private const string IUP_DLL = "libs/libiup.so";
+		#else
 		private const string IUP_DLL = "libs/iup.dll";
+		#endif
 
 		#endregion Fields
 

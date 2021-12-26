@@ -12,7 +12,7 @@ namespace IupMetadata.CodeGenerators.Zig
 		{
 			var template = Templates.element;
 			template = template.Replace("{{ElementDocumentation}}", Generator.GetDocumentation(item.Documentation));
-			template = template.Replace("{{EnumsDecl}}", GetEnumDecl(item));
+			template = template.Replace("{{EnumsDecl}}", GetEnumDecl(item, parentAttributes));
 			template = template.Replace("{{CallbacksDecl}}", GetCallbacksDecl(item));
 			template = template.Replace("{{Name}}", item.Name);
 			template = template.Replace("{{ClassName}}", item.ClassName);
@@ -24,7 +24,7 @@ namespace IupMetadata.CodeGenerators.Zig
 			template = template.Replace("{{TestsBlock}}", GetTestsBlock(item));
 
 			var fileName = item.Name.Underscore();
-			var path = Path.Combine(basePath, $"elements\\{fileName}.zig");
+			var path = Path.Combine(basePath, $"elements/{fileName}.zig");
 			File.WriteAllText(path, template);
 
 			Generator.Fmt(path);
@@ -860,10 +860,10 @@ namespace IupMetadata.CodeGenerators.Zig
 			return builder.ToString();
 		}
 
-		private static string GetEnumDecl(IupClass item)
+		private static string GetEnumDecl(IupClass item, IupAttribute[] parentAttributes)
 		{
 			var builder = new StringBuilder();
-			foreach (var attribute in item.Attributes)
+			foreach (var attribute in item.Attributes.Union(parentAttributes))
 			{
 				if (attribute.EnumValues == null || attribute.EnumValues.Length == 0) continue;
 

@@ -45,12 +45,19 @@ namespace IupMetadata.CodeGenerators.Zig
 
 		internal static void Fmt(string path)
 		{
-			//TODO: Add linux suport
+			#if Linux
+			var startInfo = new ProcessStartInfo
+			{
+				FileName = "zig",
+				Arguments = $"fmt {path}",
+			};			
+			#else
 			var startInfo = new ProcessStartInfo
 			{
 				FileName = "zig.exe",
 				Arguments = $"fmt {path}",
 			};
+			#endif
 
 			var process = Process.Start(startInfo);
 			process.WaitForExit();
