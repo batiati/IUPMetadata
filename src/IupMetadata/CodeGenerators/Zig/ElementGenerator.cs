@@ -43,7 +43,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				DataType.Char => "u8",
 				DataType.String => "[:0]const u8",
 				DataType.Handle => "iup.Element",
-				DataType.VoidPtr => "*iup.Unknow",
+				DataType.VoidPtr => "?*anyopaque",
 				DataType.Canvas => "*iup.Canvas",
 				_ => throw new NotImplementedException()
 			};

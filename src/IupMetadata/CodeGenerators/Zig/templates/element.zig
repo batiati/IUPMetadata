@@ -131,6 +131,10 @@ pub const {{Name}} = opaque {
         return interop.fromHandleName(Self, handle_name);
     }
 
+    pub fn postMessage(self: *Self, s: [:0]const u8, i: i32, f: f64, p: ?*anyopaque) void {
+        return interop.postMessage(self, s, i, f, p);
+    }
+
     {{BodyTraits}}
     {{BodyBlock}}
 

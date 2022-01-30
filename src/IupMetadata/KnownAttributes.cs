@@ -885,8 +885,8 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "ISCURRENT", ClassName = "thread"},
 			new AttributeType { AttributeName = "EXIT", ClassName = "thread"},
 
-			new AttributeType { AttributeName = "RUN", ClassName = "timer"},
-			new AttributeType { AttributeName = "TIME", ClassName = "timer"},
+			new AttributeType { AttributeName = "RUN", ClassName = "timer", DataType = DataType.Boolean },
+			new AttributeType { AttributeName = "TIME", ClassName = "timer", DataType = DataType.Int },
 
 			new AttributeType { AttributeName = "RIGHTBUTTON", ClassName = "toggle", DataType = DataType.Boolean },
 			new AttributeType { AttributeName = "3STATE", ClassName = "toggle", DataType = DataType.Boolean},
@@ -903,6 +903,7 @@ namespace IupMetadata
 
 			new AttributeType { AttributeName = "CLEARATTRIBUTES", ClassName = "user"},
 
+			new AttributeType { AttributeName = "VALUE", ClassName="val", DataType = DataType.Double},
 			new AttributeType { AttributeName = "INVERTED", ClassName = "val"},
 			new AttributeType { AttributeName = "SHOWTICKS", ClassName = "val"},
 			new AttributeType { AttributeName = "TICKSPOS", ClassName = "val"},
