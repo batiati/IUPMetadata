@@ -128,11 +128,39 @@ namespace IupMetadata.CodeGenerators.Zig
 
 			var decl = (attribute.DataFormat, attribute.DataType) switch
 			{
+				(DataFormat.Binary, DataType.Int) when attribute.IsNullable => $@"
+
+				pub fn {fnName}(self: {type}{idArgs},arg: ?i32) {ret} {{
+					{initializer}
+					if (arg == null) {{
+						interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},null);
+					}} else {{
+						interop.setIntAttribute({self}, ""{attribute.AttributeName}""{idParams},arg.?);
+					}}
+					{@return}
+				}}
+
+				",
+
 				(DataFormat.Binary, DataType.Int) => $@"
 
 				pub fn {fnName}(self: {type}{idArgs},arg: i32) {ret} {{
 					{initializer}
 					interop.setIntAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
+					{@return}
+				}}
+
+				",				
+
+				(DataFormat.Binary, DataType.String) when attribute.IsNullable => $@"
+
+				pub fn {fnName}(self: {type}{idArgs},arg: ?[:0]const u8) {ret} {{
+					{initializer}
+					if (arg == null) {{
+						interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},null);
+					}} else {{					
+						interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},arg.?);
+					}}
 					{@return}
 				}}
 
@@ -146,13 +174,41 @@ namespace IupMetadata.CodeGenerators.Zig
 					{@return}
 				}}
 
-				",
+				",				
+
+				(DataFormat.Binary, DataType.Boolean) when attribute.IsNullable => $@"
+
+				pub fn {fnName}(self: {type}{idArgs},arg: ?bool) {ret} {{
+					{initializer}
+					if (arg == null) {{
+						interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},null);
+					}} else {{					
+						interop.setBoolAttribute({self}, ""{attribute.AttributeName}""{idParams},arg.?);
+					}}
+					{@return}
+				}}
+
+				",				
 
 				(DataFormat.Binary, DataType.Boolean) => $@"
 
 				pub fn {fnName}(self: {type}{idArgs},arg: bool) {ret} {{
 					{initializer}
 					interop.setBoolAttribute({self}, ""{attribute.AttributeName}""{idParams},arg);
+					{@return}
+				}}
+
+				",
+
+				(DataFormat.Binary, DataType.Float) when attribute.IsNullable => $@"
+
+				pub fn {fnName}(self: {type}{idArgs},arg: ?f32) {ret} {{
+					{initializer}
+					if (arg == null) {{
+						interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},null);
+					}} else {{						
+						interop.setFloatAttribute({self}, ""{attribute.AttributeName}""{idParams},arg.?);
+					}}
 					{@return}
 				}}
 
@@ -166,6 +222,20 @@ namespace IupMetadata.CodeGenerators.Zig
 					{@return}
 				}}
 
+				",				
+
+				(DataFormat.Binary, DataType.Double) when attribute.IsNullable => $@"
+
+				pub fn {fnName}(self: {type}{idArgs}, arg: ?f64) {ret} {{
+					{initializer}
+					if (arg == null) {{
+						interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},null);
+					}} else {{						
+						interop.setDoubleAttribute({self}, ""{attribute.AttributeName}""{idParams},arg.?);
+					}}
+					{@return}
+				}}
+
 				",
 
 				(DataFormat.Binary, DataType.Double) => $@"
@@ -176,7 +246,7 @@ namespace IupMetadata.CodeGenerators.Zig
 					{@return}
 				}}
 
-				",
+				",				
 
 				(DataFormat.Binary, DataType.VoidPtr) => $@"
 

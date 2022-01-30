@@ -13208,7 +13208,7 @@
         "Handle": null,
         "EnumValues": null,
         "Default": null,
-        "IsNullable": false,
+        "IsNullable": true,
         "Deprecated": false
       },
       {
@@ -41911,7 +41911,7 @@
         "Handle": null,
         "EnumValues": null,
         "Default": null,
-        "IsNullable": false,
+        "IsNullable": true,
         "Deprecated": false
       },
       {

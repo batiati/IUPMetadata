@@ -410,7 +410,7 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "INSERTITEM", DataType = DataType.String}, // Used by 2 controls: FlatList, List
 			new AttributeType { AttributeName = "IMAGENATIVEHANDLE", DataType = DataType.Handle}, // Used by 2 controls: FlatList, List
 			new AttributeType { AttributeName = "MULTIPLE", DataType = DataType.Boolean}, // Used by 2 controls: FlatList, List
-			new AttributeType { AttributeName = "REMOVEITEM", DataType = DataType.Int}, // Used by 2 controls: FlatList, List
+			new AttributeType { AttributeName = "REMOVEITEM", DataType = DataType.Int, IsNullable = true}, // Used by 2 controls: FlatList, List
 			new AttributeType { AttributeName = "VALUESTRING", DataType = DataType.String}, // Used by 2 controls: FlatList, List
 			new AttributeType { AttributeName = "SCROLLTOCHILD", DataType = DataType.String}, // Used by 2 controls: FlatScrollBox, ScrollBox
 			new AttributeType { AttributeName = "SCROLLTOCHILD_HANDLE", DataType = DataType.Handle}, // Used by 2 controls: FlatScrollBox, ScrollBox
