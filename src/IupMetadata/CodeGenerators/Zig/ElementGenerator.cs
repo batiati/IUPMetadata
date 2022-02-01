@@ -927,6 +927,99 @@ namespace IupMetadata.CodeGenerators.Zig
 
 			");
 
+			var numberedAttributes = item.Attributes.Max(x => x.NumberedAttribute);
+			if (numberedAttributes >= NumberedAttribute.OneID)
+			{
+				builder.Append(@"
+
+					pub fn getIntId(self: *Self, attribute: [:0]const u8, index: i32) i32 {
+						return interop.getIntAttribute(self, attribute, .{ index });
+					}
+
+					pub fn setIntId(self: *Self, attribute: [:0]const u8, index: i32, value: i32) void {
+						interop.setIntAttribute(self, attribute, .{ index }, value);
+					}
+
+					pub fn getFloatId(self: *Self, attribute: [:0]const u8, index: i32) f32 {
+						return interop.getFloatAttribute(self, attribute, .{ index });
+					}
+
+					pub fn setFloatId(self: *Self, attribute: [:0]const u8, index: i32, value: f32) void {
+						interop.setFloatAttribute(self, attribute, .{ index }, value);
+					}
+
+					pub fn getDoubleId(self: *Self, attribute: [:0]const u8, index: i32) f64 {
+						return interop.getDoubleAttribute(self, attribute, .{ index });
+					}
+
+					pub fn setDoubleId(self: *Self, attribute: [:0]const u8, index: i32, value: f64) void {
+						interop.setFloatAttribute(self, attribute, .{ index }, value);
+					}													
+
+					pub fn getStrId(self: *Self, attribute: [:0]const u8, index: i32) [:0]const u8 {
+						return interop.getStrAttribute(self, attribute, .{ index });
+					}
+
+					pub fn setStrId(self: *Self, attribute: [:0]const u8, index: i32, value: [:0]const u8) void {
+						interop.setStrAttribute(self, attribute, .{ index }, value);
+					}
+
+					pub fn getPtrId(self: *Self, comptime T: type, attribute: [:0]const u8, index: i32) ?*T {
+						return interop.getPtrAttribute(type, self, attribute, .{ index });
+					}
+
+					pub fn setPtrId(self: *Self, comptime T: type, attribute: [:0]const u8, index: i32, value: ?*T) void {
+						interop.setPtrAttribute(type, self, attribute, .{ index }, value);
+					}
+				");
+			} 
+			
+			if (numberedAttributes >= NumberedAttribute.TwoIDs)
+			{
+				builder.Append(@"
+
+					pub fn getIntId2(self: *Self, attribute: [:0]const u8, lin: i32, col: i32) i32 {
+						return interop.getIntAttribute(self, attribute, .{ lin, col });
+					}
+
+					pub fn setIntId2(self: *Self, attribute: [:0]const u8, lin: i32, col: i32, value: i32) void {
+						interop.setIntAttribute(self, attribute, .{ lin, col }, value);
+					}
+
+					pub fn getFloatId2(self: *Self, attribute: [:0]const u8, lin: i32, col: i32) f32 {
+						return interop.getFloatAttribute(self, attribute, .{ lin, col });
+					}
+
+					pub fn setFloatId2(self: *Self, attribute: [:0]const u8, lin: i32, col: i32, value: f32) void {
+						interop.setFloatAttribute(self, attribute, .{ lin, col }, value);
+					}
+
+					pub fn getDoubleId2(self: *Self, attribute: [:0]const u8, lin: i32, col: i32) f64 {
+						return interop.getDoubleAttribute(self, attribute, .{ lin, col });
+					}
+
+					pub fn setDoubleId2(self: *Self, attribute: [:0]const u8, lin: i32, col: i32, value: f64) void {
+						interop.setFloatAttribute(self, attribute, .{ lin, col }, value);
+					}													
+
+					pub fn getStrId2(self: *Self, attribute: [:0]const u8, lin: i32, col: i32) [:0]const u8 {
+						return interop.getStrAttribute(self, attribute, .{ lin, col });
+					}
+
+					pub fn setStrId2(self: *Self, attribute: [:0]const u8, lin: i32, col: i32, value: [:0]const u8) void {
+						interop.setStrAttribute(self, attribute, .{ lin, col }, value);
+					}
+
+					pub fn getPtrId2(self: *Self, comptime T: type, attribute: [:0]const u8, lin: i32, col: i32) ?*T {
+						return interop.getPtrAttribute(type, self, attribute, .{ lin, col });
+					}
+
+					pub fn setPtrId2(self: *Self, comptime T: type, attribute: [:0]const u8, lin: i32, col: i32, value: ?*T) void {
+						interop.setPtrAttribute(type, self, attribute, .{ lin, col }, value);
+					}
+				");			
+			}
+
 			return builder.ToString();
 		}
 
