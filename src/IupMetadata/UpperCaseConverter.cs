@@ -59,7 +59,8 @@ namespace IupMetadata
 
 		public static string ToTitleCase(string value)
 		{
-			var word = value.Replace("_", "").ToLower();
+			var word = value.Replace("_", "").Replace("<", "").Replace(">", "") .ToLower();
+
 			if (!processed.TryGetValue(word, out string newName))
 			{
 				var buffer = new StringBuilder();
@@ -68,9 +69,9 @@ namespace IupMetadata
 				// Selecting all words contained on the string
 				var fitWordMaps = words.Concat(suggestWords).Select(x => new WordMap { Word = x, StartIndex = word.IndexOf(x) }).Where(x => x.StartIndex >= 0).ToArray();
 
-				// Calculating colisions between words, like "user" and "use", remove the shortest
-				var colisions = GetColisions(fitWordMaps);
-				fitWordMaps = fitWordMaps.Except(colisions).ToArray();
+				// Calculating collisions between words, like "user" and "use", remove the shortest
+				var collisions = GetCollisions(fitWordMaps);
+				fitWordMaps = fitWordMaps.Except(collisions).ToArray();
 
 				// In case of colision, prefer the longest word
 				fitWordMaps = fitWordMaps.GroupBy(x => x.StartIndex).Select(x => x.OrderByDescending(y => y.EndIndex).First()).OrderBy(x => x.StartIndex).ToArray();
@@ -112,19 +113,19 @@ namespace IupMetadata
 			return newName;
 		}
 
-		private static WordMap[] GetColisions(WordMap[] fitWordMaps)
+		private static WordMap[] GetCollisions(WordMap[] fitWordMaps)
 		{
-			var colisions = new List<WordMap>();
+			var collisions = new List<WordMap>();
 
 			foreach (var wordMap in fitWordMaps.OrderBy(x => x.StartIndex).ThenByDescending(x => x.Word.Length))
 			{
-				if (colisions.Contains(wordMap)) continue;
+				if (collisions.Contains(wordMap)) continue;
 
-				var selections = fitWordMaps.Except(colisions).Where(x => wordMap != x && IsColision(wordMap, x)).ToArray();
-				colisions.AddRange(selections);
+				var selections = fitWordMaps.Except(collisions).Where(x => wordMap != x && IsColision(wordMap, x)).ToArray();
+				collisions.AddRange(selections);
 			}
 
-			return colisions.ToArray();
+			return collisions.ToArray();
 		}
 
 		private static bool IsColision(WordMap right, WordMap left)

@@ -41,6 +41,7 @@ propagate
 secondary
 selection
 separator
+translate
 activate
 animated
 calendar
@@ -114,6 +115,7 @@ warning
 visible
 curtain
 signed
+matrix
 active
 append
 arrows
@@ -157,6 +159,7 @@ marked
 markup
 masked
 motion
+freeze
 native
 notify
 offset

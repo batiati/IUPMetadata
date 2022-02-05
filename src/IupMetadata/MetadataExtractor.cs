@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace IupMetadata
 {
@@ -17,7 +18,8 @@ namespace IupMetadata
 
 		static MetadataExtractor()
 		{
-			_ = Interop.IupOpen(IntPtr.Zero, IntPtr.Zero);
+			Debug.Assert(Interop.IupOpen(IntPtr.Zero, IntPtr.Zero) == 0);
+			Debug.Assert(Interop.IupControlsOpen() == 0);
 		}
 
 		#endregion Constructor

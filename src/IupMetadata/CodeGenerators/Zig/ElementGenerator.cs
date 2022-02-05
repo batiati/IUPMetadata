@@ -60,7 +60,7 @@ namespace IupMetadata.CodeGenerators.Zig
 				builder.Append($@"
 
 				{Generator.GetDocumentation(callback.Documentation)}
-				pub const On{callback.Name}Fn = fn(self: *Self{args}) anyerror!{getZigType(callback.ReturnType)};");
+				pub const On{callback.Name}Fn = fn(self: *Self{args}) {(callback.ReturnType == DataType.Void ? "anyerror!" : "")}{getZigType(callback.ReturnType)};");
 			}
 
 			return builder.ToString();

@@ -41,6 +41,16 @@ namespace IupMetadata
 			public bool? Deprecated { get; set; }
 		}
 
+		private class CallbackType 
+		{
+
+			public string ClassName { get; set; }
+
+			public string AttributeName { get; set; }
+
+			public string Name { get; set; }
+		}
+
 		#endregion InnerTypes
 
 		#region Fields
@@ -53,7 +63,7 @@ namespace IupMetadata
 
 		#endregion Documentation
 
-		private static readonly AttributeType[] Values = new[]
+		private static readonly AttributeType[] Attributes = new[]
 		{
 			//TODO:: Needs review, most attributes are just declared here without propper DataType
 			//Attributes with DataType set are already reviewed
@@ -907,6 +917,19 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "INVERTED", ClassName = "val"},
 			new AttributeType { AttributeName = "SHOWTICKS", ClassName = "val"},
 			new AttributeType { AttributeName = "TICKSPOS", ClassName = "val"},
+
+			new AttributeType { AttributeName = "FOCUS_CELL", Deprecated = true},
+			new AttributeType { AttributeName = "MARK_MODE", Deprecated = true},
+			new AttributeType { AttributeName = "EDIT_MODE", Deprecated = true},
+			new AttributeType { AttributeName = "REDRAW", Name="RedrawCells" },
+			
+		};
+
+		private static readonly CallbackType[] Callbacks = new[]
+		{
+			new CallbackType { AttributeName = "ACTION", ClassName="matrix", Name="CanvasAction"},
+			new CallbackType { AttributeName = "ACTION", ClassName="matrixlist", Name="CanvasAction"},
+			new CallbackType { AttributeName = "ACTION", ClassName="matrixex", Name="CanvasAction"},
 		};
 
 		#endregion Fields
@@ -925,10 +948,10 @@ namespace IupMetadata
 		{
 			foreach (var attribute in item.Attributes)
 			{
-				var match = Values.FirstOrDefault(x => x.ClassName != null && x.ClassName.Equals(item.ClassName, StringComparison.InvariantCultureIgnoreCase) && x.AttributeName.Equals(attribute.AttributeName, StringComparison.InvariantCultureIgnoreCase));
+				var match = Attributes.FirstOrDefault(x => x.ClassName != null && x.ClassName.Equals(item.ClassName, StringComparison.InvariantCultureIgnoreCase) && x.AttributeName.Equals(attribute.AttributeName, StringComparison.InvariantCultureIgnoreCase));
 				if (match == null)
 				{
-					match = Values.FirstOrDefault(x => x.ClassName == null && x.AttributeName.Equals(attribute.AttributeName, StringComparison.InvariantCultureIgnoreCase));
+					match = Attributes.FirstOrDefault(x => x.ClassName == null && x.AttributeName.Equals(attribute.AttributeName, StringComparison.InvariantCultureIgnoreCase));
 				}
 
 				if (match != null)
@@ -943,6 +966,20 @@ namespace IupMetadata
 					if (match.AtChildrenOnly != null) attribute.AtChildrenOnly = match.AtChildrenOnly.Value;
 					if (match.TargetChildren != null) attribute.TargetChildren = match.TargetChildren;
 					if (match.Deprecated != null) attribute.Deprecated = match.Deprecated.Value;
+				}
+			}
+
+			foreach(var callback in item.Callbacks) 
+			{
+				var match = Callbacks.FirstOrDefault(x => x.ClassName == item.ClassName && x.AttributeName.Equals(callback.AttributeName, StringComparison.InvariantCultureIgnoreCase));
+				if (match == null)
+				{
+					match = Callbacks.FirstOrDefault(x => x.ClassName == null && x.AttributeName.Equals(callback.AttributeName, StringComparison.InvariantCultureIgnoreCase));
+				}
+
+				if (match != null)
+				{
+					callback.Name = match.Name;
 				}
 			}
 		}
