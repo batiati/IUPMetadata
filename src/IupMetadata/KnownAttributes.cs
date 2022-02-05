@@ -922,6 +922,11 @@ namespace IupMetadata
 			new AttributeType { AttributeName = "MARK_MODE", Deprecated = true},
 			new AttributeType { AttributeName = "EDIT_MODE", Deprecated = true},
 			new AttributeType { AttributeName = "REDRAW", Name="RedrawCells" },
+			new AttributeType { AttributeName = "EDITCELL", DataType=DataType.String, DataFormat=DataFormat.LinColPosCollonSeparated, IsNullable=true },
+			new AttributeType { AttributeName = "RESIZEMATRIX", DataType=DataType.Boolean }, 
+			new AttributeType { AttributeName = "WIDTHDEF", DataType=DataType.Int }, 
+			new AttributeType { AttributeName = "HEIGHTDEF", DataType=DataType.Int }, 
+			new AttributeType { AttributeName = "MINCOLWIDTHDEF", DataType=DataType.Int }, 
 			
 		};
 

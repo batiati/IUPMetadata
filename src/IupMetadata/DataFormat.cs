@@ -80,6 +80,16 @@
 		#region Documentation
 
 		/// <summary>
+		/// C-style null terminated string formatted as "lin:col", int, both required
+		/// </summary>
+
+		#endregion Documentation
+
+		LinColPosCollonSeparated,		
+
+		#region Documentation
+
+		/// <summary>
 		/// C-style null terminated string formatted as "x,y", int, both required
 		/// </summary>
 

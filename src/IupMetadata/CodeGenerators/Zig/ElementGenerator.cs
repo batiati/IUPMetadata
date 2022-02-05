@@ -373,6 +373,18 @@ namespace IupMetadata.CodeGenerators.Zig
 
 				",
 
+				(DataFormat.LinColPosCollonSeparated, DataType.String) => @$"
+
+				pub fn {fnName}(self: {type}{idArgs}, lin: i32, col: i32) {ret} {{
+					{initializer}
+					var buffer: [128]u8 = undefined;
+					var value = iup.LinColPos.intIntToString(&buffer, lin, col, ':');
+					interop.setStrAttribute({self}, ""{attribute.AttributeName}""{idParams},value);
+					{@return}
+				}}
+
+				",				
+
 				(DataFormat.XYPosCommaSeparated or DataFormat.XYPosColonSeparated, DataType.String) x => @$"
 
 				pub fn {fnName}(self: {type}{idArgs}, x: i32, y: i32) {ret} {{
@@ -594,6 +606,27 @@ namespace IupMetadata.CodeGenerators.Zig
 				}}
 
 				",
+
+				(DataFormat.LinColPosCollonSeparated, DataType.String) when attribute.IsNullable => @$"
+
+				pub fn get{attribute.Name}(self: *Self{idArgs}) ?iup.LinColPos {{
+					if (interop.getNullableStrAttribute(self, ""{attribute.AttributeName}""{idParams})) |str| {{
+						return iup.LinColPos.parse(str, ':');
+					}} else {{
+						return null;
+					}}
+				}}
+
+				",
+
+				(DataFormat.LinColPosCollonSeparated, DataType.String) => @$"
+
+				pub fn get{attribute.Name}(self: *Self{idArgs}) iup.LinColPos {{
+					var str = interop.getStrAttribute(self, ""{attribute.AttributeName}""{idParams});
+					return iup.LinColPos.parse(str, ':');
+				}}
+
+				",				
 
 				(DataFormat.XYPosCommaSeparated or DataFormat.XYPosColonSeparated, DataType.String) x => @$"
 
