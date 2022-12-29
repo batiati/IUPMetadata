@@ -118,11 +118,11 @@ namespace IupMetadata.CodeGenerators.Zig
 			if (attribute.ReadOnly) return string.Empty;
 
 			var (idArgs, idParams) = GetNumberedParamsInfo(attribute);
-			var type = isInitializer ? "*Initializer" : "*Self";
+			var type = isInitializer ? "Initializer" : "*Self";
 			var ret = isInitializer ? "Initializer" : "void";
 			var self = isInitializer ? "self.ref" : "self";
-			var @return = isInitializer ? "return self.*;" : "";
-			var initializer = isInitializer ? "if (self.last_error) |_| return self.*;" : "";
+			var @return = isInitializer ? "return self;" : "";
+			var initializer = isInitializer ? "if (self.last_error) |_| return self;" : "";
 
 			var fnName = attribute.WriteOnly && !attribute.CreationOnly ? attribute.Name.Camelize() : $"set{attribute.Name}";
 
@@ -707,15 +707,15 @@ namespace IupMetadata.CodeGenerators.Zig
 
 		private static string GetCallbackSetBlock(IupCallback callback, bool isInitializer)
 		{
-			var type = isInitializer ? "*Initializer" : "*Self";
+			var type = isInitializer ? "Initializer" : "*Self";
 			var ret = isInitializer ? "Initializer" : "void";
 			var self = isInitializer ? "self.ref" : "self";
-			var @return = isInitializer ? "return self.*;" : "";
+			var @return = isInitializer ? "return self;" : "";
 
 			return $@"
 
 				{Generator.GetDocumentation(callback.Documentation)}
-				pub fn set{callback.Name}Callback(self: {type}, callback: ?On{callback.Name}Fn) {ret} {{
+				pub fn set{callback.Name}Callback(self: {type}, callback: ?*const On{callback.Name}Fn) {ret} {{
 					const Handler = CallbackHandler(Self, On{callback.Name}Fn, ""{callback.AttributeName}"");
 					Handler.setCallback({self}, callback);
 					{@return}
@@ -731,14 +731,17 @@ namespace IupMetadata.CodeGenerators.Zig
 			{
 				builder.AppendLine(@"
 
-					pub fn setChildren(self: *Initializer, tuple: anytype) Initializer {
-						if (self.last_error) |_| return self.*;
+					pub fn setChildren(self: Initializer, tuple: anytype) Initializer {
+						if (self.last_error) |_| return self;
 
 						Self.appendChildren(self.ref, tuple) catch |err| {
-							self.last_error = err;
+							return .{
+								.ref = self.ref,
+								.last_error = err,
+							};
 						};
 
-						return self.*;
+						return self;
 					}
 				");
 			}

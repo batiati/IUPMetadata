@@ -52,39 +52,39 @@ pub const {{Name}} = opaque {
         ///
         /// Captures a reference into a external variable
         /// Allows to capture some references even using full declarative API
-        pub fn capture(self: *Initializer, ref: **Self) Initializer {
+        pub fn capture(self: Initializer, ref: **Self) Initializer {
             ref.* = self.ref;
-            return self.*;
+            return self;
         } 
 
-        pub fn setStrAttribute(self: *Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setStrAttribute(self: Initializer, attributeName: [:0]const u8, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
             Self.setStrAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         }
 
-        pub fn setIntAttribute(self: *Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setIntAttribute(self: Initializer, attributeName: [:0]const u8, arg: i32) Initializer {
+            if (self.last_error) |_| return self;
             Self.setIntAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         } 
 
-        pub fn setBoolAttribute(self: *Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setBoolAttribute(self: Initializer, attributeName: [:0]const u8, arg: bool) Initializer {
+            if (self.last_error) |_| return self;
             Self.setBoolAttribute(self.ref, attributeName, arg);
-            return self.*;
+            return self;
         } 
 
-        pub fn setPtrAttribute(self: *Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setPtrAttribute(self: Initializer, comptime T: type, attributeName: [:0]const u8, value: ?*T) Initializer {
+            if (self.last_error) |_| return self;
             Self.setPtrAttribute(self.ref, T, attributeName, value);
-            return self.*;
+            return self;
         }
 
-        pub fn setHandle(self: *Initializer, arg: [:0]const u8) Initializer {
-            if (self.last_error) |_| return self.*;
+        pub fn setHandle(self: Initializer, arg: [:0]const u8) Initializer {
+            if (self.last_error) |_| return self;
 		    interop.setHandle(self.ref, arg);
-            return self.*;
+            return self;
 	    }
 
         {{InitializerTraits}}

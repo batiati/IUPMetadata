@@ -169,6 +169,7 @@ preced
 prompt
 raster
 redraw
+single
 remove
 rename
 resize
