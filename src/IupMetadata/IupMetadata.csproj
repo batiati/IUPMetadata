@@ -122,6 +122,9 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsLinux)'=='true'" >
+    <None Include="..\..\libs\linux\libcd.so" Link="libs\libcd.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="..\..\libs\linux\libftgl.so" Link="libs\libftgl.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

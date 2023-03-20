@@ -12,14 +12,20 @@ namespace IupMetadata
 			Console.WriteLine("IUP Metadata exporter");
 			Console.WriteLine("https://webserver2.tecgraf.puc-rio.br/iup/");
 
+			#if Linux
+			const string docsPath = @"./docs";
+			const string jsonPath = @"./iup.json";
+			const string zigPath = @"../IUPforZig/src";
+			#else
 			const string docsPath = @"../docs";
+			const string jsonPath = @"../iup.json";
+			const string zigPath = @"../../IUPforZig/src";
+			#endif
 			var metadata = MetadataExtractor.GetClasses(docsPath);
 
-			const string jsonPath = @"../iup.json";
 			Console.WriteLine("Writing JSON output: {0}", Path.GetFullPath(jsonPath));
 			SaveAsJson(jsonPath, metadata);
 
-			const string zigPath = @"../../IUPforZig/src";
 			Console.WriteLine("Generating Zig output: {0}", Path.GetFullPath(zigPath));
 			CodeGenerators.Zig.Generator.Generate(zigPath, metadata);
 

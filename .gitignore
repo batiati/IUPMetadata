@@ -3,3 +3,4 @@ src/.vs
 src/IupMetadata/obj
 src/IupMetadata/bin
 zig-cache/
+bin/
