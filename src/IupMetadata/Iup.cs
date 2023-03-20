@@ -58,8 +58,8 @@ namespace IupMetadata
 		#region Fields
 
 		#if Linux
-		private const string IUP_DLL = "libiup.so";
-		private const string IUP_CONTROLS_DLL = "libiupcontrols.so";
+		private const string IUP_DLL = "iup";
+		private const string IUP_CONTROLS_DLL = "iupcontrols";
 		#else
 		private const string IUP_DLL = "libs/iup.dll";
 
@@ -77,7 +77,7 @@ namespace IupMetadata
 		[DllImport(IUP_CONTROLS_DLL)]
 		public static extern int IupControlsOpen();
 
-				[DllImport(IUP_CONTROLS_DLL)]
+		[DllImport(IUP_CONTROLS_DLL)]
 		public static extern IntPtr IupMatrix();
 
 		[DllImport(IUP_DLL)]

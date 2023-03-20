@@ -6248,7 +6248,7 @@
         "Handle": null,
         "EnumValues": [
           {
-            "Name": "SInGle",
+            "Name": "Single",
             "StrValue": "SINGLE",
             "IntValue": null
           },
@@ -55656,7 +55656,7 @@
         "Handle": null,
         "EnumValues": [
           {
-            "Name": "SInGle",
+            "Name": "Single",
             "StrValue": "SINGLE",
             "IntValue": null
           },
@@ -63312,7 +63312,7 @@
         "Handle": null,
         "EnumValues": [
           {
-            "Name": "SInGle",
+            "Name": "Single",
             "StrValue": "SINGLE",
             "IntValue": null
           },
@@ -72022,7 +72022,7 @@
         "Handle": null,
         "EnumValues": [
           {
-            "Name": "SInGle",
+            "Name": "Single",
             "StrValue": "SINGLE",
             "IntValue": null
           },
@@ -111720,7 +111720,7 @@
         "Handle": null,
         "EnumValues": [
           {
-            "Name": "SInGle",
+            "Name": "Single",
             "StrValue": "SINGLE",
             "IntValue": null
           },
